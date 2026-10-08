@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "modern university library interior with tall bookshelves and warm light",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f4cdb2f92318.png",
+      "caption": "",
+      "source": "",
+      "original_width": "1376px",
+      "original_height": "768px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/0547c1c38790.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "2000px",
+      "original_height": "1600px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80c967e0b54f.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "864px",
+      "original_height": "1390px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ffef371445a8.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1300px",
+      "original_height": "956px"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "teacher writing lesson on blackboard in classroom warm natural light",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ac2a726fe69a.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/c99119eca690.png",
+      "caption": "",
+      "source": "",
+      "original_width": "1536px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5fa3faa8f9ea.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "816px",
+      "original_height": "1456px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/19aa97848312.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1300px",
+      "original_height": "956px"
+    }
+  ]
+}

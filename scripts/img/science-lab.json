@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "scientist using microscope in a modern research laboratory moody lighting",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/c1daf8d4faa0.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e1d1f4b2d70f.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "816px",
+      "original_height": "1456px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7c208c90bf43.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8fac2b477f0a.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1200px",
+      "original_height": "750px"
+    }
+  ]
+}

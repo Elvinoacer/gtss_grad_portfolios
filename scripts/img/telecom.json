@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "telecommunications tower with antennas silhouetted against dusk sky",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/0d9c69deb730.jpg",
+      "caption": "",
+      "source": "Alamy",
+      "original_width": "1300px",
+      "original_height": "956px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b98538525b64.jpg",
+      "caption": "",
+      "source": "StockCake",
+      "original_width": "768px",
+      "original_height": "1344px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/acb2bce2071e.jpg",
+      "caption": "",
+      "source": "Shutterstock",
+      "original_width": "843px",
+      "original_height": "1600px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5b3e7d0cfc1b.jpeg",
+      "caption": "",
+      "source": "Pexels",
+      "original_width": "4000px",
+      "original_height": "6000px"
+    }
+  ]
+}

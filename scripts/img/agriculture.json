@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "green agricultural crop fields rows from above golden hour",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/9007908da1af.jpeg",
+      "caption": "",
+      "source": "Pexels",
+      "original_width": "3000px",
+      "original_height": "1688px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8a1033159b99.jpeg",
+      "caption": "",
+      "source": "Epic Gardening",
+      "original_width": "1600px",
+      "original_height": "900px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5d639ae5e7e0.jpg",
+      "caption": "",
+      "source": "Farm Progress",
+      "original_width": "1280px",
+      "original_height": "664px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/71cd6d53f5fa.jpeg",
+      "caption": "",
+      "source": "Epic Gardening",
+      "original_width": "1600px",
+      "original_height": "900px"
+    }
+  ]
+}

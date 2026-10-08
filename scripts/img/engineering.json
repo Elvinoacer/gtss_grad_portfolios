@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "query": "structural steel framework of a modern building under construction against dramatic sky",
+  "count": 3,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a3bb5f8b6320.jpeg",
+      "caption": "",
+      "source": "The Skyscraper Museum",
+      "original_width": "2560px",
+      "original_height": "1339px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e0457128c414.jpg",
+      "caption": "",
+      "source": "The New Yorker",
+      "original_width": "2048px",
+      "original_height": "1438px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/486f089aa600.jpg",
+      "caption": "",
+      "source": "LA Times",
+      "original_width": "2000px",
+      "original_height": "1333px"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "african university graduates in gowns celebrating at graduation ceremony",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/153e2dc91b90.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1200px",
+      "original_height": "785px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/02f7a462c22f.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1200px",
+      "original_height": "800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8ee46610111d.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1300px",
+      "original_height": "956px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/bd66f42f98b5.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1600px",
+      "original_height": "1156px"
+    }
+  ]
+}

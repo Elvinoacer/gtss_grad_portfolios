@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "stack of old books and papers on wooden desk with dramatic side light",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/77ca818919f4.jpg",
+      "caption": "",
+      "source": "Mere Orthodoxy",
+      "original_width": "1280px",
+      "original_height": "853px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/56f31cc6ba7c.jpg",
+      "caption": "",
+      "source": "Dreamstime",
+      "original_width": "1600px",
+      "original_height": "1295px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/acddb78f2d37.jpg",
+      "caption": "",
+      "source": "TheCoolist",
+      "original_width": "1080px",
+      "original_height": "1440px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8a02d27e0951.jpg",
+      "caption": "",
+      "source": "Britannica",
+      "original_width": "1067px",
+      "original_height": "1600px"
+    }
+  ]
+}

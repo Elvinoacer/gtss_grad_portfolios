@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "air traffic control tower at airport at dusk with runway lights",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/6032e8e22b8c.png",
+      "caption": "",
+      "source": "Aviator Zone Academy",
+      "original_width": "2500px",
+      "original_height": "1779px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/050608be54e7.jpeg",
+      "caption": "",
+      "source": "Simple Flying",
+      "original_width": "1600px",
+      "original_height": "900px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ea01aa1d3224.jpg",
+      "caption": "",
+      "source": "CNN",
+      "original_width": "1600px",
+      "original_height": "1067px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8ef7e4486a3f.jpg",
+      "caption": "",
+      "source": "Simple Flying",
+      "original_width": "1600px",
+      "original_height": "900px"
+    }
+  ]
+}

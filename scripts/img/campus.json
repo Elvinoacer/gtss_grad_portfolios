@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "query": "university students walking on campus at golden hour",
+  "count": 4,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b10b75a0e20e.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "768px",
+      "original_height": "1344px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f0ff8c4af7b9.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1600px",
+      "original_height": "963px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/95a2a6c6f56c.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "2001px",
+      "original_height": "1331px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d590e15a99f3.jpg",
+      "caption": "",
+      "source": "",
+      "original_width": "1200px",
+      "original_height": "900px"
+    }
+  ]
+}

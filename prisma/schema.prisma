@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// GTSS graduate-portfolio commission requests (spec §34-40)
+model PortfolioRequest {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Step 1 — You
+  fullName       String
+  candidateStatus String
+  university     String
+  campus         String?
+  graduationYear Int?
+
+  // Step 2 — Your course
+  school          String?
+  degree          String
+  courseNotListed Boolean @default(false)
+  specialization  String?
+  careerDirection String?
+  rolesInterest   String?
+
+  // Step 3 — Evidence
+  evidenceJson String // JSON array of selected evidence types
+
+  // Step 4 — Direction
+  targetRoles            String?
+  knownFor               String?
+  recruiterUnderstanding String?
+  visualPreference       String?
+
+  // Step 5 — Links
+  linksJson String? // JSON object of optional links
+
+  // Step 6 — Contact
+  whatsapp         String?
+  email            String
+  preferredContact String
+  bestTime         String?
+
+  // Meta
+  source     String?
+  userAgent  String?
+  spamScore  Int      @default(0)
+}
