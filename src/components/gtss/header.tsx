@@ -186,20 +186,22 @@ export function GlobalHeader() {
               }}
               className="shell flex h-[calc(100%-4rem)] flex-col overflow-y-auto pb-10 pt-6"
             >
-              {[
-                { label: "Home", to: "/" },
-                { label: "Explore Portfolios", to: "/portfolios" },
-                ...schools.map((s) => ({
-                  label: s.shortName,
-                  to: `/universities/moi-university/schools/${s.slug}`,
-                  small: true,
-                })),
-                { label: "How It Works", to: "/how-it-works" },
-                { label: "For Graduates", to: "/for-graduates" },
-                { label: "For Departments", to: "/for-departments" },
-                { label: "About GTSS", to: "/about" },
-                { label: "Contact", to: "/contact" },
-              ].map((l) => (
+              {(
+                [
+                  { label: "Home", to: "/" },
+                  { label: "Explore Portfolios", to: "/portfolios" },
+                  ...schools.map((s) => ({
+                    label: s.shortName,
+                    to: `/universities/moi-university/schools/${s.slug}`,
+                    small: true,
+                  })),
+                  { label: "How It Works", to: "/how-it-works" },
+                  { label: "For Graduates", to: "/for-graduates" },
+                  { label: "For Departments", to: "/for-departments" },
+                  { label: "About GTSS", to: "/about" },
+                  { label: "Contact", to: "/contact" },
+                ] as Array<{ label: string; to: string; small?: boolean }>
+              ).map((l) => (
                 <motion.div
                   key={l.to + l.label}
                   variants={{
@@ -253,4 +255,3 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   );
 }
 
-export { navigate, scrollToSection, useReducedMotion };

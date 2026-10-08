@@ -499,7 +499,6 @@ export function Hero() {
               return (
                 <motion.div
                   key={p.slug}
-                  position="absolute"
                   className="absolute inset-0"
                   style={{ zIndex: 10 - offset }}
                   initial={false}

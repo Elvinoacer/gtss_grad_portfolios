@@ -6,9 +6,11 @@ export const site = {
   collectionLabel: "The Moi University Collection",
   tagline: "Your degree tells people what you studied. Your portfolio shows them what you can do.",
   domain: "portfolios.gtss.software",
-  whatsappNumber: "254700000000", // placeholder — replace with real GTSS line
+  whatsappNumber: "254792156094",
+  whatsappDisplay: "+254 792 156 094",
+  email: "support@gtss.software",
   whatsappLink:
-    "https://wa.me/254700000000?text=" +
+    "https://wa.me/254792156094?text=" +
     encodeURIComponent(
       "Hi GTSS, I was exploring the Moi University Graduate Portfolio collection. I study [COURSE] and I would like to know how I can get my own portfolio."
     ),

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { sendAdminNotification, sendApplicantConfirmation } from "@/lib/email";
 
 const requestSchema = z.object({
   // Step 1
@@ -103,37 +104,61 @@ export async function POST(req: NextRequest) {
     }
 
     const d = parsed.data;
-    const record = await db.portfolioRequest.create({
-      data: {
-        fullName: d.fullName,
-        candidateStatus: d.candidateStatus,
-        university: d.university,
-        campus: d.campus || null,
-        graduationYear: d.graduationYear ?? null,
-        school: d.school || null,
-        degree: d.degree,
-        courseNotListed: d.courseNotListed ?? false,
-        specialization: d.specialization || null,
-        careerDirection: d.careerDirection || null,
-        rolesInterest: d.rolesInterest || null,
-        evidenceJson: JSON.stringify(d.evidence ?? []),
-        targetRoles: d.targetRoles || null,
-        knownFor: d.knownFor || null,
-        recruiterUnderstanding: d.recruiterUnderstanding || null,
-        visualPreference: d.visualPreference || null,
-        linksJson: d.links ? JSON.stringify(d.links) : null,
-        whatsapp: d.whatsapp || null,
-        email: d.email,
-        preferredContact: d.preferredContact,
-        bestTime: d.bestTime || null,
-        source: d.source || null,
-        userAgent: req.headers.get("user-agent")?.slice(0, 250) ?? null,
-      },
-    });
+
+    // Generate clean reference code (e.g. A3F829)
+    const referenceId = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    // 1. Persist to database if available (non-blocking fallback)
+    try {
+      if (db?.portfolioRequest) {
+        await db.portfolioRequest.create({
+          data: {
+            fullName: d.fullName,
+            candidateStatus: d.candidateStatus,
+            university: d.university,
+            campus: d.campus || null,
+            graduationYear: d.graduationYear ?? null,
+            school: d.school || null,
+            degree: d.degree,
+            courseNotListed: d.courseNotListed ?? false,
+            specialization: d.specialization || null,
+            careerDirection: d.careerDirection || null,
+            rolesInterest: d.rolesInterest || null,
+            evidenceJson: JSON.stringify(d.evidence ?? []),
+            targetRoles: d.targetRoles || null,
+            knownFor: d.knownFor || null,
+            recruiterUnderstanding: d.recruiterUnderstanding || null,
+            visualPreference: d.visualPreference || null,
+            linksJson: d.links ? JSON.stringify(d.links) : null,
+            whatsapp: d.whatsapp || null,
+            email: d.email,
+            preferredContact: d.preferredContact,
+            bestTime: d.bestTime || null,
+            source: d.source || null,
+            userAgent: req.headers.get("user-agent")?.slice(0, 250) ?? null,
+          },
+        });
+      }
+    } catch (dbErr) {
+      console.warn("[request] Optional database write skipped/failed:", dbErr);
+    }
+
+    // 2. Dispatch Resend emails (Admin alert + Candidate auto-reply)
+    const [adminResult, applicantResult] = await Promise.allSettled([
+      sendAdminNotification(d, referenceId),
+      sendApplicantConfirmation(d, referenceId),
+    ]);
+
+    if (adminResult.status === "rejected") {
+      console.error("[request] Admin notification failed:", adminResult.reason);
+    }
+    if (applicantResult.status === "rejected") {
+      console.error("[request] Candidate confirmation failed:", applicantResult.reason);
+    }
 
     return NextResponse.json({
       ok: true,
-      id: record.id.slice(-6).toUpperCase(),
+      id: referenceId,
     });
   } catch (err) {
     console.error("[request] submission failed", err);

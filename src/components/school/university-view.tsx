@@ -81,7 +81,7 @@ export function UniversityView() {
         />
 
         {/* Detail panel */}
-        {selectedInfo && <ConstellationPanel slug={selected} onClear={() => setSelected(null)} />}
+        {selectedInfo && <ConstellationPanel slug={selectedInfo.degree.slug} onClear={() => setSelected(null)} />}
 
         {filtered.length === 0 && (
           <div className="mt-8 rounded-xl border border-dashed border-brass/40 bg-brass/[0.03] p-10 text-center">

@@ -1,6 +1,7 @@
 "use client";
 
-import { portfolios, type Portfolio } from "@/content/portfolios";
+import { portfolios } from "@/content/portfolios";
+import type { Portfolio } from "@/content/types";
 import { getDegree } from "@/content/schools";
 import { Link } from "@/lib/router";
 import { ArrowUpRight } from "lucide-react";

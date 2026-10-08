@@ -56,19 +56,7 @@ export function ContactView() {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <button
-              type="button"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText("hello@gtss.software");
-                  setCopied(true);
-                  window.setTimeout(() => setCopied(false), 2200);
-                } catch {
-                  /* clipboard unavailable */
-                }
-              }}
-              className="group flex h-full w-full flex-col justify-between rounded-2xl border border-hairline bg-surface/50 p-8 text-left transition-all duration-300 hover:-translate-y-1 hover:border-ink-tertiary"
-            >
+            <div className="group flex h-full w-full flex-col justify-between rounded-2xl border border-hairline bg-surface/50 p-8 text-left transition-all duration-300 hover:-translate-y-1 hover:border-ink-tertiary">
               <div>
                 <span className="grid size-11 place-items-center rounded-lg border border-hairline bg-raised">
                   {copied ? (
@@ -80,17 +68,41 @@ export function ContactView() {
                 <h2 className="mt-6 font-display text-xl font-bold tracking-tight text-foreground">
                   {copied ? "Email copied" : "Email the studio"}
                 </h2>
-                <p className="mt-3 font-mono text-[0.85rem] text-ink-secondary">
-                  hello@gtss.software
-                </p>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="mt-3 block font-mono text-[0.85rem] text-ink-secondary hover:text-brass transition-colors"
+                >
+                  {site.email}
+                </a>
                 <p className="mt-2 text-[0.82rem] leading-relaxed text-ink-tertiary">
-                  For departments, cohorts and bigger scopes.
+                  For departments, cohorts and graduate inquiries.
                 </p>
               </div>
-              <span className="mt-8 font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink-tertiary transition-colors group-hover:text-brass">
-                {copied ? "Paste it anywhere" : "Click to copy"}
-              </span>
-            </button>
+              <div className="mt-8 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(site.email);
+                      setCopied(true);
+                      window.setTimeout(() => setCopied(false), 2200);
+                    } catch {
+                      /* clipboard unavailable */
+                    }
+                  }}
+                  className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink-tertiary transition-colors hover:text-brass"
+                >
+                  {copied ? "Copied to clipboard" : "Click to copy"}
+                </button>
+                <span className="text-ink-tertiary/40">·</span>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brass hover:underline"
+                >
+                  Open mail client
+                </a>
+              </div>
+            </div>
           </Reveal>
 
           <Reveal delay={0.16}>
