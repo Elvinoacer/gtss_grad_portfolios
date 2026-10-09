@@ -211,9 +211,9 @@
   .display-hero {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.04;
-    font-size: clamp(1.75rem, 6.8vw, 6.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    font-size: clamp(1.45rem, 6.2vw, 6.6rem);
     text-wrap: balance;
   }
   @media (min-width: 640px) {

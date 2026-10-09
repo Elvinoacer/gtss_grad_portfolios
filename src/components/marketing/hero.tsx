@@ -289,17 +289,21 @@ export function Hero() {
 
       <div
         ref={contentRef}
-        className="shell relative grid min-h-[calc(100svh-4.5rem)] items-center gap-8 pb-8 pt-14 sm:pt-16 lg:grid-cols-[1.3fr_0.7fr] lg:gap-8 lg:pb-10"
+        className="shell relative grid grid-cols-1 min-h-[calc(100svh-4.5rem)] items-center gap-8 pb-8 pt-14 sm:pt-16 lg:grid-cols-[1.3fr_0.7fr] lg:gap-8 lg:pb-10"
       >
         {/* Copy column */}
-        <div className="relative z-10">
-          <div className="flex flex-wrap items-center gap-2 eyebrow-brass">
-            <span
-              className="inline-block h-1.5 w-1.5 rounded-full bg-brass align-middle"
-              aria-hidden
-            />{" "}
-            <span>GTSS Graduate Portfolios · {university.collectionLabel}</span>
-            <span className="font-mono text-xs font-normal text-ink-tertiary">
+        <div className="relative z-10 min-w-0 w-full">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 eyebrow-brass text-[0.7rem] sm:text-[0.75rem]">
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full bg-brass shrink-0"
+                aria-hidden
+              />
+              <span>GTSS Graduate Portfolios</span>
+            </div>
+            <span className="text-ink-tertiary hidden sm:inline">·</span>
+            <span className="text-brass/90">{university.collectionLabel}</span>
+            <span className="font-mono text-[0.68rem] font-normal text-ink-tertiary sm:text-xs">
               — Independent Initiative
             </span>
           </div>
@@ -330,10 +334,10 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
           >
-            <Magnetic>
+            <Magnetic className="w-full sm:w-auto">
               <Link
                 to="/portfolios"
-                className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground shadow-[0_0_0_1px_rgba(226,168,75,0.35),0_8px_28px_-12px_rgba(226,168,75,0.55)] transition-colors duration-300 hover:bg-[#EDBB60]"
+                className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground shadow-[0_0_0_1px_rgba(226,168,75,0.35),0_8px_28px_-12px_rgba(226,168,75,0.55)] transition-colors duration-300 hover:bg-[#EDBB60]"
               >
                 Explore the Portfolios
                 <ArrowRight
@@ -342,10 +346,10 @@ export function Hero() {
                 />
               </Link>
             </Magnetic>
-            <Magnetic>
+            <Magnetic className="w-full sm:w-auto">
               <Link
                 to="/request"
-                className="group inline-flex h-12 items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-colors duration-300 hover:border-ink-tertiary hover:bg-raised"
+                className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-colors duration-300 hover:border-ink-tertiary hover:bg-raised"
               >
                 Request My Portfolio
                 <ArrowUpRight
