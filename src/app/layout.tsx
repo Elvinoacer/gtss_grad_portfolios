@@ -31,6 +31,17 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
+const shareTitle = "More than a degree. Show what you can do. | GTSS";
+const shareDescription =
+  "Turn your projects, research and skills into a portfolio worth sharing. Explore the Moi University graduate collection, then start your own with GTSS.";
+const shareImage = {
+  url: "/og/graduate-portfolios-v2.jpg",
+  width: 1200,
+  height: 630,
+  type: "image/jpeg",
+  alt: "GTSS Graduate Portfolios — More than a degree. Show what you can do. Civil and electrical engineering portfolio examples from the Moi University Collection.",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolios.gtss.software"),
   title: {
@@ -53,18 +64,18 @@ export const metadata: Metadata = {
     icon: "/gtss-mark.svg",
   },
   openGraph: {
-    title: "GTSS Graduate Portfolios | Moi University Collection",
-    description:
-      "Your degree tells people what you studied. Your portfolio shows them what you can do. Explore the Moi University Collection by GTSS.",
+    title: shareTitle,
+    description: shareDescription,
     siteName: "GTSS Graduate Portfolios",
     type: "website",
-    images: [{ url: "/images/graduates.jpg", width: 1200, height: 785 }],
+    locale: "en_KE",
+    images: [shareImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GTSS Graduate Portfolios | Moi University Collection",
-    description:
-      "Your degree tells people what you studied. Your portfolio shows them what you can do.",
+    title: shareTitle,
+    description: shareDescription,
+    images: [shareImage],
   },
 };
 
