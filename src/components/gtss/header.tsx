@@ -7,11 +7,15 @@ import { Link, useRouter, scrollToSection } from "@/lib/router";
 import { LogoLockup } from "./ui";
 import { Magnetic } from "@/components/elite/magnetic";
 import { schools } from "@/content/schools";
+import { CHAPTERS } from "@/components/elite/chapter-rail";
+
+import { lockScroll, getLenis } from "@/components/elite/smooth-scroll";
 
 export function GlobalHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [schoolsOpen, setSchoolsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeChapter, setActiveChapter] = useState<{ id: string; num: string; label: string } | null>(null);
   const { path, navigate } = useRouter();
 
   useEffect(() => {
@@ -22,22 +26,51 @@ export function GlobalHeader() {
   }, []);
 
   useEffect(() => {
-    setMobileOpen(false);
-    setSchoolsOpen(false);
+    if (path !== "/" && path !== "") {
+      queueMicrotask(() => setActiveChapter(null));
+      return;
+    }
+    const checkChapter = () => {
+      const els = document.querySelectorAll<HTMLElement>("[data-chapter]");
+      const mid = window.innerHeight * 0.45;
+      for (let i = els.length - 1; i >= 0; i--) {
+        const r = els[i].getBoundingClientRect();
+        if (r.top <= mid && r.bottom >= mid) {
+          const id = els[i].dataset.chapter;
+          const match = CHAPTERS.find((c) => c.id === id);
+          if (match) {
+            setActiveChapter({ id: match.id, num: match.num, label: match.label });
+            return;
+          }
+        }
+      }
+    };
+    checkChapter();
+    window.addEventListener("scroll", checkChapter, { passive: true });
+    return () => window.removeEventListener("scroll", checkChapter);
   }, [path]);
 
   useEffect(() => {
+    queueMicrotask(() => {
+      setMobileOpen(false);
+      setSchoolsOpen(false);
+    });
+  }, [path]);
+
+  useEffect(() => {
+    lockScroll(mobileOpen);
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
     return () => {
+      lockScroll(false);
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
 
-  const isHome = path === "/";
+  const isHome = path === "/" || path === "";
 
   const navLinks = [
     { label: "Explore", to: "/portfolios" },
@@ -85,7 +118,7 @@ export function GlobalHeader() {
               aria-expanded={schoolsOpen}
               aria-haspopup="true"
               onClick={() => setSchoolsOpen((v) => !v)}
-              className="flex min-h-[44px] items-center gap-1.5 rounded-md px-3.5 font-sans text-[0.83rem] font-medium text-ink-secondary transition-colors hover:text-foreground"
+              className="flex min-h-[44px] items-center gap-1.5 rounded-md px-3.5 font-sans text-sm font-medium text-ink-secondary transition-colors hover:text-foreground"
             >
               Schools
               <ChevronDown
@@ -142,16 +175,35 @@ export function GlobalHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <Magnetic strength={0.25} className="hidden sm:inline-block">
-            <Link
-              to="/request"
-              className="inline-flex h-11 items-center gap-2 rounded-md bg-brass px-5 font-sans text-[0.83rem] font-semibold tracking-tight text-brass-foreground shadow-[0_0_0_1px_rgba(226,168,75,0.35),0_8px_28px_-12px_rgba(226,168,75,0.55)] transition-colors duration-300 hover:bg-[#EDBB60]"
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="hidden sm:block">
+            <Magnetic strength={0.25}>
+              <Link
+                to="/request"
+                className="inline-flex h-11 items-center gap-2 rounded-md bg-brass px-5 font-sans text-sm font-semibold tracking-tight text-brass-foreground shadow-[0_0_0_1px_rgba(226,168,75,0.35),0_8px_28px_-12px_rgba(226,168,75,0.55)] transition-colors duration-300 hover:bg-[#EDBB60]"
+              >
+                Request My Portfolio
+                <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+            </Magnetic>
+          </div>
+
+          {/* Mobile active chapter badge when scrolling on homepage */}
+          {activeChapter && isHome && (
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onClick={() => {
+                setMobileOpen(true);
+              }}
+              aria-label={`Jump to chapter (currently on Ch. ${activeChapter.num} ${activeChapter.label})`}
+              className="hidden sm:flex xl:hidden items-center gap-1.5 rounded-full border border-brass/40 bg-brass/15 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-brass shadow-[0_0_12px_rgba(226,168,75,0.2)] max-w-[11rem] truncate touch-friendly active:scale-95 transition-transform"
             >
-              Request My Portfolio
-              <ArrowRight className="size-3.5" aria-hidden />
-            </Link>
-          </Magnetic>
+              <span className="size-1.5 rounded-full bg-brass animate-pulse shrink-0" aria-hidden />
+              <span className="truncate">Ch. {activeChapter.num} · {activeChapter.label}</span>
+            </motion.button>
+          )}
 
           {/* Mobile menu toggle */}
           <button
@@ -159,7 +211,7 @@ export function GlobalHeader() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
-            className="grid size-11 place-items-center rounded-md border border-hairline text-foreground transition-colors hover:bg-raised lg:hidden"
+            className="grid size-10 sm:size-11 shrink-0 place-items-center rounded-md border border-hairline text-foreground transition-colors hover:bg-raised active:scale-95 lg:hidden"
           >
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
@@ -174,7 +226,7 @@ export function GlobalHeader() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-16 z-40 bg-background/97 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 top-16 z-40 bg-background/97 backdrop-blur-2xl lg:hidden"
           >
             <motion.nav
               aria-label="Mobile"
@@ -182,51 +234,144 @@ export function GlobalHeader() {
               animate="show"
               variants={{
                 hidden: {},
-                show: { transition: { staggerChildren: 0.05 } },
+                show: { transition: { staggerChildren: 0.04 } },
               }}
-              className="shell flex h-[calc(100%-4rem)] flex-col overflow-y-auto pb-10 pt-6"
+              className="shell flex h-[calc(100%-4rem)] flex-col overflow-y-auto pb-12 pt-5"
             >
-              {(
-                [
-                  { label: "Home", to: "/" },
-                  { label: "Explore Portfolios", to: "/portfolios" },
-                  ...schools.map((s) => ({
-                    label: s.shortName,
-                    to: `/universities/moi-university/schools/${s.slug}`,
-                    small: true,
-                  })),
-                  { label: "How It Works", to: "/how-it-works" },
-                  { label: "For Graduates", to: "/for-graduates" },
-                  { label: "For Departments", to: "/for-departments" },
-                  { label: "About GTSS", to: "/about" },
-                  { label: "Contact", to: "/contact" },
-                ] as Array<{ label: string; to: string; small?: boolean }>
-              ).map((l) => (
+              {[
+                { label: "Home", to: "/" },
+                { label: "Explore Portfolios", to: "/portfolios" },
+                { label: "How It Works", to: "/how-it-works" },
+                { label: "For Graduates", to: "/for-graduates" },
+                { label: "For Departments", to: "/for-departments" },
+              ].map((l) => (
                 <motion.div
-                  key={l.to + l.label}
+                  key={l.to}
                   variants={{
-                    hidden: { opacity: 0, y: 14 },
+                    hidden: { opacity: 0, y: 12 },
                     show: { opacity: 1, y: 0 },
                   }}
                 >
                   <Link
                     to={l.to}
-                    className={`flex min-h-[3.25rem] items-center justify-between border-b border-hairline/60 py-2 text-foreground transition-colors ${
-                      l.small ? "pl-4 text-[0.95rem] text-ink-secondary" : "font-display text-xl font-bold tracking-tight"
-                    }`}
+                    className="flex min-h-[3.25rem] items-center justify-between border-b border-hairline/60 py-2.5 font-display text-xl font-bold tracking-tight text-foreground transition-colors hover:text-brass"
                   >
                     {l.label}
                     <ArrowRight className="size-4 text-ink-tertiary" aria-hidden />
                   </Link>
                 </motion.div>
               ))}
+
+              {/* Exhibition Chapters quick navigator for mobile */}
               <motion.div
-                variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}
-                className="mt-8"
+                variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+                className="mt-6 border-b border-hairline/60 pb-6"
+              >
+                <div className="flex items-center justify-between py-1">
+                  <p className="eyebrow-brass">Exhibition Chapters (I–IX)</p>
+                  <span className="font-mono text-[0.6rem] text-ink-tertiary">Tap to jump</span>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-1.5">
+                  {CHAPTERS.map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => {
+                        setMobileOpen(false);
+                        if (path !== "/" && path !== "") {
+                          navigate("/");
+                          setTimeout(() => {
+                            const el = document.querySelector<HTMLElement>(`[data-chapter="${c.id}"]`);
+                            el?.scrollIntoView({ behavior: "smooth" });
+                          }, 320);
+                        } else {
+                          const el = document.querySelector<HTMLElement>(`[data-chapter="${c.id}"]`);
+                          const lenis = getLenis();
+                          if (lenis && el) {
+                            lenis.scrollTo(el, { offset: 0, duration: 1.2 });
+                          } else {
+                            el?.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }
+                      }}
+                      className="group flex flex-col items-center justify-center rounded-lg border border-hairline/80 bg-surface/70 py-2.5 px-1.5 text-center transition-colors active:scale-95 hover:border-brass/50 hover:bg-raised"
+                    >
+                      <span className="font-mono text-[0.58rem] font-bold text-brass group-hover:text-brass">Ch. {c.num}</span>
+                      <span className="mt-0.5 font-display text-[0.7rem] font-semibold text-foreground truncate max-w-full px-0.5">
+                        {c.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Schools Section in Mobile Menu */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+                className="mt-6 border-b border-hairline/60 pb-6"
+              >
+                <div className="flex items-center justify-between py-2">
+                  <p className="eyebrow-brass">Schools · Moi University</p>
+                  <Link
+                    to="/universities/moi-university"
+                    className="font-mono text-[0.62rem] uppercase tracking-wider text-ink-tertiary hover:text-brass"
+                  >
+                    All 6 schools →
+                  </Link>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  {schools.map((s) => (
+                    <Link
+                      key={s.slug}
+                      to={`/universities/moi-university/schools/${s.slug}`}
+                      className="group flex flex-col justify-between rounded-lg border border-hairline/80 bg-surface/70 p-3 transition-colors hover:border-brass/40 hover:bg-raised active:scale-[0.98]"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="size-2 rounded-full shrink-0"
+                          style={{ background: s.accent }}
+                          aria-hidden
+                        />
+                        <span className="font-mono text-[0.68rem] font-semibold text-foreground truncate">
+                          {s.shortName}
+                        </span>
+                      </div>
+                      <span className="mt-2 font-mono text-[0.58rem] text-ink-tertiary">
+                        {s.degrees.length} degrees
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+
+              {[
+                { label: "About GTSS", to: "/about" },
+                { label: "Contact Us", to: "/contact" },
+              ].map((l) => (
+                <motion.div
+                  key={l.to}
+                  variants={{
+                    hidden: { opacity: 0, y: 12 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                >
+                  <Link
+                    to={l.to}
+                    className="flex min-h-[3rem] items-center justify-between border-b border-hairline/60 py-2 font-display text-lg font-semibold tracking-tight text-ink-secondary transition-colors hover:text-foreground"
+                  >
+                    {l.label}
+                    <ArrowRight className="size-4 text-ink-tertiary" aria-hidden />
+                  </Link>
+                </motion.div>
+              ))}
+
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+                className="mt-8 flex flex-col gap-3"
               >
                 <Link
                   to="/request"
-                  className="flex h-12 items-center justify-center gap-2 rounded-md bg-brass px-6 font-sans text-[0.95rem] font-semibold text-brass-foreground"
+                  className="flex h-12 items-center justify-center gap-2 rounded-md bg-brass px-6 font-sans text-sm font-semibold text-brass-foreground shadow-[0_8px_24px_-8px_rgba(226,168,75,0.5)] active:scale-[0.98]"
                 >
                   Request My Portfolio
                   <ArrowRight className="size-4" aria-hidden />
@@ -246,7 +391,7 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
     <Link
       to={to}
-      className={`flex min-h-[44px] items-center rounded-md px-3.5 font-sans text-[0.83rem] font-medium transition-colors ${
+      className={`flex min-h-[44px] items-center rounded-md px-3.5 font-sans text-sm font-medium transition-colors ${
         active ? "text-foreground" : "text-ink-secondary hover:text-foreground"
       }`}
     >

@@ -76,7 +76,7 @@ export function PortfolioDetail({ slug }: { slug: string }) {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   to={`/request?course=${encodeURIComponent(degree.shortName ?? degree.name)}`}
-                  className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60]"
+                  className="group inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] sm:w-auto"
                 >
                   Build one for my course
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
@@ -86,7 +86,7 @@ export function PortfolioDetail({ slug }: { slug: string }) {
                     href={portfolio.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center gap-2 rounded-md border border-brass/50 bg-brass/10 px-6 font-sans text-sm font-semibold tracking-tight text-brass transition-all duration-300 hover:bg-brass hover:text-brass-foreground"
+                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md border border-brass/50 bg-brass/10 px-6 font-sans text-sm font-semibold tracking-tight text-brass transition-all duration-300 hover:bg-brass hover:text-brass-foreground sm:w-auto"
                   >
                     Visit live portfolio
                     <ExternalLink className="size-4" aria-hidden />
@@ -261,8 +261,10 @@ const xrayPins: Array<{ x: string; y: string; label: string; note: string }> = [
 
 function XRayFrame({ slug }: { slug: string }) {
   const [xray, setXray] = useState(false);
+  const [activePinIdx, setActivePinIdx] = useState(0);
   const reduce = useReducedMotion();
   const portfolio = portfolios.find((p) => p.slug === slug)!;
+  const currentPin = xrayPins[activePinIdx];
 
   return (
     <div>
@@ -272,13 +274,13 @@ function XRayFrame({ slug }: { slug: string }) {
             ? `Live graduate portfolio — ${portfolio.candidate.name}`
             : "Demonstration portfolio — illustrative example by GTSS"}
         </p>
-        <div className="flex items-center gap-2.5">
+        <div className="flex w-full flex-wrap items-center gap-2.5 sm:w-auto">
           {portfolio.liveUrl && (
             <a
               href={portfolio.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex min-h-[2.75rem] items-center gap-2 rounded-md border border-hairline px-4 font-mono text-[0.7rem] font-medium uppercase tracking-[0.14em] text-ink-secondary transition-all duration-300 hover:border-brass/50 hover:text-brass"
+              className="group inline-flex min-h-[2.75rem] flex-1 items-center justify-center gap-2 rounded-md border border-hairline px-4 font-mono text-[0.7rem] font-medium uppercase tracking-[0.14em] text-ink-secondary transition-all duration-300 hover:border-brass/50 hover:text-brass active:scale-95 sm:flex-initial"
             >
               <ExternalLink className="size-3.5" aria-hidden />
               Open live site
@@ -288,19 +290,19 @@ function XRayFrame({ slug }: { slug: string }) {
             type="button"
             onClick={() => setXray((v) => !v)}
             aria-pressed={xray}
-            className={`group inline-flex min-h-[2.75rem] items-center gap-2.5 rounded-md border px-5 font-mono text-[0.7rem] font-medium uppercase tracking-[0.16em] transition-all duration-300 ${
+            className={`group inline-flex min-h-[2.75rem] flex-1 items-center justify-center gap-2.5 rounded-md border px-4 font-mono text-[0.7rem] font-medium uppercase tracking-[0.16em] transition-all duration-300 active:scale-95 sm:flex-initial sm:px-5 ${
               xray
-                ? "border-brass bg-brass text-brass-foreground"
+                ? "border-brass bg-brass text-brass-foreground shadow-[0_0_16px_rgba(226,168,75,0.35)] font-semibold"
                 : "border-hairline text-ink-secondary hover:border-brass/50 hover:text-brass"
             }`}
           >
             <ScanEye className="size-4" aria-hidden />
-            {xray ? "X-Ray on — why this works" : "Turn on X-Ray"}
+            {xray ? "X-Ray Active" : "Inspect with X-Ray"}
           </button>
         </div>
       </div>
 
-      <div className="relative mt-6 min-w-0">
+      <div className="relative mt-6 min-w-0 overflow-hidden rounded-xl border border-hairline">
         <PortfolioMock portfolio={portfolio} variant="full" priority className="relative z-0" />
         <AnimatePresence>
           {xray && (
@@ -311,37 +313,131 @@ function XRayFrame({ slug }: { slug: string }) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
-                className="absolute inset-0 z-20 rounded-xl bg-background/72 backdrop-blur-[1.5px]"
+                className="absolute inset-0 z-20 bg-background/72 backdrop-blur-[1.5px]"
                 aria-hidden
               />
-              {xrayPins.map((pin, i) => (
-                <motion.div
-                  key={pin.label}
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.7 }}
-                  transition={{ delay: 0.08 + i * 0.1, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute z-30"
-                  style={{ left: pin.x, top: pin.y }}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="relative grid size-4 place-items-center">
-                      <span className="absolute inset-0 rounded-full bg-brass/40 animate-pulse-soft" aria-hidden />
-                      <span className="relative size-2 rounded-full bg-brass shadow-[0_0_12px_rgba(226,168,75,0.9)]" />
-                    </span>
-                    <div className="rounded-md border border-brass/40 bg-background/90 px-3 py-1.5 shadow-lg backdrop-blur">
-                      <p className="font-mono text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-brass">
-                        {pin.label}
-                      </p>
-                      <p className="font-mono text-[0.52rem] text-ink-secondary">{pin.note}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+
+              {/* Desktop pin callouts (>= sm) */}
+              <div className="hidden sm:block">
+                {xrayPins.map((pin, i) => {
+                  const isRight = parseInt(pin.x, 10) > 50;
+                  return (
+                    <motion.div
+                      key={pin.label}
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.7 }}
+                      transition={{ delay: 0.08 + i * 0.1, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                      className="pointer-events-none absolute z-30"
+                      style={{ left: pin.x, top: pin.y }}
+                    >
+                      <div className={`flex items-center gap-2 ${isRight ? "flex-row-reverse -translate-x-full" : ""}`}>
+                        <span className="relative grid size-4 shrink-0 place-items-center">
+                          <span className="absolute inset-0 animate-pulse-soft rounded-full bg-brass/40" aria-hidden />
+                          <span className="relative size-2 rounded-full bg-brass shadow-[0_0_12px_rgba(226,168,75,0.9)]" />
+                        </span>
+                        <div className={`max-w-[8.5rem] rounded-md border border-brass/40 bg-background/95 px-2.5 py-1.5 shadow-lg backdrop-blur sm:max-w-xs ${isRight ? "text-right" : "text-left"}`}>
+                          <p className="truncate font-mono text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-brass">
+                            {pin.label}
+                          </p>
+                          <p className="line-clamp-2 font-mono text-[0.52rem] leading-tight text-ink-secondary">{pin.note}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Mobile pulsing target reticles (< sm) */}
+              <div className="sm:hidden">
+                {xrayPins.map((pin, i) => {
+                  const isActive = activePinIdx === i;
+                  return (
+                    <button
+                      key={`mob-pin-${i}`}
+                      type="button"
+                      onClick={() => setActivePinIdx(i)}
+                      aria-label={`Inspect ${pin.label}`}
+                      className="absolute z-30 -translate-x-1/2 -translate-y-1/2 p-2 active:scale-125 transition-transform"
+                      style={{ left: pin.x, top: pin.y }}
+                    >
+                      <span className="relative grid size-5 place-items-center">
+                        <span
+                          className={`absolute inset-0 rounded-full transition-all duration-300 ${
+                            isActive ? "bg-brass/50 animate-ping" : "bg-brass/25"
+                          }`}
+                        />
+                        <span
+                          className={`relative grid size-4 place-items-center rounded-full font-mono text-[0.5rem] font-bold transition-all ${
+                            isActive
+                              ? "bg-brass text-brass-foreground shadow-[0_0_16px_rgba(226,168,75,0.9)] scale-110"
+                              : "bg-background/90 text-brass border border-brass/60"
+                          }`}
+                        >
+                          {i + 1}
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </>
           )}
         </AnimatePresence>
       </div>
+
+      {/* Mobile Interactive Architecture Inspector Drawer (< sm) */}
+      {xray && (
+        <div className="mt-4 sm:hidden">
+          <div className="rounded-xl border border-brass/40 bg-surface/95 p-4 shadow-xl backdrop-blur-md">
+            <div className="flex items-center justify-between border-b border-hairline/60 pb-2.5">
+              <span className="font-mono text-[0.62rem] font-semibold uppercase tracking-wider text-brass">
+                Principle 0{activePinIdx + 1} of 0{xrayPins.length}
+              </span>
+              <div className="flex items-center gap-1.5">
+                {xrayPins.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActivePinIdx(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      activePinIdx === i ? "w-4 bg-brass" : "w-1.5 bg-hairline"
+                    }`}
+                    aria-label={`Jump to principle ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="pt-3">
+              <h4 className="font-display text-base font-bold text-foreground">
+                {currentPin.label}
+              </h4>
+              <p className="mt-1.5 text-xs leading-relaxed text-ink-secondary">
+                {currentPin.note}
+              </p>
+              <div className="mt-4 flex items-center justify-between gap-2 pt-2 border-t border-hairline/60">
+                <button
+                  type="button"
+                  onClick={() => setActivePinIdx((i) => (i - 1 + xrayPins.length) % xrayPins.length)}
+                  className="flex h-8 items-center px-3 rounded-md border border-hairline bg-raised/50 font-mono text-[0.6rem] uppercase tracking-wider text-ink-secondary active:scale-95"
+                >
+                  ← Prev
+                </button>
+                <span className="font-mono text-[0.58rem] text-ink-tertiary">
+                  Tap pin or button
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActivePinIdx((i) => (i + 1) % xrayPins.length)}
+                  className="flex h-8 items-center px-3 rounded-md border border-brass/50 bg-brass/10 font-mono text-[0.6rem] uppercase tracking-wider text-brass font-semibold active:scale-95"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <p className="mt-4 max-w-2xl text-[0.78rem] leading-relaxed text-ink-tertiary">
         The X-Ray view shows what GTSS is actually designing: a career
@@ -373,7 +469,7 @@ function ShareButton({ name }: { name: string }) {
           /* user dismissed */
         }
       }}
-      className="inline-flex h-12 items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
+      className="inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised sm:w-auto"
     >
       {copied ? (
         <>

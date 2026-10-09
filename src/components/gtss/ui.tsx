@@ -89,7 +89,7 @@ export function BrassTextLink({
   return (
     <Link
       to={to}
-      className={`link-sweep group inline-flex items-center gap-2 font-mono text-[0.7rem] font-medium uppercase tracking-[0.18em] text-brass ${className}`}
+      className={`link-sweep group inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-brass ${className}`}
     >
       {children}
       <ArrowRight
@@ -160,11 +160,11 @@ export function Rule({
 }) {
   return (
     <div className={`flex items-center gap-4 ${className}`}>
-      <span className="font-mono text-[0.65rem] tracking-[0.2em] text-brass">
+      <span className="font-mono text-xs font-semibold tracking-[0.16em] text-brass">
         {index}
       </span>
       <span className="h-px flex-1 bg-hairline" aria-hidden />
-      <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ink-tertiary">
+      <span className="font-mono text-xs uppercase tracking-[0.16em] text-ink-secondary">
         {label}
       </span>
     </div>
@@ -200,7 +200,7 @@ export function StatusChip({
   const s = statusMap[status] ?? statusMap.concept;
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[0.65rem] font-medium uppercase tracking-[0.14em] ${s.classes} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] ${s.classes} ${className}`}
     >
       <span className="size-1.5 rounded-full bg-current opacity-80" aria-hidden />
       {s.label}
@@ -210,7 +210,7 @@ export function StatusChip({
 
 export function MetaChip({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-hairline bg-surface/60 px-2.5 py-0.5 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink-secondary">
+    <span className="inline-flex items-center rounded-full border border-hairline bg-surface/60 px-2.5 py-0.5 font-mono text-xs uppercase tracking-[0.12em] text-ink-secondary">
       {children}
     </span>
   );
@@ -222,10 +222,10 @@ export function MetaChip({ children }: { children: ReactNode }) {
 
 export function LogoLockup({ compact = false }: { compact?: boolean }) {
   return (
-    <span className="flex items-center gap-3">
+    <span className="flex items-center gap-2.5 sm:gap-3">
       <svg
         viewBox="0 0 64 64"
-        className="size-8 shrink-0"
+        className="size-7.5 sm:size-8 shrink-0"
         role="img"
         aria-label="GTSS monogram"
       >
@@ -239,10 +239,10 @@ export function LogoLockup({ compact = false }: { compact?: boolean }) {
       </svg>
       {!compact && (
         <span className="flex flex-col leading-none">
-          <span className="font-display text-[0.95rem] font-bold tracking-tight text-foreground">
-            GTSS <span className="text-ink-secondary font-medium">Graduate Portfolios</span>
+          <span className="font-display text-[0.88rem] sm:text-[0.95rem] font-bold tracking-tight text-foreground">
+            GTSS <span className="text-ink-secondary font-medium hidden min-[380px]:inline">Graduate Portfolios</span>
           </span>
-          <span className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-brass">
+          <span className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-brass font-medium">
             Moi University Collection
           </span>
         </span>

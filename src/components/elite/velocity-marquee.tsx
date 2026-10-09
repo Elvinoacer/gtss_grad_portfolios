@@ -31,6 +31,8 @@ export function VelocityMarquee({
   skewLimit?: number;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const loopRef = useRef<gsap.core.Tween | null>(null);
+  const isPausedRef = useRef(false);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -46,6 +48,7 @@ export function VelocityMarquee({
         repeat: -1,
       });
       loop.timeScale(direction);
+      loopRef.current = loop;
 
       const tsTo = gsap.quickTo(loop, "timeScale", {
         duration: 0.4,
@@ -58,6 +61,7 @@ export function VelocityMarquee({
       let settleId = 0;
       const st = ScrollTrigger.create({
         onUpdate: (self) => {
+          if (isPausedRef.current) return;
           const v = self.getVelocity() / 260;
           const boost = gsap.utils.clamp(1, 4.5, 1 + Math.abs(v) * 0.45);
           const dir = self.direction >= 0 ? 1 : -1;
@@ -65,6 +69,7 @@ export function VelocityMarquee({
           if (skewTo) skewTo(gsap.utils.clamp(-skewLimit, skewLimit, v));
           window.clearTimeout(settleId);
           settleId = window.setTimeout(() => {
+            if (isPausedRef.current) return;
             tsTo(direction);
             if (skewTo) skewTo(0);
           }, 170);
@@ -75,6 +80,7 @@ export function VelocityMarquee({
         window.clearTimeout(settleId);
         st.kill();
         loop.kill();
+        loopRef.current = null;
       };
     }, track);
 
@@ -82,7 +88,25 @@ export function VelocityMarquee({
   }, [baseDuration, direction, skew, skewLimit]);
 
   return (
-    <div className={`overflow-hidden ${className}`}>
+    <div
+      className={`overflow-hidden ${className}`}
+      onMouseEnter={() => {
+        isPausedRef.current = true;
+        loopRef.current?.pause();
+      }}
+      onMouseLeave={() => {
+        isPausedRef.current = false;
+        loopRef.current?.play();
+      }}
+      onFocusCapture={() => {
+        isPausedRef.current = true;
+        loopRef.current?.pause();
+      }}
+      onBlurCapture={() => {
+        isPausedRef.current = false;
+        loopRef.current?.play();
+      }}
+    >
       <div
         ref={trackRef}
         className={`flex w-max items-center will-change-transform ${trackClassName}`}

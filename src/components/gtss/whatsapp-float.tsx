@@ -14,14 +14,39 @@ export function WhatsAppFloat() {
   const reduce = useReducedMotion();
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 900);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let nearFooter = false;
+    const footerEl = document.querySelector("footer");
+    let observer: IntersectionObserver | null = null;
+
+    const updateVisibility = () => {
+      const scrolledEnough = window.scrollY > 800;
+      const scrollDistToBottom =
+        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      const closeToBottom = scrollDistToBottom < 550 || nearFooter;
+      setVisible(scrolledEnough && !closeToBottom);
+    };
+
+    if (footerEl && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          nearFooter = entry.isIntersecting;
+          updateVisibility();
+        },
+        { rootMargin: "120px 0px 0px 0px" }
+      );
+      observer.observe(footerEl);
+    }
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      observer?.disconnect();
+    };
   }, []);
 
   // Never compete with the request flow's own CTAs
-  if (dismissed || path.startsWith("/request")) return null;
+  if (path.startsWith("/request")) return null;
 
   return (
     <AnimatePresence>
@@ -29,30 +54,47 @@ export function WhatsAppFloat() {
         <motion.div
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={reduce ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.95 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-5 right-5 z-40 sm:bottom-6 sm:right-6"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          exit={reduce ? { opacity: 0 } : { opacity: 0, y: 14, scale: 0.92 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed right-3.5 z-40 sm:bottom-6 sm:right-6"
+          style={{ bottom: "calc(1.25rem + env(safe-area-inset-bottom, 0px))" }}
         >
-          <div className="flex items-center gap-1">
+          {dismissed ? (
             <button
               type="button"
-              onClick={() => setDismissed(true)}
-              aria-label="Dismiss WhatsApp shortcut"
-              className="grid size-8 place-items-center rounded-md border border-hairline bg-surface/80 text-ink-tertiary backdrop-blur transition-colors hover:text-foreground"
+              onClick={() => setDismissed(false)}
+              aria-label="Reopen WhatsApp chat shortcut"
+              className="grid size-10 sm:size-11 place-items-center rounded-full border border-emerald-400/50 bg-[#0c120e]/95 text-emerald-400 shadow-xl backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-emerald-400 active:scale-95"
             >
-              <X className="size-3.5" aria-hidden />
+              <MessageCircle className="size-5" aria-hidden />
             </button>
-            <a
-              href={site.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex h-12 items-center gap-2.5 rounded-full border border-emerald-400/30 bg-[#0f1512]/90 px-5 font-sans text-[0.83rem] font-semibold text-foreground shadow-[0_18px_44px_-16px_rgba(0,0,0,0.9)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/60"
-            >
-              <MessageCircle className="size-4 text-emerald-300" aria-hidden />
-              Ask GTSS on WhatsApp
-            </a>
-          </div>
+          ) : (
+            <div className="flex items-center gap-1.5 shadow-2xl">
+              <button
+                type="button"
+                onClick={() => setDismissed(true)}
+                aria-label="Dismiss WhatsApp shortcut"
+                className="grid size-7 sm:size-8 place-items-center rounded-full border border-hairline bg-surface/90 text-ink-secondary backdrop-blur-md transition-colors hover:text-foreground active:scale-95"
+              >
+                <X className="size-3.5" aria-hidden />
+              </button>
+              <a
+                href={site.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat with GTSS on WhatsApp"
+                className="group inline-flex h-10 sm:h-12 items-center gap-2 rounded-full border border-emerald-400/40 bg-[#0c120e]/95 px-3.5 sm:px-5 font-sans text-xs sm:text-sm font-semibold text-foreground shadow-[0_12px_36px_-10px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/70 active:scale-95"
+              >
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                </span>
+                <MessageCircle className="size-4 text-emerald-300" aria-hidden />
+                <span className="hidden sm:inline">Ask GTSS on WhatsApp</span>
+                <span className="sm:hidden font-mono tracking-tight text-xs">WhatsApp</span>
+              </a>
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

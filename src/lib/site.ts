@@ -1,10 +1,18 @@
 /** Site-wide configuration & marketing content (spec §55-56, §44, §89) */
 
+export const collectionStats = {
+  totalPortfolios: 10,
+  totalSchools: 6,
+  totalDegrees: 43,
+  degreePathsLabel: "43",
+  degreePathsCaption: "43 degree paths mapped across 6 schools",
+};
+
 export const site = {
   brand: "GTSS",
   productName: "Graduate Portfolios",
   collectionLabel: "The Moi University Collection",
-  tagline: "Your degree tells people what you studied. Your portfolio shows them what you can do.",
+  tagline: "Your degree tells people what you studied. Your portfolio shows what you can do.",
   domain: "portfolios.gtss.software",
   whatsappNumber: "254792156094",
   whatsappDisplay: "+254 792 156 094",
@@ -16,6 +24,8 @@ export const site = {
     ),
   disclaimer:
     "GTSS Graduate Portfolios is an independent GTSS initiative and is not affiliated with or endorsed by Moi University. Programme names are used only to organize portfolio examples by academic discipline.",
+  independenceNote:
+    "Independent GTSS initiative · Not affiliated with or endorsed by Moi University",
 };
 
 export const primaryNav = [
@@ -26,42 +36,56 @@ export const primaryNav = [
   { label: "For Departments", href: "/for-departments" },
 ];
 
+export interface ProcessStep {
+  num: string;
+  title: string;
+  body: string;
+  outcome: string;
+}
+
 /** How GTSS builds a portfolio (spec §44) */
-export const processSteps = [
+export const processSteps: ProcessStep[] = [
   {
     num: "01",
-    title: "We understand your direction",
-    body: "We start with the roles you're targeting and the work you want to be known for — not with a theme. Every later decision serves that direction.",
+    title: "Define your professional direction",
+    body: "We start with the specific roles you are targeting and the capabilities you want to be known for — not with a generic theme. Every design and editorial decision serves that target.",
+    outcome: "Target role profile & content roadmap",
   },
   {
     num: "02",
-    title: "We collect the evidence",
-    body: "Projects, attachment records, research, drawings, datasets, writing, code. You'd be surprised how much professional material a degree produces.",
+    title: "Gather authentic coursework & evidence",
+    body: "Projects, industrial attachments, lab experiments, CAD models, research papers, datasets, writing, and code. A degree produces substantial professional material when curated properly.",
+    outcome: "Vetted catalog of academic and attachment work",
   },
   {
     num: "03",
-    title: "We structure your professional story",
-    body: "Context, problem, your role, process, evidence, result, learning. The hierarchy employers actually read — arranged for your discipline.",
+    title: "Structure your project narratives",
+    body: "Context, problem, your individual contribution, technical process, tangible evidence, results, and key learnings. The narrative hierarchy employers and hiring managers actually read.",
+    outcome: "Structured case studies highlighting problem-solving",
   },
   {
     num: "04",
-    title: "We design around your discipline",
-    body: "An engineering portfolio reasons with drawings and calculations. An actuarial portfolio argues with models. A media portfolio shows bylines. Same studio, different professions.",
+    title: "Design for your specific discipline",
+    body: "An engineering portfolio reasons with technical drawings and calculations. An actuarial portfolio argues with models. A media portfolio leads with bylines and media. Discipline-specific visual logic.",
+    outcome: "Bespoke typography, layout & visual language",
   },
   {
     num: "05",
-    title: "We review the facts",
-    body: "Nothing invented, nothing inflated. Claims are checked, verified or marked as examples — because credibility is the product.",
+    title: "Verify facts and validate claims",
+    body: "Nothing invented, nothing inflated. Academic and attachment claims are checked, verified, and cited — because lasting credibility is the foundation of every portfolio.",
+    outcome: "Fact-checked portfolio draft ready for review",
   },
   {
     num: "06",
-    title: "We publish",
-    body: "A fast, mobile-first professional site with its own link — shareable via WhatsApp, email, LinkedIn, or QR code on your CV.",
+    title: "Publish your live, shareable site",
+    body: "A blazing-fast, mobile-first website hosted with its own permanent link — instantly shareable via WhatsApp, LinkedIn, email, or a scannable QR code printed on your CV.",
+    outcome: "Live high-performance web portfolio & QR code",
   },
   {
     num: "07",
-    title: "You keep building on it",
-    body: "The portfolio is designed to grow as you gain experience. It is a professional asset, not a one-off page.",
+    title: "Handover and continue building",
+    body: "The portfolio is structured to scale as you take on graduate roles and new projects. It is a living career asset that you own and evolve, not an ephemeral graduation souvenir.",
+    outcome: "Complete asset handover & update guidance",
   },
 ];
 

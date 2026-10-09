@@ -28,14 +28,14 @@ export function ForGraduatesView() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               to="/request"
-              className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60]"
+              className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] shadow-[0_8px_24px_-8px_rgba(226,168,75,0.4)]"
             >
               Request my portfolio
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
             </Link>
             <Link
               to="/portfolios"
-              className="inline-flex h-12 items-center rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
+              className="inline-flex h-12 w-full sm:w-auto justify-center items-center rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
             >
               See examples from my course
             </Link>
@@ -161,7 +161,7 @@ export function ForGraduatesView() {
               </div>
               <Link
                 to="/request"
-                className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60]"
+                className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] shadow-[0_8px_24px_-8px_rgba(226,168,75,0.4)]"
               >
                 <Sparkles className="size-4" aria-hidden />
                 See portfolio options

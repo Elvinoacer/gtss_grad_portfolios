@@ -160,7 +160,7 @@ function ConstellationField({
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (reduce) return;
+      if (reduce || e.pointerType === "touch") return;
       const container = containerRef.current;
       if (!container) return;
       const rect = container.getBoundingClientRect();

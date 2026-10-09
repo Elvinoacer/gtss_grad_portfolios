@@ -53,7 +53,7 @@ export function GalleryView() {
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Try “computer science”, “civil”, “actuarial”, “biochemistry”, “telecom”…"
                   aria-label="Search portfolios"
-                  className="h-12 w-full rounded-md border border-hairline bg-surface/80 pl-11 pr-11 font-sans text-sm text-foreground placeholder:text-ink-tertiary focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25"
+                  className="h-12 w-full rounded-md border border-hairline bg-surface/80 pl-11 pr-11 font-sans text-base text-foreground placeholder:text-ink-tertiary focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25 sm:text-sm"
                 />
                 {query && (
                   <button
@@ -67,7 +67,7 @@ export function GalleryView() {
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by school">
+              <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1 touch-pan-x sm:flex-wrap sm:overflow-visible sm:pb-0" role="group" aria-label="Filter by school">
                 <SchoolFilterPill active={school === "all"} onClick={() => setSchool("all")}>
                   All schools
                 </SchoolFilterPill>
@@ -83,14 +83,14 @@ export function GalleryView() {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2" role="group" aria-label="Filter by status">
+              <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1 touch-pan-x sm:overflow-visible sm:pb-0" role="group" aria-label="Filter by status">
                 {(["all", "live", "demo"] as StatusFilter[]).map((st) => (
                   <button
                     key={st}
                     type="button"
                     onClick={() => setStatus(st)}
                     aria-pressed={status === st}
-                    className={`inline-flex min-h-[2.75rem] items-center gap-2 rounded-md border px-4 font-mono text-[0.66rem] uppercase tracking-[0.14em] transition-colors ${
+                    className={`inline-flex min-h-[2.75rem] shrink-0 items-center gap-2 rounded-md border px-4 font-mono text-[0.66rem] uppercase tracking-[0.14em] whitespace-nowrap transition-colors ${
                       status === st
                         ? "border-brass/50 bg-brass/10 text-brass"
                         : "border-hairline text-ink-secondary hover:border-ink-tertiary hover:text-foreground"
@@ -157,42 +157,57 @@ function GalleryCard({ slug }: { slug: string }) {
   const degree = getDegree(p.degreeSlug);
   const school = schools.find((s) => s.slug === p.schoolSlug);
   return (
-    <Link
-      to={`/portfolio/${p.slug}`}
-      className="group flex h-full flex-col"
-      ariaLabel={`${p.candidate.name}, ${degree?.degree.shortName} portfolio`}
-    >
-      <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
-        <PortfolioMock portfolio={p} variant="card" />
-        <div className="absolute right-3 top-3 z-30">
-          <StatusChip status={p.status} />
+    <article className="group flex h-full flex-col">
+      <Link
+        to={`/portfolio/${p.slug}`}
+        className="block"
+        ariaLabel={`${p.candidate.name}, ${degree?.degree.shortName} portfolio`}
+      >
+        <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
+          <PortfolioMock portfolio={p} variant="card" />
+          <div className="absolute right-3 top-3 z-30">
+            <StatusChip status={p.status} />
+          </div>
         </div>
-      </div>
-      <div className="mt-4 flex-1">
-        <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em]" style={{ color: p.presentation.accent }}>
-          {degree?.degree.shortName}
-        </p>
-        <h3 className="mt-1.5 font-display text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-brass">
-          {p.candidate.name}
-        </h3>
-        <p className="mt-0.5 text-[0.82rem] text-ink-secondary">
-          {p.careerDirection} · {school?.shortName}
-        </p>
-        <p className="mt-3 line-clamp-2 text-[0.8rem] leading-relaxed text-ink-tertiary">
-          {p.presentation.summary}
-        </p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="inline-flex items-center gap-1.5 font-mono text-[0.64rem] font-medium uppercase tracking-[0.16em] text-brass opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            Explore portfolio <span aria-hidden>→</span>
-          </span>
+      </Link>
+      <div className="mt-4 flex flex-1 flex-col justify-between">
+        <div>
+          <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em]" style={{ color: p.presentation.accent }}>
+            {degree?.degree.shortName}
+          </p>
+          <Link to={`/portfolio/${p.slug}`} className="block">
+            <h3 className="mt-1.5 font-display text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-brass">
+              {p.candidate.name}
+            </h3>
+          </Link>
+          <p className="mt-0.5 text-[0.82rem] text-ink-secondary">
+            {p.careerDirection} · {school?.shortName}
+          </p>
+          <p className="mt-3 line-clamp-2 text-[0.8rem] leading-relaxed text-ink-tertiary">
+            {p.presentation.summary}
+          </p>
+        </div>
+        <div className="mt-4 flex items-center justify-between gap-2 border-t border-hairline/60 pt-3">
+          <Link
+            to={`/portfolio/${p.slug}`}
+            className="inline-flex min-h-[2.2rem] items-center gap-1.5 font-mono text-[0.66rem] font-medium uppercase tracking-[0.16em] text-brass transition-colors hover:text-brass-dim"
+          >
+            Explore case study <span aria-hidden>→</span>
+          </Link>
           {p.liveUrl && (
-            <span className="font-mono text-[0.6rem] uppercase tracking-wider text-emerald-400/90">
+            <a
+              href={p.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[2.2rem] items-center gap-1 rounded-md border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-wider text-emerald-300 transition-colors hover:bg-emerald-400/20 active:scale-95"
+            >
+              <span className="size-1 rounded-full bg-emerald-400" aria-hidden />
               Live site ↗
-            </span>
+            </a>
           )}
         </div>
       </div>
-    </Link>
+    </article>
   );
 }
 
@@ -261,7 +276,7 @@ function SchoolFilterPill({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`inline-flex min-h-[2.75rem] items-center gap-2 rounded-md border px-3.5 font-mono text-[0.66rem] uppercase tracking-[0.12em] transition-all duration-300 ${
+      className={`inline-flex min-h-[2.75rem] shrink-0 items-center gap-2 rounded-md border px-3.5 font-mono text-[0.66rem] uppercase tracking-[0.12em] whitespace-nowrap transition-all duration-300 ${
         active
           ? "border-brass/50 bg-brass/10 text-brass"
           : "border-hairline text-ink-secondary hover:border-ink-tertiary hover:text-foreground"

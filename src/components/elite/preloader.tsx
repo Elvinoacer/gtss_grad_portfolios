@@ -33,10 +33,22 @@ export function Preloader() {
     }
 
     lockScroll(true);
+    const isMobile = window.innerWidth < 640;
     const start = performance.now();
-    const duration = 1750;
+    const duration = isMobile ? 850 : 1600;
     let raf = 0;
     let timeout = 0;
+
+    const finish = () => {
+      try {
+        window.sessionStorage.setItem("gtss-intro", "1");
+      } catch (e) {}
+      markIntroDone();
+      setPhase("exit");
+    };
+
+    // Hard fallback timeout ensures preloader never hangs if rAF throttles on mobile/background
+    const safetyTimeout = window.setTimeout(finish, duration + 450);
 
     const tick = (t: number) => {
       if (!decidedRef.current) {
@@ -49,11 +61,7 @@ export function Preloader() {
       if (p < 1) {
         raf = requestAnimationFrame(tick);
       } else {
-        timeout = window.setTimeout(() => {
-          window.sessionStorage.setItem("gtss-intro", "1");
-          markIntroDone();
-          setPhase("exit");
-        }, 420);
+        timeout = window.setTimeout(finish, isMobile ? 160 : 360);
       }
     };
     raf = requestAnimationFrame(tick);
@@ -61,6 +69,7 @@ export function Preloader() {
     return () => {
       cancelAnimationFrame(raf);
       window.clearTimeout(timeout);
+      window.clearTimeout(safetyTimeout);
       lockScroll(false);
     };
   }, []);

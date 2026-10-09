@@ -36,23 +36,27 @@ export function DisciplineLanguage() {
         <div className="mt-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           {/* Discipline selector */}
           <Reveal>
-            <div role="tablist" aria-label="Choose a discipline" className="flex flex-col gap-2">
+            <div
+              role="tablist"
+              aria-label="Choose a discipline"
+              className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-3 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0"
+            >
               {picks.map((d, i) => (
                 <button
                   key={d.label}
                   role="tab"
                   aria-selected={active === i}
                   onClick={() => setActive(i)}
-                  className={`group flex min-h-[3.4rem] items-center justify-between rounded-lg border px-5 py-3 text-left transition-all duration-300 ${
+                  className={`group flex shrink-0 items-center justify-between rounded-lg border px-4 py-2.5 text-left transition-all duration-300 lg:w-full lg:min-h-[3.4rem] lg:px-5 lg:py-3 ${
                     active === i
-                      ? "border-brass/50 bg-brass/[0.07]"
+                      ? "border-brass/60 bg-brass/10 shadow-[0_0_16px_rgba(226,168,75,0.15)]"
                       : "border-hairline bg-surface/40 hover:border-ink-tertiary hover:bg-surface"
                   }`}
                 >
-                  <span className={`font-display text-base font-semibold tracking-tight ${active === i ? "text-foreground" : "text-ink-secondary"}`}>
+                  <span className={`font-display text-sm sm:text-base font-semibold tracking-tight whitespace-nowrap ${active === i ? "text-foreground" : "text-ink-secondary"}`}>
                     {d.label}
                   </span>
-                  <span className="hidden gap-1.5 sm:flex" aria-hidden>
+                  <span className="hidden gap-1.5 sm:flex sm:ml-4" aria-hidden>
                     {d.keywords.slice(0, 2).map((k) => (
                       <span
                         key={k}

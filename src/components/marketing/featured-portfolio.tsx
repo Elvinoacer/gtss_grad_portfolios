@@ -54,16 +54,29 @@ export function FeaturedPortfolio() {
                 className="mr-3 inline-block h-px w-6 translate-y-[-4px] bg-brass/60"
                 aria-hidden
               />
-              Selected work
+              Selected work · Curated Highlights
             </p>
           </Reveal>
           <Reveal delay={0.12}>
-            <h2 className="display-section mt-4 max-w-2xl text-foreground">
-              Six portfolios,{" "}
-              <span className="serif-accent text-brass">
-                six professions.
-              </span>
-            </h2>
+            <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="display-section text-foreground">
+                  Six featured portfolios,{" "}
+                  <span className="serif-accent text-brass">
+                    six professions.
+                  </span>
+                </h2>
+                <p className="mt-2 text-sm text-ink-secondary">
+                  Curated subset selected from our growing collection of {portfolios.length} live graduate portfolios.
+                </p>
+              </div>
+              <Link
+                to="/portfolios"
+                className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-brass hover:underline font-semibold"
+              >
+                Browse all {portfolios.length} live portfolios →
+              </Link>
+            </div>
           </Reveal>
         </div>
       }
@@ -73,7 +86,7 @@ export function FeaturedPortfolio() {
         return (
           <article
             key={p.slug}
-            className="relative flex w-[80vw] shrink-0 snap-center flex-col sm:w-[26rem] lg:w-[34vw] lg:max-w-[30rem]"
+            className="relative flex w-[84vw] max-w-[22rem] shrink-0 snap-center flex-col sm:w-[26rem] lg:w-[34vw] lg:max-w-[30rem]"
             data-cursor="view"
           >
             <Link

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { portfolios } from "@/content/portfolios";
 import { getDegree } from "@/content/schools";
 import { Link } from "@/lib/router";
@@ -21,9 +22,18 @@ const layout = [
   "stanley-aketch-biochemistry",
 ];
 
-/** Portfolio mosaic — controlled editorial composition (spec §51) */
 export function PortfolioMosaic() {
-  const items = layout.map((s) => portfolios.find((p) => p.slug === s)!).filter(Boolean);
+  const [filter, setFilter] = useState<string>("all");
+  const allItems = layout.map((s) => portfolios.find((p) => p.slug === s)!).filter(Boolean);
+
+  const items = useMemo(() => {
+    if (filter === "all") return allItems;
+    if (filter === "engineering") return allItems.filter((p) => p.schoolSlug === "engineering");
+    if (filter === "computing") return allItems.filter((p) => p.slug.includes("computer-science"));
+    if (filter === "actuarial") return allItems.filter((p) => p.slug.includes("actuarial"));
+    if (filter === "science") return allItems.filter((p) => p.schoolSlug === "science");
+    return allItems;
+  }, [filter, allItems]);
 
   return (
     <section
@@ -32,16 +42,42 @@ export function PortfolioMosaic() {
       className="relative border-b border-hairline/60 py-20 sm:py-28"
     >
       <div className="shell">
-        <SectionHeading
-          eyebrow="The mosaic"
-          title="Move between professions. Feel the difference."
-          lead="Civil Engineering to Actuarial Science to Biochemistry — designed by the same studio, for completely different professions."
-        />
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeading
+            eyebrow="The mosaic"
+            title="Move between professions. Feel the difference."
+            lead="Civil Engineering to Actuarial Science to Biochemistry — designed by the same studio, for completely different professions."
+          />
+        </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {/* Mobile quick discipline filter bar */}
+        <div className="no-scrollbar -mx-5 mt-8 flex items-center gap-2 overflow-x-auto px-5 pb-1 touch-pan-x sm:hidden">
+          {[
+            { id: "all", label: `All (${allItems.length})` },
+            { id: "engineering", label: "Engineering" },
+            { id: "computing", label: "Computing" },
+            { id: "actuarial", label: "Actuarial" },
+            { id: "science", label: "Science" },
+          ].map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setFilter(f.id)}
+              className={`inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 font-mono text-[0.62rem] uppercase tracking-wider transition-colors active:scale-95 ${
+                filter === f.id
+                  ? "border-brass bg-brass text-brass-foreground font-semibold"
+                  : "border-hairline bg-surface/70 text-ink-secondary"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-8 sm:mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {items.map((p, i) => {
             const degree = getDegree(p.degreeSlug);
-            const large = i === 0;
+            const large = i === 0 && filter === "all";
             return (
               <div
                 key={p.slug}
@@ -53,42 +89,85 @@ export function PortfolioMosaic() {
               >
                 <VelocitySkew className="h-full">
                 <ClipReveal delay={(i % 3) * 0.09 + Math.floor(i / 3) * 0.14} className="h-full">
-                  <Link
-                    to={`/portfolio/${p.slug}`}
-                    className="group flex h-full flex-col"
-                    ariaLabel={`${p.candidate.name} — ${degree?.degree.shortName} portfolio`}
-                  >
-                    <div className="relative overflow-hidden rounded-xl transition-shadow duration-700 group-hover:shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
-                      <div className="mosaic-lift transition-transform duration-700 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:rotate-[-0.6deg]">
-                      <PortfolioMock
-                        portfolio={p}
-                        variant="card"
-                        className={large ? "aspect-auto" : ""}
-                      />
-                      {/* hover reveal overlay — sweep with a curved drift */}
-                      <div
-                        className="absolute inset-0 z-30 flex items-end bg-gradient-to-t from-background/95 via-background/20 to-transparent p-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                        aria-hidden
-                      >
-                        <div className="translate-y-4 opacity-80 transition-all duration-700 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100">
-                          <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em]" style={{ color: p.presentation.accent }}>
-                            {degree?.degree.shortName}
-                          </p>
-                          <p className="mt-1.5 font-display text-xl font-bold tracking-tight text-foreground">
-                            {p.candidate.name}
-                          </p>
-                          <p className="mt-1 text-xs text-ink-secondary">
-                            {p.careerDirection}
-                          </p>
-                          <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[0.66rem] font-medium uppercase tracking-[0.16em] text-brass">
-                            Explore portfolio
-                            <span aria-hidden>→</span>
-                          </span>
+                  <div className="group flex h-full flex-col">
+                    <Link
+                      to={`/portfolio/${p.slug}`}
+                      className="block"
+                      ariaLabel={`${p.candidate.name} — ${degree?.degree.shortName} portfolio`}
+                    >
+                      <div className="relative overflow-hidden rounded-xl transition-shadow duration-700 group-hover:shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
+                        <div className="mosaic-lift transition-transform duration-700 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:rotate-[-0.6deg]">
+                          <PortfolioMock
+                            portfolio={p}
+                            variant="card"
+                            className={large ? "aspect-auto" : ""}
+                          />
+                          {/* hover reveal overlay — desktop only */}
+                          <div
+                            className="pointer-events-none absolute inset-0 z-30 hidden sm:flex items-end bg-gradient-to-t from-background/95 via-background/20 to-transparent p-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                            aria-hidden
+                          >
+                            <div className="translate-y-4 opacity-80 transition-all duration-700 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100">
+                              <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em]" style={{ color: p.presentation.accent }}>
+                                {degree?.degree.shortName}
+                              </p>
+                              <p className="mt-1.5 font-display text-xl font-bold tracking-tight text-foreground">
+                                {p.candidate.name}
+                              </p>
+                              <p className="mt-1 text-xs text-ink-secondary">
+                                {p.careerDirection}
+                              </p>
+                              <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[0.66rem] font-medium uppercase tracking-[0.16em] text-brass">
+                                Explore portfolio
+                                <span aria-hidden>→</span>
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                    </Link>
+
+                    {/* Always-visible scannable metadata strip & actions (GP-16) */}
+                    <div className="mt-3.5 flex flex-col gap-2.5 px-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="truncate font-mono text-xs font-semibold uppercase tracking-wider" style={{ color: p.presentation.accent }}>
+                            {degree?.degree.shortName}
+                          </p>
+                          <h3 className="mt-0.5 truncate font-display text-base font-bold text-foreground group-hover:text-brass transition-colors">
+                            {p.candidate.name}
+                          </h3>
+                          <p className="truncate text-xs text-ink-secondary">
+                            {p.careerDirection}
+                          </p>
+                        </div>
+                        {p.liveUrl && (
+                          <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-emerald-400/35 bg-emerald-400/10 px-2.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-wider text-emerald-300">
+                            <span className="size-1 rounded-full bg-emerald-400" />
+                            Live
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 pt-2 border-t border-hairline/60">
+                        <Link
+                          to={`/portfolio/${p.slug}`}
+                          className="flex-1 flex h-9 items-center justify-center rounded-md border border-hairline/80 bg-surface/80 font-mono text-xs uppercase tracking-wider text-ink-secondary hover:text-foreground hover:border-brass/40 transition-colors active:scale-95"
+                        >
+                          Inspect Story →
+                        </Link>
+                        {p.liveUrl && (
+                          <a
+                            href={p.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex h-9 items-center justify-center gap-1 rounded-md border border-brass/50 bg-brass/10 font-mono text-xs uppercase tracking-wider text-brass hover:bg-brass hover:text-brass-foreground transition-colors active:scale-95"
+                          >
+                            Live Site ↗
+                          </a>
+                        )}
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </ClipReveal>
                 </VelocitySkew>
               </div>

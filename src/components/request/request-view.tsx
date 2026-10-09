@@ -113,41 +113,43 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
 
   /* Restore draft + apply course prefill */
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const saved = JSON.parse(raw) as Partial<Draft>;
-        setDraft((d) => ({ ...d, ...saved, links: { ...d.links, ...(saved.links ?? {}) } }));
+    queueMicrotask(() => {
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const saved = JSON.parse(raw) as Partial<Draft>;
+          setDraft((d) => ({ ...d, ...saved, links: { ...d.links, ...(saved.links ?? {}) } }));
+        }
+      } catch {
+        /* corrupted draft — start fresh */
       }
-    } catch {
-      /* corrupted draft — start fresh */
-    }
-    const params = new URLSearchParams(window.location.search);
-    const course =
-      prefillCourse ??
-      params.get("course") ??
-      window.location.hash.split("?course=")[1]?.split("&")[0];
-    if (course) {
-      const decoded = decodeURIComponent(course);
-      const match = schools.find(
-        (s) =>
-          s.shortName.toLowerCase() === decoded.toLowerCase() ||
-          decoded.toLowerCase().includes(s.shortName.toLowerCase())
-      );
-      const degreeMatch = schools
-        .flatMap((s) => s.degrees.map((d) => ({ s, d })))
-        .find(
-          ({ d }) =>
-            (d.shortName ?? "").toLowerCase() === decoded.toLowerCase() ||
-            d.slug === decoded.toLowerCase().replace(/\s+/g, "-")
+      const params = new URLSearchParams(window.location.search);
+      const course =
+        prefillCourse ??
+        params.get("course") ??
+        window.location.hash.split("?course=")[1]?.split("&")[0];
+      if (course) {
+        const decoded = decodeURIComponent(course);
+        const match = schools.find(
+          (s) =>
+            s.shortName.toLowerCase() === decoded.toLowerCase() ||
+            decoded.toLowerCase().includes(s.shortName.toLowerCase())
         );
-      setDraft((prev) => ({
-        ...prev,
-        school: match?.slug ?? degreeMatch?.s.slug ?? prev.school,
-        degree: degreeMatch?.d.name ?? decoded,
-      }));
-    }
-    hydrated.current = true;
+        const degreeMatch = schools
+          .flatMap((s) => s.degrees.map((d) => ({ s, d })))
+          .find(
+            ({ d }) =>
+              (d.shortName ?? "").toLowerCase() === decoded.toLowerCase() ||
+              d.slug === decoded.toLowerCase().replace(/\s+/g, "-")
+          );
+        setDraft((prev) => ({
+          ...prev,
+          school: match?.slug ?? degreeMatch?.s.slug ?? prev.school,
+          degree: degreeMatch?.d.name ?? decoded,
+        }));
+      }
+      hydrated.current = true;
+    });
   }, [prefillCourse]);
 
   /* Persist draft */
@@ -278,15 +280,26 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
         </div>
       </section>
 
-      <div className="shell grid gap-12 pt-12 lg:grid-cols-[0.85fr_1.15fr]">
-        {/* Left rail */}
+      <div className="shell grid gap-8 pt-8 sm:pt-12 lg:gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+        {/* Left rail / mobile compact progress */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          {/* Progress */}
-          <div aria-live="polite">
-            <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-ink-tertiary">
-              Step {step} of 7
-            </p>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-raised" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={7}>
+          {/* Mobile compact header (< lg) */}
+          <div className="lg:hidden" aria-live="polite">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[0.68rem] font-medium uppercase tracking-[0.2em] text-brass">
+                Step {step} of 7
+              </span>
+              <span className="font-display text-sm font-semibold text-foreground">
+                {STEPS[step - 1]?.label}
+              </span>
+            </div>
+            <div
+              className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-raised"
+              role="progressbar"
+              aria-valuenow={step}
+              aria-valuemin={1}
+              aria-valuemax={7}
+            >
               <motion.div
                 className="h-full bg-brass"
                 initial={false}
@@ -294,61 +307,110 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
                 transition={reduce ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               />
             </div>
-          </div>
-
-          <ol className="mt-8 space-y-1">
-            {STEPS.map((s) => {
-              const Icon = s.icon;
-              const done = step > s.id;
-              const active = step === s.id;
-              return (
-                <li key={s.id}>
+            {/* Quick step jump pills on mobile */}
+            <div className="no-scrollbar mt-3 flex items-center gap-1.5 overflow-x-auto pb-1 touch-pan-x">
+              {STEPS.map((s) => {
+                const done = step > s.id;
+                const active = step === s.id;
+                return (
                   <button
+                    key={s.id}
                     type="button"
                     onClick={() => s.id < step && setStep(s.id)}
                     disabled={s.id > step}
-                    className={`flex w-full min-h-[2.75rem] items-center gap-3.5 rounded-lg px-3.5 py-2.5 text-left transition-colors ${
+                    aria-label={`Step ${s.id}: ${s.label}`}
+                    className={`flex h-7 shrink-0 items-center gap-1.5 rounded-full px-2.5 font-mono text-[0.62rem] transition-colors ${
                       active
-                        ? "bg-brass/10 text-foreground"
+                        ? "bg-brass font-semibold text-brass-foreground shadow-sm"
                         : done
-                        ? "text-ink-secondary hover:bg-surface"
-                        : "text-ink-tertiary"
+                        ? "border border-brass/40 bg-surface text-brass"
+                        : "border border-hairline/60 bg-surface/50 text-ink-tertiary opacity-45"
                     }`}
                   >
-                    <span
-                      className={`grid size-7 shrink-0 place-items-center rounded-md border ${
-                        done
-                          ? "border-brass/60 bg-brass/15 text-brass"
-                          : active
-                          ? "border-brass/60 text-brass"
-                          : "border-hairline text-ink-tertiary"
+                    <span>0{s.id}</span>
+                    <span className="max-w-[4.8rem] truncate">{s.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Desktop full rail (>= lg) */}
+          <div className="hidden lg:block">
+            <div aria-live="polite">
+              <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-ink-tertiary">
+                Step {step} of 7
+              </p>
+              <div
+                className="mt-3 h-1.5 overflow-hidden rounded-full bg-raised"
+                role="progressbar"
+                aria-valuenow={step}
+                aria-valuemin={1}
+                aria-valuemax={7}
+              >
+                <motion.div
+                  className="h-full bg-brass"
+                  initial={false}
+                  animate={{ width: `${(step / 7) * 100}%` }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </div>
+            </div>
+
+            <ol className="mt-8 space-y-1">
+              {STEPS.map((s) => {
+                const Icon = s.icon;
+                const done = step > s.id;
+                const active = step === s.id;
+                return (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      onClick={() => s.id < step && setStep(s.id)}
+                      disabled={s.id > step}
+                      className={`flex w-full min-h-[2.75rem] items-center gap-3.5 rounded-lg px-3.5 py-2.5 text-left transition-colors ${
+                        active
+                          ? "bg-brass/10 text-foreground"
+                          : done
+                          ? "text-ink-secondary hover:bg-surface"
+                          : "text-ink-tertiary"
                       }`}
                     >
-                      {done ? <Check className="size-3.5" aria-hidden /> : <Icon className="size-3.5" aria-hidden />}
-                    </span>
-                    <span className="text-[0.88rem] font-medium">{s.label}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
+                      <span
+                        className={`grid size-7 shrink-0 place-items-center rounded-md border ${
+                          done
+                            ? "border-brass/60 bg-brass/15 text-brass"
+                            : active
+                            ? "border-brass/60 text-brass"
+                            : "border-hairline text-ink-tertiary"
+                        }`}
+                      >
+                        {done ? <Check className="size-3.5" aria-hidden /> : <Icon className="size-3.5" aria-hidden />}
+                      </span>
+                      <span className="text-[0.88rem] font-medium">{s.label}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
 
-          <p className="mt-8 rounded-lg border border-hairline bg-surface/50 p-4 text-[0.75rem] leading-relaxed text-ink-tertiary">
-            Prefer talking first?{" "}
-            <a
-              href={site.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brass hover:underline"
-            >
-              Ask GTSS on WhatsApp
-            </a>{" "}
-            — no forms required.
-          </p>
+            <p className="mt-8 rounded-lg border border-hairline bg-surface/50 p-4 text-[0.75rem] leading-relaxed text-ink-tertiary">
+              Prefer talking first?{" "}
+              <a
+                href={site.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brass hover:underline"
+              >
+                Ask GTSS on WhatsApp
+              </a>{" "}
+              — no forms required.
+            </p>
+          </div>
         </aside>
 
         {/* Form card */}
-        <div className="relative overflow-hidden rounded-2xl border border-hairline bg-surface/60 p-6 sm:p-10">
+        <div className="relative overflow-hidden rounded-2xl border border-hairline bg-surface/60 p-5 sm:p-10">
           <div className="absolute inset-0 bg-blueprint-fine opacity-20" aria-hidden />
           <div className="relative">
             {/* Honeypot */}
@@ -406,7 +468,7 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
                 <button
                   type="button"
                   onClick={back}
-                  className="inline-flex h-11 items-center gap-2 rounded-md px-4 font-sans text-sm font-semibold text-ink-secondary transition-colors hover:text-foreground"
+                  className="inline-flex h-11 items-center gap-2 rounded-md px-3 font-sans text-sm font-semibold text-ink-secondary transition-colors hover:text-foreground sm:px-4"
                 >
                   <ArrowLeft className="size-4" aria-hidden />
                   Back
@@ -419,7 +481,7 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
                 <button
                   type="button"
                   onClick={next}
-                  className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60]"
+                  className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-5 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] sm:px-6"
                 >
                   Continue
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
@@ -429,7 +491,7 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
                   type="button"
                   onClick={submit}
                   disabled={submitting}
-                  className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-5 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] disabled:cursor-not-allowed disabled:opacity-60 sm:px-6"
                 >
                   {submitting ? (
                     <>
@@ -448,6 +510,19 @@ export function RequestView({ prefillCourse }: { prefillCourse?: string }) {
                 </button>
               )}
             </div>
+
+            {/* Mobile helper link */}
+            <p className="mt-6 text-center text-xs text-ink-tertiary lg:hidden">
+              Prefer talking first?{" "}
+              <a
+                href={site.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brass underline decoration-brass/40 underline-offset-2 hover:decoration-brass"
+              >
+                Chat with GTSS on WhatsApp
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -497,10 +572,10 @@ function Field({
 }
 
 const inputCls =
-  "h-11 w-full rounded-md border border-hairline bg-background/60 px-4 font-sans text-sm text-foreground placeholder:text-ink-tertiary transition-colors focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25";
+  "h-11 w-full rounded-md border border-hairline bg-background/60 px-4 font-sans text-base text-foreground placeholder:text-ink-tertiary transition-colors focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25 sm:text-sm";
 
 const areaCls =
-  "min-h-[5.5rem] w-full rounded-md border border-hairline bg-background/60 px-4 py-3 font-sans text-sm text-foreground placeholder:text-ink-tertiary transition-colors focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25";
+  "min-h-[5.5rem] w-full rounded-md border border-hairline bg-background/60 px-4 py-3 font-sans text-base text-foreground placeholder:text-ink-tertiary transition-colors focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25 sm:text-sm";
 
 function StepYou({
   draft,

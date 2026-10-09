@@ -18,11 +18,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { easeOutExpo } from "./curves";
 import { portfolios } from "@/content/portfolios";
+import { collectionStats } from "@/lib/site";
 
 const STATS = [
   { value: portfolios.length, suffix: "", label: "Live graduate portfolios", sub: "Each built around authentic evidence, deployed on the web" },
-  { value: 6, suffix: "", label: "Schools of study", sub: "Engineering to education, agriculture to information" },
-  { value: 42, suffix: "+", label: "Degree paths mapped", sub: "Every portfolio structured for its exact profession" },
+  { value: collectionStats.totalSchools, suffix: "", label: "Schools of study", sub: "Engineering to education, agriculture to information" },
+  { value: collectionStats.totalDegrees, suffix: "", label: "Degree paths mapped", sub: "Every portfolio structured for its exact profession" },
   { value: 1, suffix: "", label: "University collection", sub: "The Moi University Collection — the first of many", brass: true },
 ];
 
@@ -56,51 +57,51 @@ export function NumbersScene() {
       const desktop = window.matchMedia("(min-width: 1024px)").matches;
 
       if (desktop) {
-        /* ---- Pinned scrub scene ---- */
+        /* ---- Pinned scrub scene — shortened for concise pacing (GP-06) ---- */
         const st = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=150%",
+            end: "+=60%",
             pin: true,
-            scrub: 0.8,
+            scrub: 0.7,
             anticipatePin: 1,
             onUpdate: (self) => {
               const p = self.progress;
               counters.forEach((el, i) => {
                 const target = +(el.dataset.count ?? "0");
-                const start = 0.1 + i * 0.16;
-                const local = clamp01((p - start) / 0.42);
+                const start = 0.05 + i * 0.12;
+                const local = clamp01((p - start) / 0.45);
                 setCounter(el, Math.round(easeOutExpo(local) * target));
               });
             },
           },
         });
 
-        // Depth layers — each stat drifts at its own speed
+        // Depth layers — visible immediately with subtle parallax lift (GP-06)
         st.fromTo(
           "[data-depth='1']",
-          { yPercent: 16, opacity: 0 },
+          { yPercent: 6, opacity: 0.9 },
           { yPercent: 0, opacity: 1, duration: 0.34, ease: "power3.out" },
           0.02
         );
         st.fromTo(
           "[data-depth='2']",
-          { yPercent: 34, opacity: 0 },
-          { yPercent: -4, opacity: 1, duration: 0.6, ease: "power3.out" },
-          0.1
+          { yPercent: 10, opacity: 0.9 },
+          { yPercent: -4, opacity: 1, duration: 0.5, ease: "power3.out" },
+          0.08
         );
         st.fromTo(
           "[data-depth='3']",
-          { yPercent: 52, opacity: 0 },
-          { yPercent: -8, opacity: 1, duration: 0.72, ease: "power3.out" },
-          0.2
+          { yPercent: 14, opacity: 0.9 },
+          { yPercent: -8, opacity: 1, duration: 0.6, ease: "power3.out" },
+          0.12
         );
         st.fromTo(
           "[data-depth='4']",
-          { yPercent: 70, opacity: 0, scale: 0.94 },
-          { yPercent: -2, opacity: 1, scale: 1, duration: 0.82, ease: "expo.out" },
-          0.3
+          { yPercent: 18, opacity: 0.9, scale: 0.98 },
+          { yPercent: -2, opacity: 1, scale: 1, duration: 0.7, ease: "expo.out" },
+          0.16
         );
 
         // Floating images drift through at ghost depth
@@ -125,19 +126,34 @@ export function NumbersScene() {
           0
         );
       } else {
-        /* ---- Mobile: fire once on entry, eased ---- */
+        /* ---- Mobile: backdrop drift + eased counters on enter ---- */
+        gsap.fromTo(
+          "[data-numbackdrop]",
+          { xPercent: 6 },
+          {
+            xPercent: -10,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.7,
+            },
+          }
+        );
+
         counters.forEach((el, i) => {
           const target = +(el.dataset.count ?? "0");
           const proxy = { v: 0 };
           ScrollTrigger.create({
             trigger: el,
-            start: "top 82%",
+            start: "top 85%",
             once: true,
             onEnter: () => {
               gsap.to(proxy, {
                 v: target,
-                duration: 1.5,
-                delay: i * 0.14,
+                duration: 1.4,
+                delay: i * 0.12,
                 ease: "expo.out",
                 onUpdate: () => setCounter(el, Math.round(proxy.v)),
               });
@@ -165,12 +181,18 @@ export function NumbersScene() {
         style={{ background: "radial-gradient(closest-side, #E2A84B, transparent 70%)" }}
       />
 
-      {/* Ghost images drifting behind the numbers */}
+      {/* Floating images drifting behind the numbers */}
       <div data-ghost-a aria-hidden className="absolute left-[4%] top-[12%] hidden h-[34%] w-[19%] overflow-hidden rounded-2xl border border-hairline/40 opacity-30 lg:block">
         <Image src="/images/engineering.jpg" alt="" fill sizes="20vw" className="object-cover" style={{ filter: "saturate(0.6) brightness(0.7)" }} />
       </div>
       <div data-ghost-b aria-hidden className="absolute right-[5%] bottom-[10%] hidden h-[30%] w-[17%] overflow-hidden rounded-2xl border border-hairline/40 opacity-30 lg:block">
         <Image src="/images/science-lab.jpg" alt="" fill sizes="18vw" className="object-cover" style={{ filter: "saturate(0.6) brightness(0.7)" }} />
+      </div>
+
+      {/* Mobile floating atmospheric chips */}
+      <div aria-hidden className="pointer-events-none absolute right-4 top-16 flex items-center gap-2 rounded-full border border-brass/25 bg-surface/75 px-3 py-1 font-mono text-[0.55rem] uppercase tracking-wider text-brass/80 backdrop-blur-md lg:hidden">
+        <span className="size-1.5 rounded-full bg-brass animate-pulse" />
+        <span>Authentic Evidence Only</span>
       </div>
 
       {/* Backdrop word */}
@@ -192,19 +214,22 @@ export function NumbersScene() {
             <div
               key={s.label}
               data-depth={i + 1}
-              className={"relative " + (i % 2 === 1 ? "lg:mt-16" : "")}
+              className={
+                "relative rounded-2xl border border-hairline/60 bg-surface/40 p-6 sm:border-0 sm:bg-transparent sm:p-0 " +
+                (i % 2 === 1 ? "lg:mt-16" : "")
+              }
             >
               <div
                 className={
                   "flex items-baseline gap-1 font-display font-extrabold leading-[0.9] tracking-[-0.05em] " +
                   (s.brass ? "text-brass" : "text-foreground")
                 }
-                style={{ fontSize: "clamp(4.2rem, 9vw, 8.6rem)" }}
+                style={{ fontSize: "clamp(3.6rem, 12vw, 8.6rem)" }}
               >
                 <span
                   data-count={s.value}
                 >
-                  0
+                  {s.value}
                 </span>
                 {s.suffix && (
                   <span className="text-[0.55em]" style={{ color: "var(--brass)" }}>
@@ -213,12 +238,12 @@ export function NumbersScene() {
                 )}
               </div>
               <div className="mt-3 flex items-center gap-3">
-                <span className="font-mono text-[0.66rem] font-semibold uppercase tracking-[0.2em] text-ink-secondary">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-foreground">
                   {s.label}
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-r from-brass/50 to-transparent" aria-hidden />
               </div>
-              <p className="mt-2 max-w-sm text-[0.82rem] leading-relaxed text-ink-secondary">
+              <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink-secondary">
                 {s.sub}
               </p>
             </div>

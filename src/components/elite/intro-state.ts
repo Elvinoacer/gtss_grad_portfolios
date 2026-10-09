@@ -34,7 +34,17 @@ export function subscribeIntro(listener: Listener) {
 
 /** React binding — true once the intro curtain begins to lift */
 export function useIntroDone() {
-  const [isDone, setIsDone] = useState(false);
-  useEffect(() => subscribeIntro(() => setIsDone(true)), []);
+  const [isDone, setIsDone] = useState(isIntroDone);
+  useEffect(() => {
+    const unsub = subscribeIntro(() => setIsDone(true));
+    const safety = setTimeout(() => {
+      markIntroDone();
+      setIsDone(true);
+    }, 1800);
+    return () => {
+      unsub();
+      clearTimeout(safety);
+    };
+  }, []);
   return isDone;
 }

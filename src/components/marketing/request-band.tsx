@@ -82,19 +82,19 @@ export function RequestBand() {
         </Reveal>
         <Reveal delay={0.32}>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Magnetic>
+            <Magnetic className="w-full sm:w-auto">
               <Link
                 to="/request"
-                className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-7 font-sans text-sm font-semibold tracking-tight text-brass-foreground shadow-[0_8px_28px_-12px_rgba(226,168,75,0.55)] transition-colors duration-300 hover:bg-[#EDBB60]"
+                className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md bg-brass px-7 font-sans text-sm font-semibold tracking-tight text-brass-foreground shadow-[0_8px_28px_-12px_rgba(226,168,75,0.55)] transition-colors duration-300 hover:bg-[#EDBB60]"
               >
                 Request My Portfolio
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
               </Link>
             </Magnetic>
-            <Magnetic>
+            <Magnetic className="w-full sm:w-auto">
               <Link
                 to="/portfolios"
-                className="inline-flex h-12 items-center rounded-md border border-ink-tertiary/60 bg-background/40 px-7 font-sans text-sm font-semibold tracking-tight text-foreground backdrop-blur transition-colors duration-300 hover:bg-background/70"
+                className="inline-flex h-12 w-full sm:w-auto justify-center items-center rounded-md border border-ink-tertiary/60 bg-background/40 px-7 font-sans text-sm font-semibold tracking-tight text-foreground backdrop-blur transition-colors duration-300 hover:bg-background/70"
               >
                 Explore the collection first
               </Link>

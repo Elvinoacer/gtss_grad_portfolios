@@ -27,9 +27,26 @@ function ScrollProgressRail() {
   );
 }
 
+function MobileScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 280,
+    damping: 32,
+    mass: 0.2,
+  });
+  return (
+    <motion.div
+      className="fixed top-0 inset-x-0 z-[60] h-[2.5px] bg-gradient-to-r from-brass-dim via-brass to-[#EDBB60] origin-left lg:hidden pointer-events-none"
+      style={{ scaleX }}
+      aria-hidden
+    />
+  );
+}
+
 export function ExperienceLayer() {
   return (
     <>
+      <MobileScrollProgress />
       <SmoothScroll />
       <Preloader />
       <CustomCursor />

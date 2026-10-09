@@ -9,6 +9,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { gsap } from "gsap";
+import { cn } from "@/lib/utils";
 
 export function Magnetic({
   children,
@@ -56,7 +57,7 @@ export function Magnetic({
     <div
       ref={ref}
       data-magnetic
-      className={`inline-block will-change-transform ${className}`}
+      className={cn("inline-block will-change-transform", className)}
     >
       {children}
     </div>

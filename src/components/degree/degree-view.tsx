@@ -54,10 +54,10 @@ export function DegreeView({ slug }: { slug: string }) {
                 {degree.exampleProject ??
                   school.context}
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   to={`/request?course=${encodeURIComponent(degree.shortName ?? degree.name)}`}
-                  className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60]"
+                  className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60] shadow-[0_8px_24px_-8px_rgba(226,168,75,0.4)]"
                 >
                   Build my {degree.shortName} portfolio
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
@@ -66,7 +66,7 @@ export function DegreeView({ slug }: { slug: string }) {
                   <Link
                     key={p.slug}
                     to={`/portfolio/${p.slug}`}
-                    className="group inline-flex h-12 items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
+                    className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
                   >
                     Explore {p.candidate.name}
                     <ArrowUpRight className="size-4 text-ink-secondary transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass" aria-hidden />
@@ -110,7 +110,7 @@ export function DegreeView({ slug }: { slug: string }) {
                 <Reveal delay={idx * 0.1}>
                   <Link to={`/portfolio/${demo.slug}`} className="group block min-w-0">
                     <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
-                      <PortfolioMock portfolio={demo} variant="full" priority={idx === 0} />
+                      <PortfolioMock portfolio={demo} variant="full" priority={idx === 0} allowExternalLink={false} />
                       <div className="absolute right-3 top-3 z-30">
                         <StatusChip status={demo.status} />
                       </div>

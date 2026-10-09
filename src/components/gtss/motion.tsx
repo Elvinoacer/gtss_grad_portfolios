@@ -207,7 +207,7 @@ export function CrossFadeText({
   if (reduce) return <span className={className}>{current}</span>;
   return (
     <span
-      className={`relative inline-grid overflow-hidden align-bottom ${className ?? ""}`}
+      className={`relative inline-grid max-w-full overflow-hidden align-bottom ${className ?? ""}`}
       aria-live="polite"
     >
       <AnimatePresence mode="popLayout" initial={false}>
@@ -217,7 +217,7 @@ export function CrossFadeText({
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: -16, filter: "blur(5px)" }}
           transition={{ duration: 0.55, ease: EASE_OUT_EXPO }}
-          className="col-start-1 row-start-1 inline-block whitespace-nowrap"
+          className="col-start-1 row-start-1 inline-block max-w-full truncate whitespace-nowrap"
         >
           {current}
         </motion.span>

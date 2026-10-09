@@ -49,11 +49,11 @@
   --background: #080a0d;
   --surface: #0f1217;
   --raised: #151922;
-  --hairline: #242a33;
+  --hairline: #2e3540;
 
   --foreground: #f4f6f8;
-  --ink-secondary: #9da7b3;
-  --ink-tertiary: #66707c;
+  --ink-secondary: #b2bcc8;
+  --ink-tertiary: #8b97a5;
 
   /* Brass — the single restrained GTSS accent */
   --brass: #e2a84b;
@@ -69,12 +69,12 @@
   --secondary: #151922;
   --secondary-foreground: #f4f6f8;
   --muted: #151922;
-  --muted-foreground: #9da7b3;
+  --muted-foreground: #b2bcc8;
   --accent: #1a2029;
   --accent-foreground: #f4f6f8;
   --destructive: #e5484d;
-  --border: #242a33;
-  --input: #242a33;
+  --border: #2e3540;
+  --input: #2e3540;
   --ring: #e2a84b;
 
   --marquee-duration: 42s;
@@ -92,12 +92,12 @@
   --secondary: #151922;
   --secondary-foreground: #f4f6f8;
   --muted: #151922;
-  --muted-foreground: #9da7b3;
+  --muted-foreground: #b2bcc8;
   --accent: #1a2029;
   --accent-foreground: #f4f6f8;
   --destructive: #e5484d;
-  --border: #242a33;
-  --input: #242a33;
+  --border: #2e3540;
+  --input: #2e3540;
   --ring: #e2a84b;
 }
 
@@ -199,45 +199,73 @@
     @apply mx-auto w-full max-w-[41rem];
   }
 
-  /* Eyebrow micro-label */
+  /* Eyebrow micro-label — accessible size, clear tracking */
   .eyebrow {
-    @apply font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-ink-secondary;
+    @apply font-mono text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-ink-secondary;
   }
   .eyebrow-brass {
-    @apply font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-brass;
+    @apply font-mono text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-brass;
   }
 
-  /* Display type styles — monumental editorial scale */
+  /* Display type styles — monumental editorial scale with mobile fluidity */
   .display-hero {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.042em;
-    line-height: 0.92;
-    font-size: clamp(2.4rem, 5.8vw, 6.6rem);
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    font-size: clamp(1.75rem, 6.8vw, 6.6rem);
     text-wrap: balance;
+  }
+  @media (min-width: 640px) {
+    .display-hero {
+      letter-spacing: -0.042em;
+      line-height: 0.92;
+      font-size: clamp(2.4rem, 5.8vw, 6.6rem);
+    }
   }
   .display-section {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.028em;
-    line-height: 1.01;
-    font-size: clamp(2.1rem, 4vw, 4.1rem);
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    font-size: clamp(1.65rem, 5.5vw, 4.1rem);
+    text-wrap: balance;
+  }
+  @media (min-width: 640px) {
+    .display-section {
+      letter-spacing: -0.028em;
+      line-height: 1.01;
+      font-size: clamp(2.1rem, 4vw, 4.1rem);
+    }
   }
   .display-card {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.06;
-    font-size: clamp(1.35rem, 2vw, 1.9rem);
+    letter-spacing: -0.018em;
+    line-height: 1.12;
+    font-size: clamp(1.15rem, 2.6vw, 1.9rem);
+  }
+  @media (min-width: 640px) {
+    .display-card {
+      letter-spacing: -0.02em;
+      line-height: 1.06;
+      font-size: clamp(1.35rem, 2vw, 1.9rem);
+    }
   }
   .display-marquee {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.028em;
     line-height: 1;
-    font-size: clamp(2.6rem, 6.2vw, 6.6rem);
+    font-size: clamp(1.85rem, 6.2vw, 6.6rem);
     text-transform: uppercase;
     white-space: nowrap;
+  }
+  @media (min-width: 640px) {
+    .display-marquee {
+      letter-spacing: -0.03em;
+      font-size: clamp(2.6rem, 6.2vw, 6.6rem);
+    }
   }
 
   /* Serif italic accent — editorial luxury flourish */
@@ -263,32 +291,18 @@
     -webkit-text-stroke: 1.5px rgba(226, 168, 75, 0.55);
   }
 
-  /* Cinematic film grain — animated via transform only (compositor) */
+  /* Cinematic film grain — completely static texture, no perpetual flicker, shimmer or drift (GP-25) */
   .grain-cinema {
     position: fixed;
-    top: -100%;
-    left: -100%;
-    right: -100%;
-    bottom: -100%;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 90;
     pointer-events: none;
-    opacity: 0.055;
+    opacity: 0.035;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 220px 220px;
-    animation: grain-shift 0.8s steps(10) infinite;
-  }
-  @keyframes grain-shift {
-    0% { transform: translate(0, 0); }
-    10% { transform: translate(-3%, -6%); }
-    20% { transform: translate(-8%, 3%); }
-    30% { transform: translate(5%, -8%); }
-    40% { transform: translate(-3%, 10%); }
-    50% { transform: translate(-8%, 4%); }
-    60% { transform: translate(9%, 0%); }
-    70% { transform: translate(0%, 7%); }
-    80% { transform: translate(3%, 11%); }
-    90% { transform: translate(-6%, 4%); }
-    100% { transform: translate(0, 0); }
   }
 
   /* Inline media chip inside giant headlines — the editorial signature */
@@ -296,16 +310,24 @@
     position: relative;
     display: inline-block;
     vertical-align: baseline;
-    height: 0.68em;
-    width: 1.55em;
+    height: 0.72em;
+    width: 1.48em;
     border-radius: 999px;
     overflow: hidden;
-    margin-inline: 0.12em;
+    margin-inline: 0.1em;
     transform: translateY(0.02em);
     border: 1px solid rgba(226, 168, 75, 0.35);
-    box-shadow: 0 10px 34px -14px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.8);
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
       border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (min-width: 640px) {
+    .img-chip {
+      height: 0.68em;
+      width: 1.55em;
+      margin-inline: 0.12em;
+      box-shadow: 0 10px 34px -14px rgba(0, 0, 0, 0.8);
+    }
   }
   .img-chip:hover {
     transform: translateY(0.02em) scale(1.12) rotate(-2deg);
@@ -345,44 +367,24 @@
   @media (prefers-reduced-motion: reduce) {
     .grain-cinema,
     .img-chip img,
-    .scroll-cue-line::after {
-      animation: none;
+    .scroll-cue-line::after,
+    .dust-mote {
+      animation: none !important;
     }
   }
 
-  /* ---- Ambient brass dust (hero) — transform-only drift ---- */
+  /* ---- Ambient brass dust (hero) — static, stable presentation without distracting drift ---- */
   .dust-mote {
     position: absolute;
     border-radius: 999px;
     background: radial-gradient(
       circle,
-      rgba(226, 168, 75, 0.9),
-      rgba(226, 168, 75, 0.25) 60%,
+      rgba(226, 168, 75, 0.8),
+      rgba(226, 168, 75, 0.2) 60%,
       transparent 70%
     );
-    opacity: 0.34;
-    animation: dust-float var(--drift-duration, 12s) ease-in-out infinite
-      alternate;
-    will-change: transform;
+    opacity: 0.22;
     pointer-events: none;
-  }
-  @keyframes dust-float {
-    from {
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-    50% {
-      transform: translate3d(var(--drift, 16px), -34px, 0) scale(1.25);
-    }
-    to {
-      transform: translate3d(calc(var(--drift, 16px) * -0.6), -68px, 0)
-        scale(0.85);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .dust-mote {
-      animation: none;
-      opacity: 0.18;
-    }
   }
 
   /* ---- Manifesto scene ---- */
@@ -390,22 +392,34 @@
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.03em;
-    line-height: 1.04;
-    font-size: clamp(1.65rem, 3.6vw, 3.6rem);
+    line-height: 1.15;
+    font-size: clamp(1.35rem, 4.4vw, 3.6rem);
     text-wrap: balance;
+  }
+  @media (min-width: 640px) {
+    .display-manifesto {
+      line-height: 1.04;
+      font-size: clamp(1.65rem, 3.6vw, 3.6rem);
+    }
   }
   .display-manifesto-lead {
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.032em;
-    line-height: 1.02;
-    font-size: clamp(2rem, 4.6vw, 4.6rem);
+    line-height: 1.08;
+    font-size: clamp(1.65rem, 5.5vw, 4.6rem);
     text-wrap: balance;
   }
-  /* Words start dim only where the pin timeline runs (desktop) */
+  @media (min-width: 640px) {
+    .display-manifesto-lead {
+      line-height: 1.02;
+      font-size: clamp(2rem, 4.6vw, 4.6rem);
+    }
+  }
+  /* Words start readable immediately even before scrub finishes (GP-05) */
   @media (min-width: 1024px) {
     .m-word {
-      opacity: 0.13;
+      opacity: 0.65;
     }
   }
   .m-accent {
@@ -413,16 +427,16 @@
   }
   .manifesto-backdrop {
     position: absolute;
-    right: -4%;
+    right: 2%;
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(9rem, 24vw, 26rem);
+    font-size: clamp(4rem, 15vw, 18rem);
     letter-spacing: 0.02em;
     line-height: 1;
-    color: rgba(226, 168, 75, 0.045);
-    -webkit-text-stroke: 2px rgba(226, 168, 75, 0.16);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(226, 168, 75, 0.04);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
@@ -436,11 +450,11 @@
     transform: translate(-50%, -50%);
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(8rem, 22vw, 24rem);
+    font-size: clamp(4.8rem, 18vw, 24rem);
     letter-spacing: 0.03em;
     line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 1.5px rgba(157, 167, 179, 0.07);
+    -webkit-text-stroke: 1.2px rgba(157, 167, 179, 0.07);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
@@ -454,14 +468,27 @@
     transform: translate(-50%, -50%);
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(6rem, 17vw, 19rem);
+    font-size: clamp(3.8rem, 15vw, 19rem);
     letter-spacing: 0.01em;
     line-height: 1;
     color: rgba(226, 168, 75, 0.05);
-    -webkit-text-stroke: 2px rgba(226, 168, 75, 0.22);
+    -webkit-text-stroke: 1.5px rgba(226, 168, 75, 0.22);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
+  }
+
+  /* ---- Mobile touch & layout utilities ---- */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .touch-friendly {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* ---- Process journey lit state ---- */

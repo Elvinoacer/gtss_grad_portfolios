@@ -16,24 +16,20 @@ import { portfolios } from "@/content/portfolios";
 import { getDegree } from "@/content/schools";
 import { Link } from "@/lib/router";
 import { CrossFadeText } from "@/components/gtss/motion";
-import { SplitChars } from "@/components/elite/split-text";
 import { Magnetic } from "@/components/elite/magnetic";
 import { Parallax } from "@/components/elite/parallax";
 import { useIntroDone } from "@/components/elite/intro-state";
 import { PortfolioMock } from "@/components/portfolio/portfolio-mock";
 import { university } from "@/content/schools";
-import { degreeFutures } from "@/lib/site";
+import { degreeFutures, collectionStats } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* Ambient brass dust — floating particles, transform-only, GPU cheap */
-const DUST = Array.from({ length: 14 }, (_, i) => ({
-  left: `${(i * 37) % 96 + 2}%`,
-  top: `${(i * 53) % 88 + 6}%`,
-  size: 2 + ((i * 7) % 3),
-  duration: 9 + ((i * 13) % 8),
-  delay: -((i * 1.7) % 10),
-  drift: 12 + ((i * 11) % 26),
+/* Ambient brass dust — subtle static particles without distracting shimmer (GP-25) */
+const DUST = Array.from({ length: 8 }, (_, i) => ({
+  left: `${(i * 37) % 92 + 4}%`,
+  top: `${(i * 53) % 80 + 10}%`,
+  size: 2 + ((i * 7) % 2),
 }));
 
 const stackPortfolios = [
@@ -46,107 +42,48 @@ const stackPortfolios = [
   .map((slug) => portfolios.find((p) => p.slug === slug)!)
   .filter(Boolean);
 
-/** Background parallax strips — layered cinematic depth */
+/** Background parallax strips — reserved to far edges for text safety (GP-09) */
 function BgStrips({ layerRef }: { layerRef: React.RefObject<HTMLDivElement | null> }) {
   return (
-    <div className="absolute inset-0" aria-hidden>
-      {/* mouse-parallax layer (scrub and mouse transforms live on different nodes) */}
+    <div className="absolute inset-0 pointer-events-none" aria-hidden>
+      {/* mouse-parallax layer with text-safe clear zone on left/center */}
       <div ref={layerRef} className="absolute inset-0">
         <Parallax
-          speed={0.16}
+          speed={0.12}
           clampStart="top top"
           clampEnd="bottom top"
-          className="absolute left-[3%] top-[14%] h-[34%] w-[20%] overflow-hidden rounded-2xl border border-hairline/50 opacity-25 lg:left-[5%] lg:opacity-35"
-        >
-          <Image
-            src="/images/campus.jpg"
-            alt=""
-            fill
-            sizes="20vw"
-            className="object-cover"
-            style={{ filter: "saturate(0.85) contrast(1.1) brightness(0.8)" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
-        </Parallax>
-
-        <Parallax
-          speed={0.26}
-          clampStart="top top"
-          clampEnd="bottom top"
-          className="absolute left-[36%] top-[38%] hidden h-[30%] w-[17%] overflow-hidden rounded-2xl border border-hairline/40 opacity-25 md:block lg:left-[30%] lg:top-[30%] lg:opacity-35"
-        >
-          <Image
-            src="/images/science-lab.jpg"
-            alt=""
-            fill
-            sizes="17vw"
-            className="object-cover"
-            style={{ filter: "saturate(0.85) contrast(1.1) brightness(0.8)" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-        </Parallax>
-
-        <Parallax
-          speed={0.1}
-          clampStart="top top"
-          clampEnd="bottom top"
-          className="absolute right-[6%] top-[10%] hidden h-[36%] w-[22%] overflow-hidden rounded-2xl border border-hairline/50 opacity-30 lg:right-[10%] lg:block lg:opacity-40"
+          className="absolute right-[4%] top-[10%] hidden h-[38%] w-[20%] overflow-hidden rounded-2xl border border-hairline/40 opacity-20 lg:block"
         >
           <Image
             src="/images/graduates.jpg"
             alt=""
             fill
-            sizes="22vw"
+            sizes="20vw"
             className="object-cover"
-            style={{ filter: "saturate(0.85) contrast(1.1) brightness(0.8)" }}
+            style={{ filter: "saturate(0.7) contrast(1.05) brightness(0.65)" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         </Parallax>
       </div>
     </div>
   );
 }
 
-/** Inline media chip for the giant headline */
-function HeadlineChip({
-  src,
-  alt,
-  priority,
-}: {
-  src: string;
-  alt: string;
-  priority?: boolean;
-}) {
-  return (
-    <span className="img-chip" data-cursor="link" aria-hidden>
-      <Image
-        src={src}
-        alt=""
-        fill
-        priority={priority}
-        sizes="180px"
-        className="object-cover"
-      />
-      <span className="sr-only">{alt}</span>
-    </span>
-  );
-}
-
 export function Hero() {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const reduce = useReducedMotion();
   const introDone = useIntroDone();
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const bgLayerRef = useRef<HTMLDivElement>(null);
 
-  /* Rotating portfolio stack */
+  /* Rotating portfolio stack — paused by default on initial view for stability (GP-10) */
   useEffect(() => {
     if (reduce || paused) return;
     const id = window.setInterval(
       () => setActive((v) => (v + 1) % stackPortfolios.length),
-      3600
+      6000
     );
     return () => window.clearInterval(id);
   }, [reduce, paused]);
@@ -227,10 +164,21 @@ export function Hero() {
     return () => window.removeEventListener("pointermove", onMove);
   }, [reduce]);
 
+  const [isNarrow, setIsNarrow] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsNarrow(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   /* Stat strip counts up when the curtain lifts */
   useEffect(() => {
     if (reduce || !introDone) return;
-    const counters = statRefs.current;
+    const section = sectionRef.current;
+    if (!section) return;
+    const counters = section.querySelectorAll<HTMLElement>("[data-stat-counter]");
     if (!counters.length) return;
     counters.forEach((el, i) => {
       const target = +(el.dataset.target ?? "0");
@@ -248,7 +196,8 @@ export function Hero() {
   }, [reduce, introDone]);
 
   const spotRef = useRef<HTMLDivElement>(null);
-  const statRefs = useRef<HTMLSpanElement[]>([]);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
 
   const tiltX = useSpring(useMotionValue(0), { stiffness: 120, damping: 18 });
   const tiltY = useSpring(useMotionValue(0), { stiffness: 120, damping: 18 });
@@ -269,6 +218,23 @@ export function Hero() {
   const onStackLeave = () => {
     tiltX.set(0);
     tiltY.set(0);
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(deltaX) > 36 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX < 0) {
+        setActive((v) => (v + 1) % stackPortfolios.length);
+      } else {
+        setActive((v) => (v - 1 + stackPortfolios.length) % stackPortfolios.length);
+      }
+    }
   };
 
   const activeP = stackPortfolios[active];
@@ -313,10 +279,7 @@ export function Hero() {
               top: d.top,
               width: d.size,
               height: d.size,
-              animationDuration: `${d.duration}s`,
-              animationDelay: `${d.delay}s`,
-              "--drift": `${d.drift}px`,
-            } as React.CSSProperties}
+            }}
           />
         ))}
       </div>
@@ -326,113 +289,46 @@ export function Hero() {
 
       <div
         ref={contentRef}
-        className="shell relative grid min-h-[calc(100svh-4.5rem)] items-center gap-10 pb-12 pt-24 sm:pt-28 lg:grid-cols-[1.35fr_0.65fr] lg:gap-8 lg:pb-16"
+        className="shell relative grid min-h-[calc(100svh-4.5rem)] items-center gap-8 pb-8 pt-14 sm:pt-16 lg:grid-cols-[1.3fr_0.7fr] lg:gap-8 lg:pb-10"
       >
         {/* Copy column */}
         <div className="relative z-10">
-          <motion.p
-            className="eyebrow-brass"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
-            animate={introDone ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
-          >
+          <div className="flex flex-wrap items-center gap-2 eyebrow-brass">
             <span
               className="inline-block h-1.5 w-1.5 rounded-full bg-brass align-middle"
               aria-hidden
             />{" "}
-            GTSS Graduate Portfolios · {university.collectionLabel}
-          </motion.p>
-
-          <h1 className="mt-6 display-hero text-foreground">
-            <span className="block">
-              <SplitChars
-                text="Your degree"
-                play={introDone}
-                delay={0.12}
-                stagger={0.02}
-              />
-              <HeadlineChip src="/images/graduates.jpg" alt="graduates" priority />
-              <SplitChars
-                text="tells"
-                play={introDone}
-                delay={0.26}
-                stagger={0.02}
-              />
+            <span>GTSS Graduate Portfolios · {university.collectionLabel}</span>
+            <span className="font-mono text-xs font-normal text-ink-tertiary">
+              — Independent Initiative
             </span>
-            <span className="block">
-              <SplitChars
-                text="people what"
-                play={introDone}
-                delay={0.3}
-                stagger={0.02}
-              />
-            </span>
-            <span className="block">
-              <SplitChars
-                text="you studied."
-                play={introDone}
-                delay={0.42}
-                stagger={0.02}
-              />
-            </span>
+          </div>
 
-            <motion.span
-              className="serif-accent mt-2 block text-brass"
-              style={{
-                fontSize: "clamp(1.7rem, 3.4vw, 3.2rem)",
-                lineHeight: 1.12,
-              }}
-              initial={
-                reduce
-                  ? { opacity: 0 }
-                  : { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" }
-              }
-              animate={
-                introDone
-                  ? { opacity: 1, clipPath: "inset(0% 0% 0% 0%)" }
-                  : undefined
-              }
-              transition={{ duration: 1.0, delay: 0.72, ease: EASE }}
-            >
-              but your portfolio shows them
-            </motion.span>
-
+          <h1 className="mt-4 display-hero text-foreground">
+            <span className="block">Your degree tells people</span>
+            <span className="block text-ink-secondary">what you studied.</span>
             <span className="mt-2 block">
-              <SplitChars
-                text="what you can"
-                play={introDone}
-                delay={0.88}
-                stagger={0.02}
-              />
-              <span className="text-shimmer">
-                <SplitChars
-                  text="do."
-                  play={introDone}
-                  delay={1.06}
-                  stagger={0.05}
-                />
+              <span className="serif-accent text-brass block sm:inline">
+                Your portfolio shows{" "}
               </span>
-              <HeadlineChip src="/images/computer-science.jpg" alt="portfolio work" />
+              <span className="block text-foreground sm:inline">
+                what you can do.
+              </span>
             </span>
           </h1>
 
-          <motion.p
-            className="mt-5 max-w-lg text-base leading-relaxed text-ink-secondary sm:text-lg"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            animate={introDone ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.8, delay: 1.08, ease: EASE }}
-          >
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-secondary sm:text-lg">
             Explore profession-specific digital portfolios designed around the
             work, thinking, tools and career direction of emerging graduates —
             from engineering and computing to science, information, education,
             agriculture and the social sciences.
-          </motion.p>
+          </p>
 
           <motion.div
-            className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            animate={introDone ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.8, delay: 1.2, ease: EASE }}
+            className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center"
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
           >
             <Magnetic>
               <Link
@@ -460,36 +356,45 @@ export function Hero() {
             </Magnetic>
           </motion.div>
 
-          <motion.p
-            className="mt-5 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ink-tertiary"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
-            animate={introDone ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.7, delay: 1.34, ease: EASE }}
+          <motion.div
+            className="mt-5 max-w-full font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink-tertiary sm:text-[0.68rem] sm:tracking-[0.16em]"
+            initial={reduce ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
           >
-            One degree, different futures —{" "}
-            <CrossFadeText
-              keyPrefix="futures"
-              items={degreeFutures.map((d) => `${d.degree} → ${d.futures}`)}
-              interval={2800}
-              className="text-brass/90"
-            />
-          </motion.p>
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+              <span className="shrink-0 text-ink-tertiary">One degree, different futures</span>
+              <span className="hidden text-ink-tertiary/60 sm:inline" aria-hidden>
+                —
+              </span>
+              <div className="min-w-0 max-w-full overflow-hidden">
+                <CrossFadeText
+                  keyPrefix="futures"
+                  items={degreeFutures.map((d) => `${d.degree} → ${d.futures}`)}
+                  interval={2800}
+                  className="font-medium text-brass/90"
+                />
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Portfolio stack — pointer-tilted, glare-tracked */}
         <motion.div
           className="relative z-10 [perspective:1400px]"
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 60, scale: 0.94 }}
-          animate={introDone ? { opacity: 1, y: 0, scale: 1 } : undefined}
-          transition={{ duration: 1.1, delay: 0.55, ease: EASE }}
+          initial={reduce ? false : { opacity: 0, y: 24, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
           onPointerMove={onStackMove}
           onPointerLeave={onStackLeave}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           data-cursor="view"
         >
           <motion.div
-            className="relative mx-auto aspect-[12/13] w-full max-w-[24.5rem] lg:max-w-[23rem]"
+            className="relative mx-auto aspect-[12/13] w-full max-w-[21.5rem] sm:max-w-[24.5rem] lg:max-w-[23rem]"
             style={{ rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" }}
           >
             {[0, 1, 2].map((offset) => {
@@ -508,9 +413,9 @@ export function Hero() {
                       : {
                           opacity: isFront ? 1 : offset === 1 ? 0.66 : 0.36,
                           scale: 1 - offset * 0.06,
-                          y: offset * 14 + (offset > 0 ? 10 : 0),
-                          x: offset === 1 ? -26 : offset === 2 ? 26 : 0,
-                          rotate: offset === 1 ? -4.5 : offset === 2 ? 4 : 0,
+                          y: offset * 12 + (offset > 0 ? 8 : 0),
+                          x: offset === 1 ? (isNarrow ? -14 : -26) : offset === 2 ? (isNarrow ? 14 : 26) : 0,
+                          rotate: offset === 1 ? -3.5 : offset === 2 ? 3.5 : 0,
                         }
                   }
                   transition={{ duration: 0.85, ease: EASE }}
@@ -548,8 +453,8 @@ export function Hero() {
             })}
           </motion.div>
 
-          {/* Active label */}
-          <div className="mt-6 flex items-center justify-between gap-4">
+          {/* Active label + Controls (GP-10) */}
+          <div className="mt-4 flex items-center justify-between gap-3">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeP.slug}
@@ -570,32 +475,76 @@ export function Hero() {
                 </p>
               </motion.div>
             </AnimatePresence>
-            <Link
-              to={`/portfolio/${activeP.slug}`}
-              className="group inline-flex shrink-0 items-center gap-1.5 font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-brass"
-            >
-              View
-              <ArrowRight
-                className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
-                aria-hidden
-              />
-            </Link>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setActive((v) => (v - 1 + stackPortfolios.length) % stackPortfolios.length)}
+                aria-label="Previous portfolio example"
+                className="grid size-8 place-items-center rounded-md border border-hairline bg-surface/80 text-sm font-semibold text-ink-secondary hover:text-foreground hover:border-brass/40 transition-colors"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                onClick={() => setActive((v) => (v + 1) % stackPortfolios.length)}
+                aria-label="Next portfolio example"
+                className="grid size-8 place-items-center rounded-md border border-hairline bg-surface/80 text-sm font-semibold text-ink-secondary hover:text-foreground hover:border-brass/40 transition-colors"
+              >
+                ›
+              </button>
+              <Link
+                to={`/portfolio/${activeP.slug}`}
+                className="group inline-flex items-center gap-1.5 rounded-md border border-brass/40 bg-brass/10 px-3 py-1.5 font-mono text-[0.7rem] font-medium uppercase tracking-[0.16em] text-brass hover:bg-brass hover:text-brass-foreground transition-colors"
+              >
+                View
+                <ArrowRight
+                  className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
+                  aria-hidden
+                />
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile card indicator dots + gesture cue */}
+          <div className="mt-3.5 flex items-center justify-between gap-3 sm:hidden">
+            <div className="flex items-center gap-1.5" aria-label="Portfolio cards pagination">
+              {stackPortfolios.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setActive(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    active === i ? "w-6 bg-brass" : "w-1.5 bg-hairline"
+                  }`}
+                  aria-label={`Jump to portfolio card ${i + 1}`}
+                />
+              ))}
+            </div>
+            <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary">
+              Tap or swipe to leaf
+            </span>
           </div>
         </motion.div>
       </div>
 
-      {/* Stat strip + scroll cue */}
-      <div className="relative z-10 border-t border-hairline/60 bg-background/40 backdrop-blur-sm">
-        <div className="shell flex flex-wrap items-center gap-x-8 gap-y-3 py-5">
-          <Stat value={`${portfolios.length}`} label="Live portfolios" refCb={(el) => { if (el) statRefs.current[0] = el; }} />
-          <Stat value="6" label="Schools" refCb={(el) => { if (el) statRefs.current[1] = el; }} />
-          <Stat value="40" suffix="+" label="Degree paths" refCb={(el) => { if (el) statRefs.current[2] = el; }} />
-          <Stat value="1" label="University collection" refCb={(el) => { if (el) statRefs.current[3] = el; }} />
-          <div className="ml-auto hidden items-center gap-3 md:flex">
-            <span className="font-mono text-[0.6rem] uppercase tracking-[0.24em] text-ink-tertiary">
+      {/* Stat strip + scroll cue (GP-02, GP-04) */}
+      <div className="relative z-10 border-t border-hairline/60 bg-background/60 backdrop-blur-sm">
+        <div className="shell grid grid-cols-2 gap-3 py-4 sm:flex sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-3">
+          <Stat value={`${portfolios.length}`} label="Live portfolios" />
+          <Stat value={`${collectionStats.totalSchools}`} label="Schools" />
+          <Stat value={`${collectionStats.totalDegrees}`} label="Degree paths mapped" />
+          <Stat value="1" label="University collection" />
+          <div className="col-span-2 hidden items-center gap-3 sm:col-span-1 sm:ml-auto md:flex">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink-tertiary">
               Scroll
             </span>
-            <span className="scroll-cue-line h-9" aria-hidden />
+            <span className="scroll-cue-line h-8" aria-hidden />
+          </div>
+          <div className="col-span-2 flex items-center justify-center gap-2 pt-2 border-t border-hairline/40 sm:hidden">
+            <span className="font-mono text-xs uppercase tracking-[0.16em] text-ink-tertiary">
+              Scroll to explore Ch. II
+            </span>
+            <span className="inline-block h-2.5 w-px bg-brass/60" />
           </div>
         </div>
       </div>
@@ -607,24 +556,22 @@ function Stat({
   value,
   label,
   suffix = "",
-  refCb,
 }: {
   value: string;
   label: string;
   suffix?: string;
-  refCb?: (el: HTMLSpanElement | null) => void;
 }) {
   const num = value.replace(/[^\d]/g, "");
   return (
-    <span className="flex items-baseline gap-2">
+    <span className="flex items-baseline gap-2 rounded-lg bg-surface/40 p-2 sm:bg-transparent sm:p-0">
       <span
-        ref={refCb}
+        data-stat-counter
         data-target={num}
-        className="font-display text-xl font-bold tracking-tight text-brass"
+        className="font-display text-xl sm:text-2xl font-bold tracking-tight text-brass"
       >
         {num}{suffix}
       </span>
-      <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-ink-secondary">
+      <span className="font-mono text-xs uppercase tracking-[0.14em] text-ink-secondary font-medium">
         {label}
       </span>
     </span>

@@ -17,6 +17,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
 import { portfolios } from "@/content/portfolios";
+import { getDegree } from "@/content/schools";
 import { Link } from "@/lib/router";
 import { PortfolioMock } from "@/components/portfolio/portfolio-mock";
 import { Magnetic } from "./magnetic";
@@ -85,11 +86,11 @@ export function ZoomScene() {
         },
       });
 
-      /* Phase 1 (0-42%): the push-in. Card scales from small to hero. */
+      /* Phase 1 (0-42%): Card starts well-sized and legible from the beginning (GP-14) */
       tl.fromTo(
         "[data-zoom-card]",
-        { scale: 0.52, yPercent: 14, rotate: -2.5 },
-        { scale: 1.02, yPercent: -2, rotate: 0, duration: 0.42, ease: "power2.inOut" },
+        { scale: 0.94, yPercent: 4, rotate: -1 },
+        { scale: 1.05, yPercent: -2, rotate: 0, duration: 0.42, ease: "power2.inOut" },
         0
       );
 
@@ -201,32 +202,106 @@ export function ZoomScene() {
           One portfolio is one person.
         </h2>
 
-        {/* The card — the camera target */}
-        <div data-zoom-card className="relative z-10 mt-8 w-[min(86vw,29rem)] will-change-transform lg:mt-10">
-          <PortfolioMock portfolio={hero} variant="card" className="w-full" />
+        {/* The card — the camera target (GP-14) */}
+        <div data-zoom-card className="relative z-10 mt-6 w-[min(90vw,32rem)] will-change-transform lg:mt-8">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass/10 px-3.5 py-1 font-mono text-xs uppercase tracking-wider text-brass font-medium">
+              <span className="size-1.5 rounded-full bg-brass" />
+              Featured Graduate · Kevin Mwangi
+            </span>
+            <Link
+              to={`/portfolio/${hero.slug}`}
+              className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-brass hover:underline font-semibold"
+            >
+              View Full Portfolio →
+            </Link>
+          </div>
+          <PortfolioMock portfolio={hero} variant="card" className="w-full shadow-2xl" />
         </div>
 
-        {/* Mid-scene caption */}
-        <p data-zoom-caption className="mt-8 max-w-md text-center text-sm leading-relaxed text-ink-secondary">
-          <span className="font-display text-base font-bold text-foreground">
-            {hero.candidate.name}
-          </span>{" "}
-          — {hero.careerDirection}. {COUNT_WORD.charAt(0).toUpperCase() + COUNT_WORD.slice(1)} fields. One standard of proof.
-        </p>
+        {/* Mid-scene caption with proof points */}
+        <div data-zoom-caption className="mt-6 max-w-xl text-center">
+          <p className="text-base leading-relaxed text-ink-secondary">
+            <span className="font-display text-lg font-bold text-foreground">
+              {hero.candidate.name}
+            </span>{" "}
+            — {hero.careerDirection} · BSc Computer Science
+          </p>
+          <p className="mt-2 text-xs font-mono uppercase tracking-[0.14em] text-ink-tertiary">
+            Proof: Full-Stack Architecture · Distributed Systems · System Design Case Studies
+          </p>
+        </div>
 
-        {/* The orbit — the rest of the collection converging, dimmed for depth */}
+        {/* Desktop Orbit — the rest of the collection converging in 3 depth planes */}
         <div className="pointer-events-none absolute inset-0 z-20 hidden items-center justify-center lg:flex" aria-hidden>
           {orbit.map((p, i) => (
             <div
               key={p.slug}
               data-orbit
               data-orbit-depth={i % 3}
-              className="absolute w-[9.5rem] will-change-transform"
+              className="absolute w-[10.5rem] will-change-transform"
               style={{ opacity: 0 }}
             >
-              <PortfolioMock portfolio={p} variant="card" className="pointer-events-auto" />
+              <Link
+                to={`/portfolio/${p.slug}`}
+                className="pointer-events-auto block transition-transform duration-300 hover:scale-105"
+                tabIndex={0}
+                ariaLabel={`View ${p.candidate.name}'s portfolio`}
+              >
+                <PortfolioMock portfolio={p} variant="card" />
+              </Link>
             </div>
           ))}
+        </div>
+
+        {/* Mobile Orbit: Touch-friendly preview strip of the other graduates */}
+        <div className="relative z-20 mt-10 w-full max-w-full lg:hidden">
+          <div className="mb-3.5 flex items-center justify-between px-1">
+            <p className="font-mono text-[0.64rem] uppercase tracking-[0.18em] text-brass">
+              The Other {orbit.length} Graduates
+            </p>
+            <span className="font-mono text-[0.58rem] uppercase tracking-wider text-ink-tertiary">
+              Swipe cards →
+            </span>
+          </div>
+          <div className="no-scrollbar -mx-5 flex gap-3.5 overflow-x-auto px-5 pb-3 pt-1 snap-x snap-mandatory touch-pan-x">
+            {orbit.map((p, idx) => {
+              const degree = getDegree(p.degreeSlug);
+              return (
+                <Link
+                  key={p.slug}
+                  to={`/portfolio/${p.slug}`}
+                  className="group relative flex w-[14rem] shrink-0 snap-center flex-col overflow-hidden rounded-xl border border-hairline/80 bg-surface/90 p-3 transition-all active:scale-[0.98] hover:border-brass/40"
+                >
+                  <div className="relative overflow-hidden rounded-lg">
+                    <PortfolioMock portfolio={p} variant="card" className="w-full" />
+                    {p.liveUrl && (
+                      <span className="absolute right-2 top-2 z-30 inline-flex items-center gap-1 rounded-[3px] bg-[#080A0D]/85 px-1.5 py-0.5 font-mono text-[0.52rem] uppercase tracking-wider text-emerald-400 border border-emerald-400/30">
+                        <span className="size-1 rounded-full bg-emerald-400" />
+                        Live
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-3 px-0.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="truncate font-mono text-[0.58rem] uppercase tracking-wider text-brass">
+                        {degree?.degree.shortName ?? p.degreeSlug}
+                      </p>
+                      <span className="font-mono text-[0.52rem] text-ink-tertiary">
+                        0{idx + 2}/10
+                      </span>
+                    </div>
+                    <p className="mt-1 truncate font-display text-sm font-bold text-foreground group-hover:text-brass">
+                      {p.candidate.name}
+                    </p>
+                    <p className="truncate text-[0.72rem] text-ink-secondary">
+                      {p.careerDirection}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {/* Finale — a frosted focal point above the orbit */}

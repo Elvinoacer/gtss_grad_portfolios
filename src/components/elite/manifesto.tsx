@@ -20,11 +20,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { EASE_EXPO, stagger } from "./curves";
 
 const LINES: { text: string; accents?: string[] }[] = [
-  { text: "Every graduate carries proof." , accents: ["proof."] },
+  { text: "Every graduate carries proof.", accents: ["proof."] },
   { text: "Projects. Research. Code. Field notes. Drawings. Data." },
-  { text: "Most of it dies in a lecture hall.", accents: ["dies"] },
-  { text: "A degree tells people what you studied." },
-  { text: "A portfolio shows them what you can do.", accents: ["portfolio", "do."] },
+  { text: "Too much of that work never gets the audience it deserves.", accents: ["audience", "deserves."] },
+  { text: "A portfolio turns coursework into verifiable capability." },
+  { text: "Built from authentic evidence, ready for employers to inspect.", accents: ["authentic", "inspect."] },
 ];
 
 type Word = { word: string; accent: boolean };
@@ -46,27 +46,60 @@ export function Manifesto() {
 
   useEffect(() => {
     if (reduce) return;
-    if (!window.matchMedia("(min-width: 1024px)").matches) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
     if (!section) return;
 
     const ctx = gsap.context(() => {
+      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+
+      if (!isDesktop) {
+        // Mobile: smooth non-pinning parallax scrub for backdrop and breathing photo
+        gsap.fromTo(
+          "[data-backdrop]",
+          { xPercent: 6 },
+          {
+            xPercent: -12,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.7,
+            },
+          }
+        );
+        gsap.fromTo(
+          "[data-breath]",
+          { scale: 1.04 },
+          {
+            scale: 1.18,
+            ease: "sine.inOut",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.8,
+            },
+          }
+        );
+        return;
+      }
+
       const tl = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=170%",
+          end: "+=60%",
           pin: true,
-          scrub: 0.85,
+          scrub: 0.7,
           anticipatePin: 1,
         },
       });
 
       // Each word illuminates with its OWN curve — never a uniform crawl.
-      // The stagger positions compress toward the end (accelerating rhythm).
       wordsRef.current.forEach((el, i) => {
         const accent = el.dataset.accent === "1";
         tl.to(
@@ -188,23 +221,48 @@ export function Manifesto() {
                 key={li}
                 className={
                   li === 4
-                    ? "display-manifesto-lead text-foreground"
-                    : "display-manifesto text-ink-secondary"
+                    ? "display-manifesto-lead mt-6 text-foreground"
+                    : "display-manifesto mb-3 text-ink-secondary"
                 }
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-12% 0px" }}
-                transition={{ duration: 0.9, delay: li * 0.05, ease: EASE_EXPO }}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-5% 0px -5% 0px" }}
+                variants={{
+                  hidden: { opacity: 0.3, y: 16 },
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.75,
+                      delay: li * 0.06,
+                      staggerChildren: 0.035,
+                      ease: EASE_EXPO,
+                    },
+                  },
+                }}
               >
                 {line.map((w, wi) => (
-                  <span
+                  <motion.span
                     key={wi}
                     ref={registerWord}
                     data-accent={w.accent ? "1" : "0"}
-                    className={"m-word " + (w.accent ? "m-accent" : "")}
+                    variants={{
+                      hidden: { opacity: 0.3, y: 4 },
+                      show: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.45, ease: EASE_EXPO },
+                      },
+                    }}
+                    className={
+                      "m-word inline " +
+                      (w.accent
+                        ? "m-accent font-semibold text-brass [text-shadow:0_0_24px_rgba(226,168,75,0.45)]"
+                        : "")
+                    }
                   >
                     {w.word}{" "}
-                  </span>
+                  </motion.span>
                 ))}
               </motion.p>
             ))

@@ -15,6 +15,7 @@ import {
 } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getLenis } from "./smooth-scroll";
 
 export function HorizontalGallery({
   children,
@@ -40,6 +41,7 @@ export function HorizontalGallery({
   const trackRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLSpanElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const total = Children.count(children);
 
   useEffect(() => {
@@ -98,11 +100,52 @@ export function HorizontalGallery({
     return () => mm.revert();
   }, [total]);
 
+  const handlePrev = () => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024 && trackRef.current && sectionRef.current) {
+      const dist = Math.max(1, trackRef.current.scrollWidth - sectionRef.current.clientWidth);
+      const step = dist / Math.max(1, total - 1);
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(window.scrollY - step, { duration: 0.6 });
+      } else {
+        window.scrollBy({ top: -step, behavior: "smooth" });
+      }
+    } else if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -340, behavior: "smooth" });
+    }
+  };
+
+  const handleNext = () => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024 && trackRef.current && sectionRef.current) {
+      const dist = Math.max(1, trackRef.current.scrollWidth - sectionRef.current.clientWidth);
+      const step = dist / Math.max(1, total - 1);
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(window.scrollY + step, { duration: 0.6 });
+      } else {
+        window.scrollBy({ top: step, behavior: "smooth" });
+      }
+    } else if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 340, behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       ref={sectionRef}
       data-chapter={chapter}
-      className={`relative overflow-hidden py-16 sm:py-20 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0 ${className}`}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          handlePrev();
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          handleNext();
+        }
+      }}
+      tabIndex={0}
+      aria-label="Featured portfolios exhibition"
+      className={`relative overflow-hidden py-16 sm:py-20 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0 focus:outline-none ${className}`}
     >
       {backdrop && (
         <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -113,35 +156,68 @@ export function HorizontalGallery({
       {header}
 
       <div
+        ref={scrollContainerRef}
         data-lenis-prevent
-        className="mt-8 snap-x snap-mandatory overflow-x-auto pb-4 [scrollbar-width:none] lg:mt-10 lg:snap-none lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden"
+        onScroll={(e) => {
+          const el = e.currentTarget;
+          const max = el.scrollWidth - el.clientWidth;
+          if (max > 0) {
+            const progress = Math.min(1, Math.max(0, el.scrollLeft / max));
+            if (barRef.current) {
+              barRef.current.style.transform = `scaleX(${progress})`;
+            }
+            if (countRef.current) {
+              const idx = Math.min(total, Math.floor(progress * (total - 1) + 0.5) + 1);
+              countRef.current.textContent = String(idx).padStart(2, "0");
+            }
+          }
+        }}
+        className="mt-8 snap-x snap-mandatory overflow-x-auto pb-4 no-scrollbar lg:mt-10 lg:snap-none lg:overflow-visible lg:pb-0"
       >
         <div
           ref={trackRef}
-          className={`flex w-max items-stretch gap-5 px-5 will-change-transform sm:px-8 lg:gap-10 lg:px-12 ${trackClassName}`}
+          className={`flex w-max items-stretch gap-4 px-4 will-change-transform sm:gap-6 sm:px-8 lg:gap-10 lg:px-12 ${trackClassName}`}
         >
           {children}
         </div>
       </div>
 
-      {/* Progress + counter */}
-      <div className="shell mt-6 flex items-center gap-5 lg:mt-12">
-        <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-brass">
-          {counterLabel}
-        </span>
-        <div className="h-px max-w-xs flex-1 bg-hairline">
-          <div
-            ref={barRef}
-            className="h-full origin-left scale-x-0 bg-gradient-to-r from-brass-dim to-brass"
-          />
+      {/* Progress + counter + navigation controls (GP-15) */}
+      <div className="shell mt-6 flex flex-wrap items-center justify-between gap-4 lg:mt-12">
+        <div className="flex items-center gap-4">
+          <span className="font-mono text-xs uppercase tracking-[0.16em] text-brass font-medium">
+            {counterLabel}
+          </span>
+          <div className="h-px w-24 sm:w-36 bg-hairline">
+            <div
+              ref={barRef}
+              className="h-full origin-left scale-x-0 bg-gradient-to-r from-brass-dim to-brass transition-transform duration-150"
+            />
+          </div>
+          <span className="font-mono text-xs tabular-nums tracking-[0.16em] text-ink-secondary">
+            <span ref={countRef}>01</span>
+            <span className="text-ink-tertiary"> / {String(total).padStart(2, "0")}</span>
+          </span>
         </div>
-        <span className="font-mono text-[0.65rem] tabular-nums tracking-[0.2em] text-ink-secondary">
-          <span ref={countRef}>01</span>
-          <span className="text-ink-tertiary"> / {String(total).padStart(2, "0")}</span>
-        </span>
-        <span className="ml-auto font-mono text-[0.6rem] uppercase tracking-[0.22em] text-ink-tertiary lg:hidden">
-          Swipe
-        </span>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous portfolio card"
+            className="grid size-9 place-items-center rounded-md border border-hairline bg-surface/80 text-foreground hover:border-brass/40 transition-colors active:scale-95 text-base"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next portfolio card"
+            className="grid size-9 place-items-center rounded-md border border-hairline bg-surface/80 text-foreground hover:border-brass/40 transition-colors active:scale-95 text-base"
+          >
+            ›
+          </button>
+        </div>
       </div>
 
       {footer}

@@ -32,7 +32,7 @@ export function HowItWorksView() {
       {/* Steps */}
       <section className="shell pt-16" aria-label="The seven steps">
         <div className="relative">
-          <div className="absolute left-[1.05rem] top-2 hidden h-[calc(100%-1rem)] w-px bg-hairline sm:block" aria-hidden>
+          <div className="absolute left-[1.07rem] top-2 h-[calc(100%-1rem)] w-px bg-hairline/60" aria-hidden>
             <motion.div
               className="h-full w-px origin-top bg-gradient-to-b from-brass via-brass/60 to-transparent"
               initial={{ scaleY: 0 }}
@@ -61,6 +61,12 @@ export function HowItWorksView() {
                     <p className="mt-2.5 text-[0.95rem] leading-relaxed text-ink-secondary">
                       {step.body}
                     </p>
+                    {step.outcome && (
+                      <div className="mt-3 inline-flex items-center gap-1.5 rounded border border-hairline/70 bg-raised/70 px-2.5 py-1 font-mono text-xs text-ink-secondary">
+                        <span className="font-semibold text-brass">Deliverable:</span>
+                        <span>{step.outcome}</span>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </li>

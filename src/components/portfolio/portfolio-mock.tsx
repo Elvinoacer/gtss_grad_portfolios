@@ -20,12 +20,15 @@ export function PortfolioMock({
   variant = "card",
   className = "",
   priority = false,
+  allowExternalLink,
 }: {
   portfolio: Portfolio;
   variant?: MockVariant;
   className?: string;
   priority?: boolean;
+  allowExternalLink?: boolean;
 }) {
+  const shouldAllowLink = allowExternalLink ?? (variant === "full");
   const degreeInfo = getDegree(portfolio.degreeSlug);
   const school = getSchool(portfolio.schoolSlug);
   const degree = degreeInfo?.degree;
@@ -49,7 +52,7 @@ export function PortfolioMock({
           <span className="size-2.5 rounded-full bg-[#3d4550]" />
           <span className="size-2.5 rounded-full bg-[#3d4550]" />
         </div>
-        {portfolio.liveUrl ? (
+        {shouldAllowLink && portfolio.liveUrl ? (
           <a
             href={portfolio.liveUrl}
             target="_blank"
@@ -64,19 +67,25 @@ export function PortfolioMock({
             <ExternalLink className="ml-1 size-2.5 shrink-0 text-ink-tertiary transition-transform group-hover/url:translate-x-0.5 group-hover/url:text-brass" aria-hidden />
           </a>
         ) : (
-          <div className="flex h-5.5 min-w-0 flex-1 items-center rounded-sm border border-hairline/70 bg-background/60 px-2.5">
+          <div
+            title={portfolio.liveUrl ? `Live deployment: ${displayUrl}` : displayUrl}
+            className="flex h-5.5 min-w-0 flex-1 items-center justify-between rounded-sm border border-hairline/70 bg-background/60 px-2.5"
+          >
             <span className="truncate font-mono text-[0.58rem] tracking-wide text-ink-tertiary">
               {displayUrl}
             </span>
+            {portfolio.liveUrl && (
+              <ExternalLink className="ml-1 size-2.5 shrink-0 text-ink-tertiary/70" aria-hidden />
+            )}
           </div>
         )}
         <span
-          className="hidden rounded-sm px-1.5 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.14em] sm:inline"
+          className="rounded-sm px-1.5 py-0.5 font-mono text-[0.52rem] uppercase tracking-[0.12em]"
           style={{
             color: portfolio.status === "live" ? "#34D399" : accent,
-            background: portfolio.status === "live" ? "rgba(52, 211, 153, 0.1)" : undefined,
-            border: portfolio.status === "live" ? "1px solid rgba(52, 211, 153, 0.25)" : undefined,
-            opacity: 0.9,
+            background: portfolio.status === "live" ? "rgba(52, 211, 153, 0.12)" : `${accent}14`,
+            border: portfolio.status === "live" ? "1px solid rgba(52, 211, 153, 0.28)" : `1px solid ${accent}28`,
+            opacity: 0.95,
           }}
         >
           {portfolio.status}
