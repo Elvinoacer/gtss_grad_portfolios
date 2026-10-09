@@ -43,7 +43,7 @@ const shareImage = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolios.gtss.software"),
+  metadataBase: new URL("https://gtss-grad-portfolios.vercel.app"),
   title: {
     default: "GTSS Graduate Portfolios | Moi University Collection",
     template: "%s | GTSS Graduate Portfolios",
