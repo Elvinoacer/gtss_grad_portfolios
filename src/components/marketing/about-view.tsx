@@ -91,7 +91,7 @@ export function AboutView() {
             },
             {
               title: "Quality bar",
-              body: `The hub must match or exceed the strongest individual portfolio. Today: ${portfolios.length} concepts, growing course by course.`,
+              body: `The hub must match or exceed the strongest individual portfolio. Today: ${portfolios.length} live portfolios, growing course by course.`,
             },
             {
               title: "Small is honest",

@@ -21,7 +21,7 @@ const order = [
   "naomi-wambui-actuarial-science",
   "ian-kamau-electrical-electronics",
   "brian-kipkemoi-telecommunications",
-  "sarah-cherono-communication-journalism",
+  "lydia-chebet-industrial-textile",
 ];
 
 const featured: Portfolio[] = order

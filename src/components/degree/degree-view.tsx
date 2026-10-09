@@ -19,9 +19,9 @@ export function DegreeView({ slug }: { slug: string }) {
   if (!info) return <DegreeNotFound />;
 
   const { degree, school } = info;
-  const demo = degree.demoSlug
-    ? portfolios.find((p) => p.slug === degree.demoSlug)
-    : undefined;
+  const degreePortfolios = portfolios.filter(
+    (p) => p.degreeSlug === degree.slug || p.slug === degree.demoSlug
+  );
   const evidence = degree.evidence ?? school.evidence;
   const sections = degree.sections ?? school.sections;
   const related = allDegrees
@@ -54,7 +54,7 @@ export function DegreeView({ slug }: { slug: string }) {
                 {degree.exampleProject ??
                   school.context}
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   to={`/request?course=${encodeURIComponent(degree.shortName ?? degree.name)}`}
                   className="group inline-flex h-12 items-center gap-2.5 rounded-md bg-brass px-6 font-sans text-sm font-semibold tracking-tight text-brass-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EDBB60]"
@@ -62,15 +62,16 @@ export function DegreeView({ slug }: { slug: string }) {
                   Build my {degree.shortName} portfolio
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                 </Link>
-                {demo && (
+                {degreePortfolios.map((p) => (
                   <Link
-                    to={`/portfolio/${demo.slug}`}
+                    key={p.slug}
+                    to={`/portfolio/${p.slug}`}
                     className="group inline-flex h-12 items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
                   >
-                    Explore the demo
+                    Explore {p.candidate.name}
                     <ArrowUpRight className="size-4 text-ink-secondary transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass" aria-hidden />
                   </Link>
-                )}
+                ))}
               </div>
             </div>
 
@@ -101,36 +102,69 @@ export function DegreeView({ slug }: { slug: string }) {
       </section>
 
       {/* Demo / empty state (spec §96) */}
-      <section className="shell pt-14" aria-label="Available demo">
-        {demo ? (
-          <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-            <Reveal>
-              <Link to={`/portfolio/${demo.slug}`} className="group block min-w-0">
-                <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
-                  <PortfolioMock portfolio={demo} variant="full" priority />
-                  <div className="absolute right-3 top-3 z-30">
-                    <StatusChip status={demo.status} />
+      <section className="shell pt-14" aria-label="Available portfolios">
+        {degreePortfolios.length > 0 ? (
+          <div className="space-y-16">
+            {degreePortfolios.map((demo, idx) => (
+              <div key={demo.slug} className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+                <Reveal delay={idx * 0.1}>
+                  <Link to={`/portfolio/${demo.slug}`} className="group block min-w-0">
+                    <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
+                      <PortfolioMock portfolio={demo} variant="full" priority={idx === 0} />
+                      <div className="absolute right-3 top-3 z-30">
+                        <StatusChip status={demo.status} />
+                      </div>
+                    </div>
+                    <p className="mt-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-ink-tertiary">
+                      {demo.status === "live" ? "Live portfolio" : "Demonstration portfolio"} — {demo.candidate.name} ({demo.careerDirection})
+                    </p>
+                  </Link>
+                </Reveal>
+                <Reveal delay={0.12 + idx * 0.1}>
+                  <div>
+                    <span
+                      className="inline-flex rounded-full px-2.5 py-0.5 font-mono text-[0.6rem] font-semibold uppercase tracking-wider"
+                      style={{
+                        background: `${demo.presentation.accent}20`,
+                        color: demo.presentation.accent,
+                        border: `1px solid ${demo.presentation.accent}40`,
+                      }}
+                    >
+                      {demo.candidate.name} · {demo.presentation.themeLabel}
+                    </span>
+                    <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                      {demo.presentation.headline}
+                    </h2>
+                    <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-secondary">
+                      {demo.presentation.summary}
+                    </p>
+                    <p className="mt-5 border-l-2 pl-4 text-[0.85rem] leading-relaxed text-ink-tertiary" style={{ borderColor: `${demo.presentation.accent}55` }}>
+                      {demo.designRationale}
+                    </p>
+                    <div className="mt-6 flex flex-wrap items-center gap-3">
+                      <Link
+                        to={`/portfolio/${demo.slug}`}
+                        className="group inline-flex h-11 items-center gap-2 rounded-md bg-brass px-5 font-sans text-xs font-semibold uppercase tracking-wider text-brass-foreground transition-all duration-300 hover:bg-[#EDBB60]"
+                      >
+                        Inspect architecture
+                        <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+                      </Link>
+                      {demo.liveUrl && (
+                        <a
+                          href={demo.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex h-11 items-center gap-2 rounded-md border border-brass/40 bg-brass/10 px-5 font-mono text-xs font-medium text-brass transition-all duration-300 hover:bg-brass/20"
+                        >
+                          Visit live site
+                          <ArrowUpRight className="size-3.5" aria-hidden />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <p className="mt-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-ink-tertiary">
-                  Demonstration portfolio — {demo.candidate.name}
-                </p>
-              </Link>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <div>
-                <p className="eyebrow-brass">The demo</p>
-                <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  See how a {degree.shortName} story is told.
-                </h2>
-                <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-secondary">
-                  {demo.presentation.summary}
-                </p>
-                <p className="mt-5 border-l-2 pl-4 text-[0.85rem] leading-relaxed text-ink-tertiary" style={{ borderColor: `${demo.presentation.accent}55` }}>
-                  {demo.designRationale}
-                </p>
+                </Reveal>
               </div>
-            </Reveal>
+            ))}
           </div>
         ) : (
           <Reveal>

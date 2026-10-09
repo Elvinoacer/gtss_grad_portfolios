@@ -98,6 +98,8 @@ export interface Portfolio {
   status: PortfolioStatus;
   isFeatured: boolean;
   publishedAt?: string;
+  liveUrl?: string;
+  screenshot?: string;
 }
 
 export interface University {

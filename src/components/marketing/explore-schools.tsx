@@ -9,7 +9,7 @@ import { schools, university } from "@/content/schools";
 import { Link } from "@/lib/router";
 import { Reveal, SectionHeading } from "@/components/gtss/ui";
 import { Parallax } from "@/components/elite/parallax";
-import { getPortfolioOfDegree } from "@/content/portfolios";
+import { portfolios } from "@/content/portfolios";
 
 /**
  * Explore by school — a sticky stacked deck.
@@ -159,8 +159,8 @@ export function ExploreSchools() {
                       />
                     </span>
                     <span className="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-ink-tertiary">
-                      {countDemos(school.slug)} demo
-                      {countDemos(school.slug) === 1 ? "" : "s"}
+                      {countPortfolios(school.slug)} portfolio
+                      {countPortfolios(school.slug) === 1 ? "" : "s"}
                     </span>
                   </div>
                 </div>
@@ -186,8 +186,6 @@ export function ExploreSchools() {
   );
 }
 
-function countDemos(schoolSlug: string) {
-  return schools
-    .find((s) => s.slug === schoolSlug)!
-    .degrees.filter((d) => d.demoSlug && getPortfolioOfDegree(d.slug)).length;
+function countPortfolios(schoolSlug: string) {
+  return portfolios.filter((p) => p.schoolSlug === schoolSlug).length;
 }

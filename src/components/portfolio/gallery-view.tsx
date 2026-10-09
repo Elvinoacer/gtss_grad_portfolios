@@ -51,7 +51,7 @@ export function GalleryView() {
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Try “computer science”, “civil”, “actuarial”, “journalism”, “teacher”…"
+                  placeholder="Try “computer science”, “civil”, “actuarial”, “biochemistry”, “telecom”…"
                   aria-label="Search portfolios"
                   className="h-12 w-full rounded-md border border-hairline bg-surface/80 pl-11 pr-11 font-sans text-sm text-foreground placeholder:text-ink-tertiary focus:border-brass/60 focus:outline-none focus:ring-2 focus:ring-brass/25"
                 />
@@ -84,7 +84,7 @@ export function GalleryView() {
               </div>
 
               <div className="flex items-center gap-2" role="group" aria-label="Filter by status">
-                {(["all", "demo"] as StatusFilter[]).map((st) => (
+                {(["all", "live", "demo"] as StatusFilter[]).map((st) => (
                   <button
                     key={st}
                     type="button"
@@ -97,7 +97,7 @@ export function GalleryView() {
                     }`}
                   >
                     <SlidersHorizontal className="size-3" aria-hidden />
-                    {st === "all" ? "Any status" : "Demos"}
+                    {st === "all" ? "Any status" : st === "live" ? "Live" : "Demos"}
                   </button>
                 ))}
               </div>
@@ -181,9 +181,16 @@ function GalleryCard({ slug }: { slug: string }) {
         <p className="mt-3 line-clamp-2 text-[0.8rem] leading-relaxed text-ink-tertiary">
           {p.presentation.summary}
         </p>
-        <span className="mt-4 inline-flex items-center gap-1.5 font-mono text-[0.64rem] font-medium uppercase tracking-[0.16em] text-brass opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          Explore portfolio <span aria-hidden>→</span>
-        </span>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="inline-flex items-center gap-1.5 font-mono text-[0.64rem] font-medium uppercase tracking-[0.16em] text-brass opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            Explore portfolio <span aria-hidden>→</span>
+          </span>
+          {p.liveUrl && (
+            <span className="font-mono text-[0.6rem] uppercase tracking-wider text-emerald-400/90">
+              Live site ↗
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

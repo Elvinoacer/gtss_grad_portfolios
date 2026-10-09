@@ -15,9 +15,10 @@ const layout = [
   "brian-kipkemoi-telecommunications",
   "mercy-achieng-mechanical-production",
   "david-wafula-chemical-process",
-  "sarah-cherono-communication-journalism",
-  "peter-mutua-agribusiness-management",
-  "grace-atieno-applied-statistics",
+  "ian-kamau-electrical-electronics",
+  "lydia-chebet-industrial-textile",
+  "alloice-otieno-biochemistry",
+  "stanley-aketch-biochemistry",
 ];
 
 /** Portfolio mosaic — controlled editorial composition (spec §51) */
@@ -34,7 +35,7 @@ export function PortfolioMosaic() {
         <SectionHeading
           eyebrow="The mosaic"
           title="Move between professions. Feel the difference."
-          lead="Civil Engineering to Actuarial Science to Communication — designed by the same studio, for completely different professions."
+          lead="Civil Engineering to Actuarial Science to Biochemistry — designed by the same studio, for completely different professions."
         />
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -95,7 +96,7 @@ export function PortfolioMosaic() {
           })}
 
           {/* Final cell — request tile */}
-          <Reveal delay={0.2}>
+          <Reveal delay={0.2} className="min-w-0 lg:col-span-2">
             <Link
               to="/request"
               className="group relative flex h-full min-h-[16rem] flex-col justify-between overflow-hidden rounded-xl border border-dashed border-brass/40 bg-brass/[0.04] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brass/70 hover:bg-brass/[0.08]"
@@ -124,7 +125,7 @@ export function PortfolioMosaic() {
 
         <Reveal className="mt-10">
           <BrassTextLink to="/portfolios">
-            Browse all {portfolios.length} portfolio concepts in the gallery
+            Browse all {portfolios.length} live graduate portfolios in the gallery
           </BrassTextLink>
         </Reveal>
       </div>

@@ -137,6 +137,7 @@ export const engineering: School = {
       ],
       exampleProject:
         "A production-line study presented through workflow diagrams, optimisation reasoning and measurable improvements.",
+      demoSlug: "lydia-chebet-industrial-textile",
     },
   ],
 };

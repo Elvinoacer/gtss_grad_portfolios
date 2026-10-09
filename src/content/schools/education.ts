@@ -52,7 +52,6 @@ export const education: School = {
       ],
       exampleProject:
         "A teaching practicum presented through lesson sequences, assessment design and learner outcomes.",
-      demoSlug: "lucy-njeri-bed-science",
     },
     {
       name: "Bachelor of Education (Science)",
@@ -67,7 +66,6 @@ export const education: School = {
       ],
       exampleProject:
         "A science lesson study showing experiments, misconception handling and assessment results.",
-      demoSlug: "lucy-njeri-bed-science",
     },
     {
       name: "Bachelor of Education (Special Needs Education — Secondary Option)",

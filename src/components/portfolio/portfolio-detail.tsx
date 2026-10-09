@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ScanEye, Share2, Check, Copy } from "lucide-react";
+import { ArrowRight, ScanEye, Share2, Check, Copy, ExternalLink } from "lucide-react";
 import { portfolios, relatedPortfolios } from "@/content/portfolios";
 import { getDegree, getSchool, university } from "@/content/schools";
 import { Link, usePageTitle } from "@/lib/router";
@@ -81,6 +81,17 @@ export function PortfolioDetail({ slug }: { slug: string }) {
                   Build one for my course
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                 </Link>
+                {portfolio.liveUrl && (
+                  <a
+                    href={portfolio.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 items-center gap-2 rounded-md border border-brass/50 bg-brass/10 px-6 font-sans text-sm font-semibold tracking-tight text-brass transition-all duration-300 hover:bg-brass hover:text-brass-foreground"
+                  >
+                    Visit live portfolio
+                    <ExternalLink className="size-4" aria-hidden />
+                  </a>
+                )}
                 <ShareButton name={portfolio.candidate.name} />
               </div>
             </div>
@@ -257,21 +268,36 @@ function XRayFrame({ slug }: { slug: string }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-ink-tertiary">
-          Demonstration portfolio — illustrative example by GTSS
+          {portfolio.liveUrl
+            ? `Live graduate portfolio — ${portfolio.candidate.name}`
+            : "Demonstration portfolio — illustrative example by GTSS"}
         </p>
-        <button
-          type="button"
-          onClick={() => setXray((v) => !v)}
-          aria-pressed={xray}
-          className={`group inline-flex min-h-[2.75rem] items-center gap-2.5 rounded-md border px-5 font-mono text-[0.7rem] font-medium uppercase tracking-[0.16em] transition-all duration-300 ${
-            xray
-              ? "border-brass bg-brass text-brass-foreground"
-              : "border-hairline text-ink-secondary hover:border-brass/50 hover:text-brass"
-          }`}
-        >
-          <ScanEye className="size-4" aria-hidden />
-          {xray ? "X-Ray on — why this works" : "Turn on X-Ray"}
-        </button>
+        <div className="flex items-center gap-2.5">
+          {portfolio.liveUrl && (
+            <a
+              href={portfolio.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex min-h-[2.75rem] items-center gap-2 rounded-md border border-hairline px-4 font-mono text-[0.7rem] font-medium uppercase tracking-[0.14em] text-ink-secondary transition-all duration-300 hover:border-brass/50 hover:text-brass"
+            >
+              <ExternalLink className="size-3.5" aria-hidden />
+              Open live site
+            </a>
+          )}
+          <button
+            type="button"
+            onClick={() => setXray((v) => !v)}
+            aria-pressed={xray}
+            className={`group inline-flex min-h-[2.75rem] items-center gap-2.5 rounded-md border px-5 font-mono text-[0.7rem] font-medium uppercase tracking-[0.16em] transition-all duration-300 ${
+              xray
+                ? "border-brass bg-brass text-brass-foreground"
+                : "border-hairline text-ink-secondary hover:border-brass/50 hover:text-brass"
+            }`}
+          >
+            <ScanEye className="size-4" aria-hidden />
+            {xray ? "X-Ray on — why this works" : "Turn on X-Ray"}
+          </button>
+        </div>
       </div>
 
       <div className="relative mt-6 min-w-0">

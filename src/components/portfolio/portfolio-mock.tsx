@@ -8,6 +8,7 @@
  */
 
 import Image from "next/image";
+import { ExternalLink } from "lucide-react";
 import type { Portfolio } from "@/content/types";
 import { getDegree, getSchool } from "@/content/schools";
 import { MotifField } from "./motifs";
@@ -32,6 +33,9 @@ export function PortfolioMock({
   const shortDegree = degree?.shortName ?? degree?.name ?? "";
   const image = degree?.image ?? school?.image ?? "/images/campus.jpg";
   const initials = portfolio.candidate.initials;
+  const displayUrl = portfolio.liveUrl
+    ? portfolio.liveUrl.replace(/^https?:\/\//, "")
+    : `${portfolio.slug}.portfolios.gtss.software`;
 
   return (
     <div
@@ -45,51 +49,99 @@ export function PortfolioMock({
           <span className="size-2.5 rounded-full bg-[#3d4550]" />
           <span className="size-2.5 rounded-full bg-[#3d4550]" />
         </div>
-        <div className="flex h-5.5 min-w-0 flex-1 items-center rounded-sm border border-hairline/70 bg-background/60 px-2.5">
-          <span className="truncate font-mono text-[0.58rem] tracking-wide text-ink-tertiary">
-            {portfolio.slug}.portfolios.gtss.software
-          </span>
-        </div>
+        {portfolio.liveUrl ? (
+          <a
+            href={portfolio.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            title={`Visit ${portfolio.candidate.name}'s live portfolio`}
+            className="group/url flex h-5.5 min-w-0 flex-1 items-center justify-between rounded-sm border border-hairline/70 bg-background/60 px-2.5 transition-colors hover:border-brass/50 hover:bg-background/90"
+          >
+            <span className="truncate font-mono text-[0.58rem] tracking-wide text-ink-tertiary group-hover/url:text-brass">
+              {displayUrl}
+            </span>
+            <ExternalLink className="ml-1 size-2.5 shrink-0 text-ink-tertiary transition-transform group-hover/url:translate-x-0.5 group-hover/url:text-brass" aria-hidden />
+          </a>
+        ) : (
+          <div className="flex h-5.5 min-w-0 flex-1 items-center rounded-sm border border-hairline/70 bg-background/60 px-2.5">
+            <span className="truncate font-mono text-[0.58rem] tracking-wide text-ink-tertiary">
+              {displayUrl}
+            </span>
+          </div>
+        )}
         <span
-          className="hidden rounded-sm px-1.5 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.14em] text-ink-tertiary sm:inline"
-          style={{ color: accent, opacity: 0.85 }}
+          className="hidden rounded-sm px-1.5 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.14em] sm:inline"
+          style={{
+            color: portfolio.status === "live" ? "#34D399" : accent,
+            background: portfolio.status === "live" ? "rgba(52, 211, 153, 0.1)" : undefined,
+            border: portfolio.status === "live" ? "1px solid rgba(52, 211, 153, 0.25)" : undefined,
+            opacity: 0.9,
+          }}
         >
-          demo
+          {portfolio.status}
         </span>
       </div>
 
       {/* Screen */}
-      <div className="relative aspect-[16/10.4] w-full overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(160deg, ${accent}14 0%, #0B0D10 46%, #0D1014 100%)`,
-          }}
-        />
-        <div className="absolute inset-0" style={{ color: accent }}>
-          <MotifField motif={portfolio.motif} className="opacity-[0.3]" />
-        </div>
-
-        {variant === "full" ? (
-          <FullScreen
-            portfolio={portfolio}
-            accent={accent}
-            shortDegree={shortDegree}
-            schoolShort={school?.shortName ?? ""}
-            image={image}
-            initials={initials}
-            priority={priority}
-          />
+      <div
+        className={`relative w-full overflow-hidden bg-[#0A0D11] ${
+          portfolio.screenshot ? "aspect-[16/9]" : "aspect-[16/10.4]"
+        }`}
+      >
+        {portfolio.screenshot ? (
+          <div className="relative h-full w-full">
+            <Image
+              src={portfolio.screenshot}
+              alt={`${portfolio.candidate.name} portfolio preview`}
+              fill
+              priority={priority}
+              sizes={
+                variant === "full"
+                  ? "(max-width: 1024px) 100vw, 1200px"
+                  : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              }
+              className="object-cover object-top transition-transform duration-700 ease-out group-hover/mock:scale-[1.02]"
+            />
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0A0D11]/45 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover/mock:opacity-20"
+              aria-hidden
+            />
+          </div>
         ) : (
-          <CardScreen
-            portfolio={portfolio}
-            accent={accent}
-            shortDegree={shortDegree}
-            image={image}
-            initials={initials}
-            hero={variant === "hero"}
-            priority={priority}
-          />
+          <>
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(160deg, ${accent}14 0%, #0B0D10 46%, #0D1014 100%)`,
+              }}
+            />
+            <div className="absolute inset-0" style={{ color: accent }}>
+              <MotifField motif={portfolio.motif} className="opacity-[0.3]" />
+            </div>
+
+            {variant === "full" ? (
+              <FullScreen
+                portfolio={portfolio}
+                accent={accent}
+                shortDegree={shortDegree}
+                schoolShort={school?.shortName ?? ""}
+                image={image}
+                initials={initials}
+                priority={priority}
+              />
+            ) : (
+              <CardScreen
+                portfolio={portfolio}
+                accent={accent}
+                shortDegree={shortDegree}
+                image={image}
+                initials={initials}
+                hero={variant === "hero"}
+                priority={priority}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

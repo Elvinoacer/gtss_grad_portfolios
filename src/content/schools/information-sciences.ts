@@ -84,7 +84,6 @@ export const informationSciences: School = {
       ],
       exampleProject:
         "Published work presented with context: brief, research, audience and editorial decisions — a byline portfolio with reasoning.",
-      demoSlug: "sarah-cherono-communication-journalism",
     },
     {
       name: "BSc in Communication & Public Relations",

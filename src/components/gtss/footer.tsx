@@ -108,8 +108,8 @@ export function GlobalFooter() {
             <FooterLink to="/portfolio/naomi-wambui-actuarial-science">
               Actuarial Science
             </FooterLink>
-            <FooterLink to="/portfolio/sarah-cherono-communication-journalism">
-              Journalism
+            <FooterLink to="/portfolio/lydia-chebet-industrial-textile">
+              Industrial &amp; Textile
             </FooterLink>
           </FooterCol>
         </div>

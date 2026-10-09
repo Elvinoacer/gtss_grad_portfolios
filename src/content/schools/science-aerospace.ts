@@ -88,7 +88,6 @@ export const scienceAerospace: School = {
       ],
       exampleProject:
         "A survey or experimental study presented through design, analysis, dashboards and honest interpretation of uncertainty.",
-      demoSlug: "grace-atieno-applied-statistics",
     },
     {
       name: "BSc in Biochemistry",
@@ -104,6 +103,7 @@ export const scienceAerospace: School = {
       ],
       exampleProject:
         "A laboratory project shown through protocols, results, controls and interpretation — evidence arranged like a paper, not a poster.",
+      demoSlug: "alloice-otieno-biochemistry",
     },
     {
       name: "BSc in Microbiology",

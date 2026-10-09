@@ -44,7 +44,7 @@ export function UniversityView() {
             schools, each with its own professional language.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
-            <Stat value={`${portfolios.length}`} label="Portfolio concepts" />
+            <Stat value={`${portfolios.length}`} label="Live portfolios" />
             <Stat value={`${schools.length}`} label="Schools" />
             <Stat value={`${allDegrees.length}`} label="Degree paths" />
             <Stat value="1" label="Campus collection" />
@@ -57,7 +57,7 @@ export function UniversityView() {
         <SectionHeading
           eyebrow="The course constellation"
           title="Find your course in the field."
-          lead="Move your cursor to bring degrees forward — or search. Select one to see its professional directions and whether a portfolio demo exists."
+          lead="Move your cursor to bring degrees forward — or search. Select one to see its professional directions and whether a live portfolio exists."
         />
 
         <Reveal delay={0.12} className="mt-8">
@@ -222,7 +222,7 @@ function ConstellationField({
 
       <div className="relative flex flex-wrap gap-2.5">
         {degrees.map(({ degree, school }) => {
-          const hasDemo = !!degree.demoSlug;
+          const hasPortfolio = portfolios.some((p) => p.degreeSlug === degree.slug) || !!degree.demoSlug;
           const isSel = selected === degree.slug;
           return (
             <button
@@ -238,17 +238,17 @@ function ConstellationField({
                 isSel
                   ? "border-brass/70 bg-brass/15 text-brass"
                   : "border-hairline text-ink-secondary"
-              } ${hasDemo ? "" : "opacity-80"}`}
+              } ${hasPortfolio ? "" : "opacity-80"}`}
             >
               <span
                 className="size-1.5 shrink-0 rounded-full"
-                style={{ background: hasDemo ? school.accent : "#39424f" }}
+                style={{ background: hasPortfolio ? "#34D399" : "#39424f" }}
                 aria-hidden
               />
               {degree.shortName ?? degree.name}
-              {hasDemo && (
-                <span className="rounded-full bg-brass/15 px-1.5 py-px text-[0.52rem] font-semibold text-brass">
-                  demo
+              {hasPortfolio && (
+                <span className="rounded-full bg-emerald-500/15 px-1.5 py-px text-[0.52rem] font-semibold text-emerald-400">
+                  live
                 </span>
               )}
             </button>
@@ -257,7 +257,7 @@ function ConstellationField({
       </div>
       <p className="relative mt-5 flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-ink-tertiary">
         <Compass className="size-3.5 text-brass/60" aria-hidden />
-        {degrees.length} degrees · amber dot = portfolio demo exists
+        {degrees.length} degrees · green dot = live graduate portfolio
       </p>
     </div>
   );
@@ -286,9 +286,9 @@ function ConstellationPanel({ slug, onClear }: { slug: string; onClear: () => vo
           <h3 className="mt-2 font-display text-2xl font-bold tracking-tight text-foreground">
             {degree.name}
           </h3>
-          {degree.demoSlug ? (
+          {degree.demoSlug || portfolios.some((p) => p.degreeSlug === degree.slug) ? (
             <p className="mt-2 text-[0.85rem] text-ink-secondary">
-              A portfolio demo exists — {degree.roles[0]} direction.
+              Live graduate portfolio exists — {degree.roles[0]} direction.
             </p>
           ) : (
             <p className="mt-2 text-[0.85rem] text-ink-secondary">
@@ -319,7 +319,7 @@ function ConstellationPanel({ slug, onClear }: { slug: string; onClear: () => vo
           onClick={() => navigate(`/universities/moi-university/degrees/${degree.slug}`)}
           className="group inline-flex h-11 items-center gap-2 rounded-md bg-brass px-5 font-sans text-sm font-semibold text-brass-foreground transition-all duration-300 hover:-translate-y-0.5"
         >
-          {degree.demoSlug ? "Explore this degree" : "See what it could show"}
+          {degree.demoSlug || portfolios.some((p) => p.degreeSlug === degree.slug) ? "Explore this degree" : "See what it could show"}
           <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
         </button>
         <button
@@ -330,7 +330,7 @@ function ConstellationPanel({ slug, onClear }: { slug: string; onClear: () => vo
           className="inline-flex h-11 items-center gap-2 rounded-md border border-hairline px-5 font-sans text-sm font-semibold text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
         >
           <Sparkles className="size-4 text-brass" aria-hidden />
-          {degree.demoSlug ? "Build mine like this" : "Be the first example"}
+          {degree.demoSlug || portfolios.some((p) => p.degreeSlug === degree.slug) ? "Build mine like this" : "Be the first example"}
         </button>
       </div>
     </motion.div>

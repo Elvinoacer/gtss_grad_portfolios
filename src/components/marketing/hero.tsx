@@ -41,7 +41,7 @@ const stackPortfolios = [
   "faith-wanjiru-civil-structural",
   "naomi-wambui-actuarial-science",
   "brian-kipkemoi-telecommunications",
-  "sarah-cherono-communication-journalism",
+  "lydia-chebet-industrial-textile",
 ]
   .map((slug) => portfolios.find((p) => p.slug === slug)!)
   .filter(Boolean);
@@ -587,7 +587,7 @@ export function Hero() {
       {/* Stat strip + scroll cue */}
       <div className="relative z-10 border-t border-hairline/60 bg-background/40 backdrop-blur-sm">
         <div className="shell flex flex-wrap items-center gap-x-8 gap-y-3 py-5">
-          <Stat value={`${portfolios.length}`} label="Portfolio concepts" refCb={(el) => { if (el) statRefs.current[0] = el; }} />
+          <Stat value={`${portfolios.length}`} label="Live portfolios" refCb={(el) => { if (el) statRefs.current[0] = el; }} />
           <Stat value="6" label="Schools" refCb={(el) => { if (el) statRefs.current[1] = el; }} />
           <Stat value="40" suffix="+" label="Degree paths" refCb={(el) => { if (el) statRefs.current[2] = el; }} />
           <Stat value="1" label="University collection" refCb={(el) => { if (el) statRefs.current[3] = el; }} />

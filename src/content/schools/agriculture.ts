@@ -66,7 +66,6 @@ export const agriculture: School = {
       ],
       exampleProject:
         "An enterprise plan or value-chain study presented through numbers, operations and market reasoning.",
-      demoSlug: "peter-mutua-agribusiness-management",
     },
     {
       name: "BSc in Agricultural Extension & Education",

@@ -16,12 +16,12 @@ const disciplineWords = [
   "Computer Science",
   "Actuarial Science",
   "Telecommunications",
-  "Journalism",
-  "Aerospace",
-  "Applied Statistics",
-  "Education",
-  "Agribusiness",
-  "Information Sciences",
+  "Electronics Engineering",
+  "Industrial & Textile",
+  "Biochemistry",
+  "Chemical & Process",
+  "Mechanical & Production",
+  "Civil Systems",
 ];
 
 function Diamond({ className = "" }: { className?: string }) {

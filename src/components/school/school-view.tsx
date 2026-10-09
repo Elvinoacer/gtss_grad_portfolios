@@ -64,7 +64,7 @@ export function SchoolView({ slug }: { slug: string }) {
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
             </Link>
             <span className="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-ink-secondary">
-              {school.degrees.length} degree paths · {schoolPortfolios.length} demo{schoolPortfolios.length === 1 ? "" : "s"}
+              {school.degrees.length} degree paths · {schoolPortfolios.length} live portfolio{schoolPortfolios.length === 1 ? "" : "s"}
             </span>
           </div>
         </div>
@@ -76,7 +76,7 @@ export function SchoolView({ slug }: { slug: string }) {
           <SectionHeading
             eyebrow="Featured graduate portfolios"
             title={`Examples from ${school.shortName}.`}
-            lead="Each one is a demonstration — illustrative, honestly labelled, designed around the discipline's own evidence."
+            lead="Real, deployed graduate portfolios designed around each discipline's authentic evidence."
           />
           <Stagger className="mt-10 grid gap-6 md:grid-cols-2">
             {schoolPortfolios.map((p) => (
@@ -123,11 +123,21 @@ export function SchoolView({ slug }: { slug: string }) {
                     <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-ink-tertiary">
                       {d.tagline}
                     </p>
-                    {d.demoSlug && (
-                      <span className="shrink-0 rounded-full border border-brass/30 bg-brass/10 px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.12em] text-brass">
-                        Demo
-                      </span>
-                    )}
+                    {(() => {
+                      const port = portfolios.find((p) => p.degreeSlug === d.slug || p.slug === d.demoSlug);
+                      if (!port) return null;
+                      return (
+                        <span
+                          className={`shrink-0 rounded-full border px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.12em] ${
+                            port.status === "live"
+                              ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+                              : "border-brass/30 bg-brass/10 text-brass"
+                          }`}
+                        >
+                          {port.status}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <h3 className="mt-3 font-display text-[1.05rem] font-bold leading-snug tracking-tight text-foreground group-hover:text-brass">
                     {d.shortName ?? d.name}

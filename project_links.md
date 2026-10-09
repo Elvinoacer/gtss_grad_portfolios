@@ -1,0 +1,10 @@
+https://brian-kipkemoi-telecom.vercel.app
+https://ian-kamau-electronics.vercel.app
+https://alloice-biochem.vercel.app
+https://david-wafula-chemical.vercel.app
+https://kevin-mwangicomp.vercel.app
+https://faith-wanjiru-civil.vercel.app
+https://lydia-chebet-industrial.vercel.app
+https://mercy-achieng-mechanical.vercel.app
+https://naomi-wambui-actuary.vercel.app
+https://stanley-aketch-biochem.vercel.app

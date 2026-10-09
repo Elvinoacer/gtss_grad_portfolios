@@ -28,9 +28,10 @@ const ORBIT_SLUGS = [
   "brian-kipkemoi-telecommunications",
   "mercy-achieng-mechanical-production",
   "david-wafula-chemical-process",
-  "sarah-cherono-communication-journalism",
-  "grace-atieno-applied-statistics",
-  "peter-mutua-agribusiness-management",
+  "ian-kamau-electrical-electronics",
+  "lydia-chebet-industrial-textile",
+  "alloice-otieno-biochemistry",
+  "stanley-aketch-biochemistry",
 ];
 
 /* Orbit positions — vw/vh strings, deliberately uneven */
@@ -43,6 +44,7 @@ const ORBIT_POS = [
   { x: "16vw", y: "25vh", r: -9 },
   { x: "-2vw", y: "-27vh", r: 4 },
   { x: "2vw", y: "30vh", r: -4 },
+  { x: "-28vw", y: "-20vh", r: -5 },
 ];
 
 const COUNT = portfolios.length;
@@ -139,21 +141,22 @@ export function ZoomScene() {
         const depth = i % 3;
         const targetScale = depth === 0 ? 0.62 : depth === 1 ? 0.5 : 0.42;
         const targetOpacity = depth === 0 ? 1 : depth === 1 ? 0.78 : 0.55;
+        const pos = ORBIT_POS[i] ?? { x: "0vw", y: "0vh", r: 0 };
         tl.fromTo(
           el,
           {
-            x: `calc(${ORBIT_POS[i].x} * 2.1)`,
-            y: `calc(${ORBIT_POS[i].y} * 2.1)`,
+            x: `calc(${pos.x} * 2.1)`,
+            y: `calc(${pos.y} * 2.1)`,
             scale: 0.15,
             opacity: 0,
-            rotate: ORBIT_POS[i].r * 3,
+            rotate: pos.r * 3,
           },
           {
-            x: ORBIT_POS[i].x,
-            y: ORBIT_POS[i].y,
+            x: pos.x,
+            y: pos.y,
             scale: targetScale,
             opacity: targetOpacity,
-            rotate: ORBIT_POS[i].r,
+            rotate: pos.r,
             duration: 0.26,
             ease: "expo.out",
           },

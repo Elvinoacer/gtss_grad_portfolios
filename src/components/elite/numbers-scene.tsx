@@ -20,7 +20,7 @@ import { easeOutExpo } from "./curves";
 import { portfolios } from "@/content/portfolios";
 
 const STATS = [
-  { value: portfolios.length, suffix: "", label: "Portfolio concepts", sub: "One per discipline, each a complete professional story" },
+  { value: portfolios.length, suffix: "", label: "Live graduate portfolios", sub: "Each built around authentic evidence, deployed on the web" },
   { value: 6, suffix: "", label: "Schools of study", sub: "Engineering to education, agriculture to information" },
   { value: 42, suffix: "+", label: "Degree paths mapped", sub: "Every portfolio structured for its exact profession" },
   { value: 1, suffix: "", label: "University collection", sub: "The Moi University Collection — the first of many", brass: true },
