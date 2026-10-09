@@ -81,7 +81,7 @@ export function SchoolView({ slug }: { slug: string }) {
           <Stagger className="mt-10 grid gap-6 md:grid-cols-2">
             {schoolPortfolios.map((p) => (
               <StaggerItem key={p.slug}>
-                <Link to={`/portfolio/${p.slug}`} className="group block h-full">
+                <Link to={p.liveUrl} className="group block h-full">
                   <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
                     <PortfolioMock portfolio={p} variant="card" />
                     <div className="absolute right-3 top-3 z-30">

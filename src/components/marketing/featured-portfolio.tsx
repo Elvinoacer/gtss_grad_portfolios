@@ -90,7 +90,7 @@ export function FeaturedPortfolio() {
             data-cursor="view"
           >
             <Link
-              to={`/portfolio/${p.slug}`}
+              to={p.liveUrl}
               className="group relative block overflow-hidden rounded-2xl transition-colors duration-500 [&>div]:border-hairline/70 [&>div]:transition-colors [&>div]:duration-500 hover:[&>div]:border-brass/40"
               ariaLabel={`${p.candidate.name} — ${p.careerDirection} portfolio`}
             >
@@ -122,7 +122,7 @@ export function FeaturedPortfolio() {
                 </p>
               </div>
               <Link
-                to={`/portfolio/${p.slug}`}
+                to={p.liveUrl}
                 className="group mt-1 grid size-11 shrink-0 place-items-center rounded-full border border-hairline text-ink-secondary transition-all duration-300 hover:border-brass/60 hover:text-brass"
                 ariaLabel={`View ${p.candidate.name}'s portfolio`}
               >

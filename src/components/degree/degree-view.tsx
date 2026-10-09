@@ -65,7 +65,7 @@ export function DegreeView({ slug }: { slug: string }) {
                 {degreePortfolios.map((p) => (
                   <Link
                     key={p.slug}
-                    to={`/portfolio/${p.slug}`}
+                    to={p.liveUrl}
                     className="group inline-flex h-12 w-full sm:w-auto justify-center items-center gap-2.5 rounded-md border border-hairline px-6 font-sans text-sm font-semibold tracking-tight text-foreground transition-all duration-300 hover:border-ink-tertiary hover:bg-raised"
                   >
                     Explore {p.candidate.name}
@@ -108,7 +108,7 @@ export function DegreeView({ slug }: { slug: string }) {
             {degreePortfolios.map((demo, idx) => (
               <div key={demo.slug} className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr]">
                 <Reveal delay={idx * 0.1}>
-                  <Link to={`/portfolio/${demo.slug}`} className="group block min-w-0">
+                  <Link to={demo.liveUrl} className="group block min-w-0">
                     <div className="relative overflow-hidden rounded-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
                       <PortfolioMock portfolio={demo} variant="full" priority={idx === 0} allowExternalLink={false} />
                       <div className="absolute right-3 top-3 z-30">
@@ -143,23 +143,12 @@ export function DegreeView({ slug }: { slug: string }) {
                     </p>
                     <div className="mt-6 flex flex-wrap items-center gap-3">
                       <Link
-                        to={`/portfolio/${demo.slug}`}
+                        to={demo.liveUrl}
                         className="group inline-flex h-11 items-center gap-2 rounded-md bg-brass px-5 font-sans text-xs font-semibold uppercase tracking-wider text-brass-foreground transition-all duration-300 hover:bg-[#EDBB60]"
                       >
-                        Inspect architecture
+                        View portfolio
                         <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                       </Link>
-                      {demo.liveUrl && (
-                        <a
-                          href={demo.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex h-11 items-center gap-2 rounded-md border border-brass/40 bg-brass/10 px-5 font-mono text-xs font-medium text-brass transition-all duration-300 hover:bg-brass/20"
-                        >
-                          Visit live site
-                          <ArrowUpRight className="size-3.5" aria-hidden />
-                        </a>
-                      )}
                     </div>
                   </div>
                 </Reveal>

@@ -12,7 +12,6 @@ import { WhatsAppFloat } from "@/components/gtss/whatsapp-float";
 
 import { HomeView } from "@/components/marketing/home-view";
 import { GalleryView } from "@/components/portfolio/gallery-view";
-import { PortfolioDetail } from "@/components/portfolio/portfolio-detail";
 import { UniversityView } from "@/components/school/university-view";
 import { SchoolView } from "@/components/school/school-view";
 import { DegreeView } from "@/components/degree/degree-view";
@@ -51,8 +50,6 @@ function App() {
     view = <HomeView />;
   } else if (routePath === "/portfolios") {
     view = <GalleryView />;
-  } else if (routePath.startsWith("/portfolio/")) {
-    view = <PortfolioDetail slug={decodeURIComponent(routePath.replace("/portfolio/", ""))} />;
   } else if (routePath === "/universities/moi-university") {
     view = <UniversityView />;
   } else if (routePath.startsWith("/universities/moi-university/schools/")) {

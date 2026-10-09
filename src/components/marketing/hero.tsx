@@ -493,7 +493,7 @@ export function Hero() {
                 ›
               </button>
               <Link
-                to={`/portfolio/${activeP.slug}`}
+                to={activeP.liveUrl}
                 className="group inline-flex items-center gap-1.5 rounded-md border border-brass/40 bg-brass/10 px-3 py-1.5 font-mono text-[0.7rem] font-medium uppercase tracking-[0.16em] text-brass hover:bg-brass hover:text-brass-foreground transition-colors"
               >
                 View

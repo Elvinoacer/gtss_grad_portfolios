@@ -210,7 +210,7 @@ export function ZoomScene() {
               Featured Graduate · Kevin Mwangi
             </span>
             <Link
-              to={`/portfolio/${hero.slug}`}
+              to={hero.liveUrl}
               className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-brass hover:underline font-semibold"
             >
               View Full Portfolio →
@@ -243,7 +243,7 @@ export function ZoomScene() {
               style={{ opacity: 0 }}
             >
               <Link
-                to={`/portfolio/${p.slug}`}
+                to={p.liveUrl}
                 className="pointer-events-auto block transition-transform duration-300 hover:scale-105"
                 tabIndex={0}
                 ariaLabel={`View ${p.candidate.name}'s portfolio`}
@@ -270,7 +270,7 @@ export function ZoomScene() {
               return (
                 <Link
                   key={p.slug}
-                  to={`/portfolio/${p.slug}`}
+                  to={p.liveUrl}
                   className="group relative flex w-[14rem] shrink-0 snap-center flex-col overflow-hidden rounded-xl border border-hairline/80 bg-surface/90 p-3 transition-all active:scale-[0.98] hover:border-brass/40"
                 >
                   <div className="relative overflow-hidden rounded-lg">

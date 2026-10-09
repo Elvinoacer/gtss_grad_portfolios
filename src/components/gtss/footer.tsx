@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/lib/router";
+import { getPortfolio } from "@/content/portfolios";
 import { schools, university } from "@/content/schools";
 import { site } from "@/lib/site";
 import { WordReveal, Reveal } from "./motion";
@@ -99,16 +100,16 @@ export function GlobalFooter() {
           </FooterCol>
 
           <FooterCol title="Portfolio Examples">
-            <FooterLink to="/portfolio/kevin-mwangi-computer-science">
+            <FooterLink to={getPortfolio("kevin-mwangi-computer-science")!.liveUrl}>
               Computer Science
             </FooterLink>
-            <FooterLink to="/portfolio/faith-wanjiru-civil-structural">
+            <FooterLink to={getPortfolio("faith-wanjiru-civil-structural")!.liveUrl}>
               Civil Engineering
             </FooterLink>
-            <FooterLink to="/portfolio/naomi-wambui-actuarial-science">
+            <FooterLink to={getPortfolio("naomi-wambui-actuarial-science")!.liveUrl}>
               Actuarial Science
             </FooterLink>
-            <FooterLink to="/portfolio/lydia-chebet-industrial-textile">
+            <FooterLink to={getPortfolio("lydia-chebet-industrial-textile")!.liveUrl}>
               Industrial &amp; Textile
             </FooterLink>
           </FooterCol>

@@ -159,7 +159,7 @@ function GalleryCard({ slug }: { slug: string }) {
   return (
     <article className="group flex h-full flex-col">
       <Link
-        to={`/portfolio/${p.slug}`}
+        to={p.liveUrl}
         className="block"
         ariaLabel={`${p.candidate.name}, ${degree?.degree.shortName} portfolio`}
       >
@@ -175,7 +175,7 @@ function GalleryCard({ slug }: { slug: string }) {
           <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em]" style={{ color: p.presentation.accent }}>
             {degree?.degree.shortName}
           </p>
-          <Link to={`/portfolio/${p.slug}`} className="block">
+          <Link to={p.liveUrl} className="block">
             <h3 className="mt-1.5 font-display text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-brass">
               {p.candidate.name}
             </h3>
@@ -189,22 +189,11 @@ function GalleryCard({ slug }: { slug: string }) {
         </div>
         <div className="mt-4 flex items-center justify-between gap-2 border-t border-hairline/60 pt-3">
           <Link
-            to={`/portfolio/${p.slug}`}
+            to={p.liveUrl}
             className="inline-flex min-h-[2.2rem] items-center gap-1.5 font-mono text-[0.66rem] font-medium uppercase tracking-[0.16em] text-brass transition-colors hover:text-brass-dim"
           >
-            Explore case study <span aria-hidden>→</span>
+            View portfolio <span aria-hidden>→</span>
           </Link>
-          {p.liveUrl && (
-            <a
-              href={p.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-[2.2rem] items-center gap-1 rounded-md border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-wider text-emerald-300 transition-colors hover:bg-emerald-400/20 active:scale-95"
-            >
-              <span className="size-1 rounded-full bg-emerald-400" aria-hidden />
-              Live site ↗
-            </a>
-          )}
         </div>
       </div>
     </article>

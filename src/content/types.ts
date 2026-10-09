@@ -98,7 +98,8 @@ export interface Portfolio {
   status: PortfolioStatus;
   isFeatured: boolean;
   publishedAt?: string;
-  liveUrl?: string;
+  /** Main portfolio website; every listed portfolio must have a destination. */
+  liveUrl: string;
   screenshot?: string;
 }
 

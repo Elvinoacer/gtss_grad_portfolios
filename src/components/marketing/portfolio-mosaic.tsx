@@ -91,7 +91,7 @@ export function PortfolioMosaic() {
                 <ClipReveal delay={(i % 3) * 0.09 + Math.floor(i / 3) * 0.14} className="h-full">
                   <div className="group flex h-full flex-col">
                     <Link
-                      to={`/portfolio/${p.slug}`}
+                      to={p.liveUrl}
                       className="block"
                       ariaLabel={`${p.candidate.name} — ${degree?.degree.shortName} portfolio`}
                     >
@@ -150,21 +150,11 @@ export function PortfolioMosaic() {
                       </div>
                       <div className="flex items-center gap-2 pt-2 border-t border-hairline/60">
                         <Link
-                          to={`/portfolio/${p.slug}`}
+                          to={p.liveUrl}
                           className="flex-1 flex h-9 items-center justify-center rounded-md border border-hairline/80 bg-surface/80 font-mono text-xs uppercase tracking-wider text-ink-secondary hover:text-foreground hover:border-brass/40 transition-colors active:scale-95"
                         >
-                          Inspect Story →
+                          View Portfolio ↗
                         </Link>
-                        {p.liveUrl && (
-                          <a
-                            href={p.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 flex h-9 items-center justify-center gap-1 rounded-md border border-brass/50 bg-brass/10 font-mono text-xs uppercase tracking-wider text-brass hover:bg-brass hover:text-brass-foreground transition-colors active:scale-95"
-                          >
-                            Live Site ↗
-                          </a>
-                        )}
                       </div>
                     </div>
                   </div>
