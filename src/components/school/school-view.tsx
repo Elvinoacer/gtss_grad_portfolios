@@ -194,9 +194,9 @@ export function SchoolView({ slug }: { slug: string }) {
                   : `${school.shortName} deserves its first portfolio.`}
               </h3>
               <p className="mx-auto mt-4 max-w-lg text-[0.95rem] leading-relaxed text-ink-secondary">
-                A GTSS portfolio for this school presents design reasoning,
-                calculations, systems and projects — the evidence the
-                profession actually reviews.
+                Built from the real projects, attachments and research this
+                school&apos;s graduates already have — the evidence its
+                professions actually review.
               </p>
               <Link
                 to={`/request?course=${encodeURIComponent(school.shortName)}`}

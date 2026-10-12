@@ -100,18 +100,21 @@ export function GlobalFooter() {
           </FooterCol>
 
           <FooterCol title="Portfolio Examples">
-            <FooterLink to={getPortfolio("kevin-mwangi-computer-science")!.liveUrl}>
-              Computer Science
-            </FooterLink>
-            <FooterLink to={getPortfolio("faith-wanjiru-civil-structural")!.liveUrl}>
-              Civil Engineering
-            </FooterLink>
-            <FooterLink to={getPortfolio("naomi-wambui-actuarial-science")!.liveUrl}>
-              Actuarial Science
-            </FooterLink>
-            <FooterLink to={getPortfolio("lydia-chebet-industrial-textile")!.liveUrl}>
-              Industrial &amp; Textile
-            </FooterLink>
+            {(
+              [
+                ["kevin-mwangi-computer-science", "Computer Science"],
+                ["faith-wanjiru-civil-structural", "Civil Engineering"],
+                ["naomi-wambui-actuarial-science", "Actuarial Science"],
+                ["lydia-chebet-industrial-textile", "Industrial & Textile"],
+              ] as const
+            ).map(([slug, label]) => {
+              const p = getPortfolio(slug);
+              return p ? (
+                <FooterLink key={slug} to={p.liveUrl}>
+                  {label}
+                </FooterLink>
+              ) : null;
+            })}
           </FooterCol>
         </div>
       </div>

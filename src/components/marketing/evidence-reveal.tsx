@@ -19,7 +19,7 @@ export function EvidenceReveal() {
               brassEyebrow
               eyebrow="The most common blocker"
               title={"\u201CI don't have enough experience yet.\u201D"}
-              lead="You may have more evidence than you think. Every item below can anchor a professional portfolio — truthfully, without inventing a single thing."
+              lead="You have more evidence than you think. Every item below can anchor a truthful portfolio."
             />
             <Reveal delay={0.25}>
               <blockquote className="mt-8 border-l-2 border-brass/60 pl-5">
@@ -52,7 +52,7 @@ export function EvidenceReveal() {
                   style={{ filter: "saturate(0.75) contrast(1.05)" }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" aria-hidden />
-                <p className="absolute bottom-4 left-5 right-5 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ink-secondary">
+                <p className="absolute bottom-4 left-5 right-5 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-ink-secondary">
                   Evidence, not invention — the platform-wide rule
                 </p>
               </div>
@@ -63,7 +63,7 @@ export function EvidenceReveal() {
                 <StaggerItem key={e}>
                   <div className="group flex min-h-[3.6rem] items-center gap-2.5 rounded-lg border border-hairline/80 bg-surface/70 px-3.5 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/40 hover:bg-raised">
                     <span className="size-1.5 shrink-0 rounded-full bg-brass/70 transition-colors group-hover:bg-brass" aria-hidden />
-                    <span className="text-[0.8rem] leading-tight text-ink-secondary group-hover:text-foreground">
+                    <span className="text-[0.84rem] leading-tight text-ink-secondary group-hover:text-foreground">
                       {e}
                     </span>
                   </div>

@@ -4,7 +4,7 @@
  * ChapterRail — the film spine of the homepage.
  * A fixed vertical chapter index (I–VIII) that live-tracks which scroll
  * "scene" the visitor is inside, with a rolling title readout and
- * Lenis-aware jump links. Desktop only (>= 1280px).
+ * Lenis-aware jump links. Desktop only (>= 1536px).
  *
  * Sections register themselves with `data-chapter="overture"` etc.
  */

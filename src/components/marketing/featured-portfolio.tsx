@@ -67,7 +67,8 @@ export function FeaturedPortfolio() {
                   </span>
                 </h2>
                 <p className="mt-2 text-sm text-ink-secondary">
-                  Curated subset selected from our growing collection of {portfolios.length} live graduate portfolios.
+                  Six highlights from the {portfolios.length} live portfolios —
+                  each a different profession.
                 </p>
               </div>
               <Link

@@ -322,10 +322,8 @@ export function Hero() {
           </h1>
 
           <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-secondary sm:text-lg">
-            Explore profession-specific digital portfolios designed around the
-            work, thinking, tools and career direction of emerging graduates —
-            from engineering and computing to science, information, education,
-            agriculture and the social sciences.
+            Real graduate work — projects, attachments, research — designed
+            into profession-specific portfolios employers can explore.
           </p>
 
           <motion.div
@@ -531,14 +529,14 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Stat strip + scroll cue (GP-02, GP-04) */}
+      {/* Stat strip + scroll cue (GP-02, GP-04) — spread evenly for balance */}
       <div className="relative z-10 border-t border-hairline/60 bg-background/60 backdrop-blur-sm">
-        <div className="shell grid grid-cols-2 gap-3 py-4 sm:flex sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-3">
+        <div className="shell grid grid-cols-2 gap-3 py-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
           <Stat value={`${portfolios.length}`} label="Live portfolios" />
           <Stat value={`${collectionStats.totalSchools}`} label="Schools" />
           <Stat value={`${collectionStats.totalDegrees}`} label="Degree paths mapped" />
           <Stat value="1" label="University collection" />
-          <div className="col-span-2 hidden items-center gap-3 sm:col-span-1 sm:ml-auto md:flex">
+          <div className="col-span-2 hidden items-center gap-3 sm:col-span-1 md:flex">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink-tertiary">
               Scroll
             </span>

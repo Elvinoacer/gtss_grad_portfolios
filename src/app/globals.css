@@ -659,6 +659,23 @@
     transform-origin: left;
   }
 
+  /* Flowing dashed connector (CV → portfolio diagram) — a directed current */
+  .flow-line {
+    stroke-dasharray: 5 7;
+    animation: flow-dash 1.1s linear infinite;
+  }
+  @keyframes flow-dash {
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow-line {
+      animation: none;
+      stroke-dasharray: none;
+    }
+  }
+
   .text-shimmer {
     background: linear-gradient(100deg, #f4f6f8 40%, #e2a84b 50%, #f4f6f8 60%);
     background-size: 200% 100%;

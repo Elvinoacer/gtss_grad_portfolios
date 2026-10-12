@@ -198,9 +198,9 @@ export function GlobalHeader() {
                 setMobileOpen(true);
               }}
               aria-label={`Jump to chapter (currently on Ch. ${activeChapter.num} ${activeChapter.label})`}
-              className="hidden sm:flex xl:hidden items-center gap-1.5 rounded-full border border-brass/40 bg-brass/15 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-brass shadow-[0_0_12px_rgba(226,168,75,0.2)] max-w-[11rem] truncate touch-friendly active:scale-95 transition-transform"
+              className="hidden sm:flex xl:hidden items-center gap-1.5 rounded-full border border-brass/40 bg-brass/15 px-2.5 py-1 font-mono text-[0.66rem] uppercase tracking-[0.14em] text-brass shadow-[0_0_12px_rgba(226,168,75,0.2)] max-w-[11rem] truncate touch-friendly active:scale-95 transition-transform"
             >
-              <span className="size-1.5 rounded-full bg-brass animate-pulse shrink-0" aria-hidden />
+              <span className="size-1.5 rounded-full bg-brass motion-safe:animate-pulse shrink-0" aria-hidden />
               <span className="truncate">Ch. {activeChapter.num} · {activeChapter.label}</span>
             </motion.button>
           )}
@@ -262,16 +262,13 @@ export function GlobalHeader() {
                 </motion.div>
               ))}
 
-              {/* Exhibition Chapters quick navigator for mobile */}
+              {/* Exhibition Chapters quick navigator for mobile — one calm scroller */}
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
                 className="mt-6 border-b border-hairline/60 pb-6"
               >
-                <div className="flex items-center justify-between py-1">
-                  <p className="eyebrow-brass">Exhibition Chapters (I–IX)</p>
-                  <span className="font-mono text-[0.6rem] text-ink-tertiary">Tap to jump</span>
-                </div>
-                <div className="mt-3 grid grid-cols-3 gap-1.5">
+                <p className="eyebrow-brass">Exhibition Chapters</p>
+                <div className="no-scrollbar -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 pb-1 touch-pan-x">
                   {CHAPTERS.map((c) => (
                     <button
                       key={c.id}
@@ -294,10 +291,10 @@ export function GlobalHeader() {
                           }
                         }
                       }}
-                      className="group flex flex-col items-center justify-center rounded-lg border border-hairline/80 bg-surface/70 py-2.5 px-1.5 text-center transition-colors active:scale-95 hover:border-brass/50 hover:bg-raised"
+                      className="group flex shrink-0 items-center gap-2 rounded-full border border-hairline/80 bg-surface/70 px-4 py-2.5 transition-colors active:scale-95 hover:border-brass/50 hover:bg-raised"
                     >
-                      <span className="font-mono text-[0.58rem] font-bold text-brass group-hover:text-brass">Ch. {c.num}</span>
-                      <span className="mt-0.5 font-display text-[0.7rem] font-semibold text-foreground truncate max-w-full px-0.5">
+                      <span className="font-mono text-[0.7rem] font-bold text-brass">{c.num}</span>
+                      <span className="font-display text-[0.8rem] font-semibold text-foreground">
                         {c.label}
                       </span>
                     </button>
@@ -314,9 +311,9 @@ export function GlobalHeader() {
                   <p className="eyebrow-brass">Schools · Moi University</p>
                   <Link
                     to="/universities/moi-university"
-                    className="font-mono text-[0.62rem] uppercase tracking-wider text-ink-tertiary hover:text-brass"
+                    className="font-mono text-[0.7rem] uppercase tracking-wider text-ink-secondary hover:text-brass"
                   >
-                    All 6 schools →
+                    All 6 →
                   </Link>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2">
@@ -332,11 +329,11 @@ export function GlobalHeader() {
                           style={{ background: s.accent }}
                           aria-hidden
                         />
-                        <span className="font-mono text-[0.68rem] font-semibold text-foreground truncate">
+                        <span className="font-mono text-[0.72rem] font-semibold text-foreground truncate">
                           {s.shortName}
                         </span>
                       </div>
-                      <span className="mt-2 font-mono text-[0.58rem] text-ink-tertiary">
+                      <span className="mt-2 font-mono text-[0.64rem] text-ink-secondary">
                         {s.degrees.length} degrees
                       </span>
                     </Link>

@@ -49,19 +49,15 @@ const ORBIT_POS = [
 ];
 
 const COUNT = portfolios.length;
-const COUNT_WORD =
-  [
-    "zero", "one", "two", "three", "four", "five", "six", "seven",
-    "eight", "nine", "ten", "eleven", "twelve", "thirteen",
-    "fourteen", "fifteen", "sixteen", "seventeen",
-  ][COUNT] ?? String(COUNT);
+const hero = portfolios.find((p) => p.slug === HERO_SLUG);
+const heroDegree = hero ? getDegree(hero.degreeSlug) : undefined;
+const orbit = ORBIT_SLUGS.map((s) => portfolios.find((p) => p.slug === s)).filter(
+  (p): p is NonNullable<typeof p> => Boolean(p)
+);
 
 export function ZoomScene() {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-
-  const hero = portfolios.find((p) => p.slug === HERO_SLUG)!;
-  const orbit = ORBIT_SLUGS.map((s) => portfolios.find((p) => p.slug === s)!).filter(Boolean);
 
   useEffect(() => {
     if (reduce) return;
@@ -177,6 +173,9 @@ export function ZoomScene() {
     return () => ctx.revert();
   }, [reduce]);
 
+  /* Content guard — the scene needs its featured graduate */
+  if (!hero) return null;
+
   return (
     <section
       ref={sectionRef}
@@ -219,16 +218,17 @@ export function ZoomScene() {
           <PortfolioMock portfolio={hero} variant="card" className="w-full shadow-2xl" />
         </div>
 
-        {/* Mid-scene caption with proof points */}
+        {/* Mid-scene caption with proof points — derived from content data */}
         <div data-zoom-caption className="mt-6 max-w-xl text-center">
           <p className="text-base leading-relaxed text-ink-secondary">
             <span className="font-display text-lg font-bold text-foreground">
-              {hero.candidate.name}
+              {hero?.candidate.name}
             </span>{" "}
-            — {hero.careerDirection} · BSc Computer Science
+            — {hero?.careerDirection}
+            {heroDegree ? ` · ${heroDegree.degree.name}` : ""}
           </p>
-          <p className="mt-2 text-xs font-mono uppercase tracking-[0.14em] text-ink-tertiary">
-            Proof: Full-Stack Architecture · Distributed Systems · System Design Case Studies
+          <p className="mt-2 text-xs font-mono uppercase tracking-[0.14em] text-ink-secondary">
+            Proof: {hero?.evidenceTypes.slice(0, 3).join(" · ")}
           </p>
         </div>
 
@@ -257,10 +257,10 @@ export function ZoomScene() {
         {/* Mobile Orbit: Touch-friendly preview strip of the other graduates */}
         <div className="relative z-20 mt-10 w-full max-w-full lg:hidden">
           <div className="mb-3.5 flex items-center justify-between px-1">
-            <p className="font-mono text-[0.64rem] uppercase tracking-[0.18em] text-brass">
+            <p className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-brass">
               The Other {orbit.length} Graduates
             </p>
-            <span className="font-mono text-[0.58rem] uppercase tracking-wider text-ink-tertiary">
+            <span className="font-mono text-[0.66rem] uppercase tracking-wider text-ink-secondary">
               Swipe cards →
             </span>
           </div>
@@ -276,7 +276,7 @@ export function ZoomScene() {
                   <div className="relative overflow-hidden rounded-lg">
                     <PortfolioMock portfolio={p} variant="card" className="w-full" />
                     {p.liveUrl && (
-                      <span className="absolute right-2 top-2 z-30 inline-flex items-center gap-1 rounded-[3px] bg-[#080A0D]/85 px-1.5 py-0.5 font-mono text-[0.52rem] uppercase tracking-wider text-emerald-400 border border-emerald-400/30">
+                      <span className="absolute right-2 top-2 z-30 inline-flex items-center gap-1 rounded-[4px] bg-[#080A0D]/85 px-1.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-wider text-emerald-400 border border-emerald-400/30">
                         <span className="size-1 rounded-full bg-emerald-400" />
                         Live
                       </span>
@@ -284,11 +284,11 @@ export function ZoomScene() {
                   </div>
                   <div className="mt-3 px-0.5">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="truncate font-mono text-[0.58rem] uppercase tracking-wider text-brass">
+                      <p className="truncate font-mono text-[0.66rem] uppercase tracking-wider text-brass">
                         {degree?.degree.shortName ?? p.degreeSlug}
                       </p>
-                      <span className="font-mono text-[0.52rem] text-ink-tertiary">
-                        0{idx + 2}/10
+                      <span className="font-mono text-[0.62rem] text-ink-secondary">
+                        {String(idx + 2).padStart(2, "0")}/{COUNT}
                       </span>
                     </div>
                     <p className="mt-1 truncate font-display text-sm font-bold text-foreground group-hover:text-brass">

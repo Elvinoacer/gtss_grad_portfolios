@@ -86,7 +86,7 @@ export function WhatsAppFloat() {
                 className="group inline-flex h-10 sm:h-12 items-center gap-2 rounded-full border border-emerald-400/40 bg-[#0c120e]/95 px-3.5 sm:px-5 font-sans text-xs sm:text-sm font-semibold text-foreground shadow-[0_12px_36px_-10px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/70 active:scale-95"
               >
                 <span className="relative flex size-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
                 </span>
                 <MessageCircle className="size-4 text-emerald-300" aria-hidden />

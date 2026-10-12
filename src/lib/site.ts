@@ -43,49 +43,49 @@ export interface ProcessStep {
   outcome: string;
 }
 
-/** How GTSS builds a portfolio (spec §44) */
+/** How GTSS builds a portfolio (spec §44) — short bodies; the /how-it-works page carries the detail */
 export const processSteps: ProcessStep[] = [
   {
     num: "01",
-    title: "Define your professional direction",
-    body: "We start with the specific roles you are targeting and the capabilities you want to be known for — not with a generic theme. Every design and editorial decision serves that target.",
+    title: "Define your direction",
+    body: "We start with the roles you're targeting and what you want to be known for — never with a theme.",
     outcome: "Target role profile & content roadmap",
   },
   {
     num: "02",
-    title: "Gather authentic coursework & evidence",
-    body: "Projects, industrial attachments, lab experiments, CAD models, research papers, datasets, writing, and code. A degree produces substantial professional material when curated properly.",
-    outcome: "Vetted catalog of academic and attachment work",
+    title: "Gather your evidence",
+    body: "Projects, attachments, lab work, research, code, datasets — a degree produces real professional material.",
+    outcome: "Vetted catalog of real work",
   },
   {
     num: "03",
-    title: "Structure your project narratives",
-    body: "Context, problem, your individual contribution, technical process, tangible evidence, results, and key learnings. The narrative hierarchy employers and hiring managers actually read.",
-    outcome: "Structured case studies highlighting problem-solving",
+    title: "Structure the narratives",
+    body: "Context, problem, contribution, process, evidence, results — the hierarchy employers actually read.",
+    outcome: "Structured case studies",
   },
   {
     num: "04",
-    title: "Design for your specific discipline",
-    body: "An engineering portfolio reasons with technical drawings and calculations. An actuarial portfolio argues with models. A media portfolio leads with bylines and media. Discipline-specific visual logic.",
-    outcome: "Bespoke typography, layout & visual language",
+    title: "Design for your discipline",
+    body: "An engineering portfolio reasons with drawings. An actuarial one argues with models. Different visual logic.",
+    outcome: "Bespoke typography & layout",
   },
   {
     num: "05",
-    title: "Verify facts and validate claims",
-    body: "Nothing invented, nothing inflated. Academic and attachment claims are checked, verified, and cited — because lasting credibility is the foundation of every portfolio.",
-    outcome: "Fact-checked portfolio draft ready for review",
+    title: "Verify every claim",
+    body: "Nothing invented, nothing inflated. Academic claims are checked, verified and cited.",
+    outcome: "Fact-checked draft",
   },
   {
     num: "06",
-    title: "Publish your live, shareable site",
-    body: "A blazing-fast, mobile-first website hosted with its own permanent link — instantly shareable via WhatsApp, LinkedIn, email, or a scannable QR code printed on your CV.",
-    outcome: "Live high-performance web portfolio & QR code",
+    title: "Publish your live site",
+    body: "A fast, mobile-first site with its own permanent link — shareable via WhatsApp, LinkedIn, email or QR.",
+    outcome: "Live portfolio & QR code",
   },
   {
     num: "07",
-    title: "Handover and continue building",
-    body: "The portfolio is structured to scale as you take on graduate roles and new projects. It is a living career asset that you own and evolve, not an ephemeral graduation souvenir.",
-    outcome: "Complete asset handover & update guidance",
+    title: "Hand over & keep building",
+    body: "A living career asset you own and evolve — not a graduation souvenir.",
+    outcome: "Full handover & update guidance",
   },
 ];
 
@@ -168,35 +168,35 @@ export const evidenceChecklist = [
   "None organized yet",
 ];
 
-/** FAQ (spec §89) */
+/** FAQ (spec §89) — answers kept to one honest breath each */
 export const faqs = [
   {
     q: "Do I need work experience?",
-    a: "No. A graduate portfolio can be built around truthful academic projects, attachment experience, research, fieldwork, technical work, independent projects and other relevant evidence. The job is presenting what you already have with clarity — not inventing what you don't.",
+    a: "No. Portfolios are built from real academic projects, attachments, research and fieldwork — presenting what you already have, clearly.",
   },
   {
     q: "Is this the same as a CV?",
-    a: "No. Your CV remains useful. The portfolio expands the evidence behind it — a place where the strongest lines in your CV can prove themselves. We design the two to work together.",
+    a: "No — they work together. The portfolio gives the strongest lines in your CV somewhere to prove themselves.",
   },
   {
     q: "What if my course is not shown?",
-    a: "Request it. The collection is growing course by course, and your discipline can become the next portfolio direction. Gaps in the catalog are demand signals — they tell us what to design next.",
+    a: "Request it. Catalog gaps are demand signals — they tell us what to design next.",
   },
   {
     q: "Can I update the portfolio later?",
-    a: "The portfolio is built to evolve as you gain experience. Update arrangements are agreed with GTSS before your project starts, so the answer you get is the answer that holds.",
+    a: "Yes. It's built to evolve; update arrangements are agreed before your project starts.",
   },
   {
     q: "Is this an official Moi University project?",
-    a: "No. GTSS Graduate Portfolios is an independent GTSS initiative. Programme names are used only to organize portfolio examples by academic discipline.",
+    a: "No. An independent GTSS initiative. Programme names only organize examples by discipline.",
   },
   {
-    q: "Can employers contact me through the portfolio?",
-    a: "Yes — if you choose to publish suitable contact options. You decide exactly what is public, and what stays behind a contact form.",
+    q: "Can employers contact me through it?",
+    a: "Yes — if you choose. You decide what's public and what stays behind a contact form.",
   },
   {
     q: "Do you create the projects for me?",
-    a: "No. The portfolio presents real work. GTSS can help you structure, select and communicate existing work — but professional evidence is never fabricated.",
+    a: "No. GTSS structures and presents real work — professional evidence is never fabricated.",
   },
 ];
 

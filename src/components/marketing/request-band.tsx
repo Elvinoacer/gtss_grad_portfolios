@@ -75,9 +75,7 @@ export function RequestBand() {
         />
         <Reveal delay={0.22}>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-ink-secondary sm:text-lg">
-            Whether your work lives in code, calculations, field notes, reports,
-            drawings, datasets, lesson plans, research or media — GTSS can help
-            turn it into a professional digital story.
+            Four years of real work — one link that makes it visible.
           </p>
         </Reveal>
         <Reveal delay={0.32}>

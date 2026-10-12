@@ -205,7 +205,7 @@ export function HorizontalGallery({
             type="button"
             onClick={handlePrev}
             aria-label="Previous portfolio card"
-            className="grid size-9 place-items-center rounded-md border border-hairline bg-surface/80 text-foreground hover:border-brass/40 transition-colors active:scale-95 text-base"
+            className="grid size-11 place-items-center rounded-md border border-hairline bg-surface/80 text-foreground hover:border-brass/40 transition-colors active:scale-95 text-base"
           >
             ‹
           </button>
@@ -213,7 +213,7 @@ export function HorizontalGallery({
             type="button"
             onClick={handleNext}
             aria-label="Next portfolio card"
-            className="grid size-9 place-items-center rounded-md border border-hairline bg-surface/80 text-foreground hover:border-brass/40 transition-colors active:scale-95 text-base"
+            className="grid size-11 place-items-center rounded-md border border-hairline bg-surface/80 text-foreground hover:border-brass/40 transition-colors active:scale-95 text-base"
           >
             ›
           </button>

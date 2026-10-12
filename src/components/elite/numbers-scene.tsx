@@ -62,7 +62,7 @@ export function NumbersScene() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=60%",
+            end: "+=50%",
             pin: true,
             scrub: 0.7,
             anticipatePin: 1,
@@ -72,6 +72,12 @@ export function NumbersScene() {
                 const target = +(el.dataset.count ?? "0");
                 const start = 0.05 + i * 0.12;
                 const local = clamp01((p - start) / 0.45);
+                /* Pre-roll: keep the real value visible (GP-06) — the race
+                   from zero only begins once this counter's window opens. */
+                if (local <= 0) {
+                  setCounter(el, target);
+                  return;
+                }
                 setCounter(el, Math.round(easeOutExpo(local) * target));
               });
             },
@@ -206,7 +212,7 @@ export function NumbersScene() {
           Chapter IV — The evidence
         </p>
         <h2 className="display-section max-w-2xl text-foreground">
-          The collection, in numbers that live in the scroll.
+          The collection, in numbers.
         </h2>
 
         <div className="mt-10 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:mt-14 lg:gap-x-16">

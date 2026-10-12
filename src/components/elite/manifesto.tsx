@@ -7,7 +7,7 @@
  * accent words ignite in brass with a glow. Behind it, the campus image
  * breathes (slow scale scrub) and a giant backdrop word drifts.
  *
- * Desktop: pinned scrub scene (+170vh).
+ * Desktop: pinned scrub scene (+45%).
  * Mobile: in-view cascade reveal.
  * Reduced motion: fully static, fully legible.
  */
@@ -22,9 +22,7 @@ import { EASE_EXPO, stagger } from "./curves";
 const LINES: { text: string; accents?: string[] }[] = [
   { text: "Every graduate carries proof.", accents: ["proof."] },
   { text: "Projects. Research. Code. Field notes. Drawings. Data." },
-  { text: "Too much of that work never gets the audience it deserves.", accents: ["audience", "deserves."] },
-  { text: "A portfolio turns coursework into verifiable capability." },
-  { text: "Built from authentic evidence, ready for employers to inspect.", accents: ["authentic", "inspect."] },
+  { text: "A portfolio turns it into capability employers can inspect.", accents: ["capability", "inspect."] },
 ];
 
 type Word = { word: string; accent: boolean };
@@ -92,7 +90,7 @@ export function Manifesto() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=60%",
+          end: "+=45%",
           pin: true,
           scrub: 0.7,
           anticipatePin: 1,
@@ -203,7 +201,7 @@ export function Manifesto() {
               <p
                 key={li}
                 className={
-                  li === 4
+                  li === 2
                     ? "display-manifesto-lead text-foreground"
                     : "display-manifesto text-ink-secondary"
                 }
@@ -220,7 +218,7 @@ export function Manifesto() {
               <motion.p
                 key={li}
                 className={
-                  li === 4
+                  li === 2
                     ? "display-manifesto-lead mt-6 text-foreground"
                     : "display-manifesto mb-3 text-ink-secondary"
                 }

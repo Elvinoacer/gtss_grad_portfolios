@@ -21,10 +21,8 @@ export function HowItWorksView() {
             We start with your evidence, not a theme.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-secondary sm:text-lg">
-            We do not begin by choosing a theme. We begin by asking what
-            somebody evaluating you needs to understand. Seven steps stand
-            between your scattered work and a professional identity people can
-            explore.
+            Seven steps stand between your scattered work and a professional
+            identity people can explore — this is the full method.
           </p>
         </div>
       </section>

@@ -157,28 +157,38 @@ function ConstellationField({
   const containerRef = useRef<HTMLDivElement>(null);
   const pillRefs = useRef(new Map<string, HTMLButtonElement>());
   const reduce = useReducedMotion();
+  const rafPending = useRef(false);
+  const lastPointer = useRef<{ x: number; y: number } | null>(null);
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
       if (reduce || e.pointerType === "touch") return;
-      const container = containerRef.current;
-      if (!container) return;
-      const rect = container.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-      container.style.setProperty("--mx", `${mx}px`);
-      container.style.setProperty("--my", `${my}px`);
-      pillRefs.current.forEach((el, slug) => {
-        const r = el.getBoundingClientRect();
-        const cx = r.left - rect.left + r.width / 2;
-        const cy = r.top - rect.top + r.height / 2;
-        const dist = Math.hypot(mx - cx, my - cy);
-        const influence = Math.max(0, 1 - dist / 190);
-        const scale = 1 + influence * 0.22;
-        el.style.transform = `scale(${scale.toFixed(3)})`;
-        el.style.zIndex = influence > 0.35 ? "5" : "";
-        el.style.borderColor = influence > 0.4 ? "rgba(226,168,75,0.45)" : "";
-        el.style.color = influence > 0.55 ? "#E2A84B" : "";
+      /* coalesce to one frame — never do O(n) layout reads per event */
+      lastPointer.current = { x: e.clientX, y: e.clientY };
+      if (rafPending.current) return;
+      rafPending.current = true;
+      requestAnimationFrame(() => {
+        rafPending.current = false;
+        const pt = lastPointer.current;
+        const container = containerRef.current;
+        if (!pt || !container) return;
+        const rect = container.getBoundingClientRect();
+        const mx = pt.x - rect.left;
+        const my = pt.y - rect.top;
+        container.style.setProperty("--mx", `${mx}px`);
+        container.style.setProperty("--my", `${my}px`);
+        pillRefs.current.forEach((el) => {
+          const r = el.getBoundingClientRect();
+          const cx = r.left - rect.left + r.width / 2;
+          const cy = r.top - rect.top + r.height / 2;
+          const dist = Math.hypot(mx - cx, my - cy);
+          const influence = Math.max(0, 1 - dist / 190);
+          const scale = 1 + influence * 0.22;
+          el.style.transform = `scale(${scale.toFixed(3)})`;
+          el.style.zIndex = influence > 0.35 ? "5" : "";
+          el.style.borderColor = influence > 0.4 ? "rgba(226,168,75,0.45)" : "";
+          el.style.color = influence > 0.55 ? "#E2A84B" : "";
+        });
       });
     },
     [reduce]

@@ -30,7 +30,7 @@ export function DisciplineLanguage() {
         <SectionHeading
           eyebrow="No generic student template"
           title="Same purpose. Different professional language."
-          lead="A strong portfolio should not make every graduate look like a web developer. GTSS adapts the information architecture, visual language and evidence model to the profession."
+          lead="Every discipline gets its own visual logic — not a web-developer template wearing a different color."
         />
 
         <div className="mt-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
@@ -60,8 +60,8 @@ export function DisciplineLanguage() {
                     {d.keywords.slice(0, 2).map((k) => (
                       <span
                         key={k}
-                        className={`rounded-[3px] border px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.1em] ${
-                          active === i ? "border-brass/40 text-brass/90" : "border-hairline text-ink-tertiary"
+                        className={`rounded-[4px] border px-2 py-0.5 font-mono text-[0.66rem] uppercase tracking-[0.08em] ${
+                          active === i ? "border-brass/40 text-brass/90" : "border-hairline text-ink-secondary"
                         }`}
                       >
                         {k}
@@ -89,7 +89,7 @@ export function DisciplineLanguage() {
                     <MotifField motif={pick.motif as never} className="opacity-[0.16]" />
                   </div>
                   <div className="relative flex h-full flex-col p-7 sm:p-9">
-                    <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em]" style={{ color: targetSchool.accent }}>
+                    <p className="font-mono text-[0.72rem] uppercase tracking-[0.22em]" style={{ color: targetSchool.accent }}>
                       {pick.label} → visual language
                     </p>
                     <p className="mt-5 max-w-md font-display text-2xl font-bold leading-tight tracking-tight text-foreground">
@@ -112,12 +112,12 @@ export function DisciplineLanguage() {
                     </div>
 
                     <div className="mt-auto pt-7">
-                      <p className="text-[0.8rem] leading-relaxed text-ink-tertiary">
+                      <p className="text-[0.8rem] leading-relaxed text-ink-secondary">
                         Portfolio structure: {targetSchool.sections.slice(0, 4).join(" · ")}
                       </p>
                       <Link
                         to={`/universities/moi-university/schools/${targetSchool.slug}`}
-                        className="link-sweep mt-4 inline-flex items-center gap-2 font-mono text-[0.66rem] font-medium uppercase tracking-[0.18em] text-brass"
+                        className="link-sweep mt-4 inline-flex items-center gap-2 font-mono text-[0.7rem] font-medium uppercase tracking-[0.18em] text-brass"
                       >
                         See the {targetSchool.shortName} world
                         <span aria-hidden>→</span>

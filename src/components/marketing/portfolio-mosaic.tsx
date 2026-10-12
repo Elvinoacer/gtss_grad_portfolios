@@ -46,7 +46,7 @@ export function PortfolioMosaic() {
           <SectionHeading
             eyebrow="The mosaic"
             title="Move between professions. Feel the difference."
-            lead="Civil Engineering to Actuarial Science to Biochemistry — designed by the same studio, for completely different professions."
+            lead="Same studio, completely different professions — scroll through and feel the shift."
           />
         </div>
 
@@ -63,7 +63,7 @@ export function PortfolioMosaic() {
               key={f.id}
               type="button"
               onClick={() => setFilter(f.id)}
-              className={`inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 font-mono text-[0.62rem] uppercase tracking-wider transition-colors active:scale-95 ${
+              className={`inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 font-mono text-[0.68rem] uppercase tracking-wider transition-colors active:scale-95 ${
                 filter === f.id
                   ? "border-brass bg-brass text-brass-foreground font-semibold"
                   : "border-hairline bg-surface/70 text-ink-secondary"
@@ -142,7 +142,7 @@ export function PortfolioMosaic() {
                           </p>
                         </div>
                         {p.liveUrl && (
-                          <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-emerald-400/35 bg-emerald-400/10 px-2.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-wider text-emerald-300">
+                          <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-emerald-400/35 bg-emerald-400/10 px-2.5 py-0.5 font-mono text-[0.66rem] uppercase tracking-wider text-emerald-300">
                             <span className="size-1 rounded-full bg-emerald-400" />
                             Live
                           </span>
@@ -171,7 +171,7 @@ export function PortfolioMosaic() {
               className="group relative flex h-full min-h-[16rem] flex-col justify-between overflow-hidden rounded-xl border border-dashed border-brass/40 bg-brass/[0.04] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brass/70 hover:bg-brass/[0.08]"
             >
               <div className="absolute inset-0 bg-blueprint-fine opacity-30" aria-hidden />
-              <p className="relative font-mono text-[0.62rem] uppercase tracking-[0.2em] text-brass">
+              <p className="relative font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass">
                 {items.length + 1} — yours
               </p>
               <div className="relative">
@@ -179,9 +179,9 @@ export function PortfolioMosaic() {
                   Your course can be next.
                 </p>
                 <p className="mt-2.5 text-[0.84rem] leading-relaxed text-ink-secondary">
-                  Whether your work lives in code, calculations, field notes,
-                  reports, drawings, datasets, lesson plans, research or media —
-                  GTSS can help turn it into a professional digital story.
+                  Every discipline has evidence worth showing — code,
+                  calculations, field notes, lesson plans. Yours can join the
+                  collection.
                 </p>
                 <span className="mt-5 inline-flex items-center gap-2 font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-brass">
                   Request my portfolio

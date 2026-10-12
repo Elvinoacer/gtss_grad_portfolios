@@ -17,13 +17,11 @@ export function ForGraduatesView() {
         <div className="shell relative">
           <p className="eyebrow-brass">For graduates</p>
           <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.2rem,4.6vw,4rem)] font-bold leading-[1.0] tracking-tight text-foreground">
-            Can GTSS make me look professional — without pretending I have ten
-            years of experience?
+            Professional — without pretending you have ten years of experience.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-secondary sm:text-lg">
-            Yes. That question is exactly what this platform is designed
-            around: credible early-career positioning, real evidence,
-            professional presentation. Nothing inflated.
+            Credible early-career positioning, real evidence, professional
+            presentation. Nothing inflated.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link

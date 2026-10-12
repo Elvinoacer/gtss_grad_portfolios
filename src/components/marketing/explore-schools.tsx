@@ -76,7 +76,7 @@ export function ExploreSchools() {
         <SectionHeading
           eyebrow={`${university.name} · Main Campus`}
           title="Six schools. Six professional languages."
-          lead="Each school world carries its own visual logic — the same studio, completely different professions. Scroll through the collection and choose yours."
+          lead="Same studio, six different professional worlds. Leaf through the collection and choose yours."
         />
 
         <div ref={stackRef} className="mt-12 sm:mt-14">
@@ -198,7 +198,7 @@ export function ExploreSchools() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-ink-tertiary">
+          <p className="mt-4 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-ink-secondary">
             Stack scrolls · every school keeps its own visual logic
           </p>
         </Reveal>
